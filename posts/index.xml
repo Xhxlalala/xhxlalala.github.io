@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Pure theme for Hugo</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>CC BY 4.0 CN</copyright>
-    <lastBuildDate>Sun, 12 Jun 2022 16:39:11 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jun 2022 17:00:26 +0800</lastBuildDate>
     
         <atom:link href="https://xhxlalala.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>First</title>
+      <link>https://xhxlalala.github.io/2022/06/first/</link>
+      <pubDate>Sun, 12 Jun 2022 17:00:26 +0800</pubDate>
+      
+      <guid>https://xhxlalala.github.io/2022/06/first/</guid>
+      <description>1 hello hello world
+1da ca ad 1.1 ada heee
+2 world </description>
+    </item>
     
     <item>
       <title>Test</title>
