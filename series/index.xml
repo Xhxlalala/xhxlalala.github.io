@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on Pure theme for Hugo</title>
+    <link>https://xhxlalala.github.io/series/</link>
+    <description>Recent content in Series on Pure theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>CC BY 4.0 CN</copyright>
+    
+        <atom:link href="https://xhxlalala.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Test</title>
+      <link>https://xhxlalala.github.io/2022/06/test/</link>
+      <pubDate>Sun, 12 Jun 2022 16:39:11 +0800</pubDate>
+      
+      <guid>https://xhxlalala.github.io/2022/06/test/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
