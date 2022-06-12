@@ -60,7 +60,7 @@
             <img class="img-circle img-rotate" src="https://www.xhxha.one/avatar.png" width="200" height="200">
           </a>
           <h2 id="name" class="hidden-xs hidden-sm">xhx</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">骑驴找马的小码农</h3>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">且乐生前一杯酒</h3>
           <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Hangzhou, China</small>
         </div><div class="search" id="search-form-wrap">
     <form class="search-form sidebar-form">
@@ -145,38 +145,11 @@
 </div>
 
       <div class="widget">
-    <h3 class="widget-title"> 标签</h3>
-    <div id="tag-cloud-list" class="widget-body">
-            
-    </div>
-<script>
-document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
-    tagCloud('#tag-cloud-list a',  8 ,  20 );
-  }
-};
-
-function tagCloud(where, min, max) {
-  let iMax = 0;
-  let iMin = 0;
-  $(where).each(function() {
-    let weight = Number($(this).attr("rel"));
-    if(iMax < weight) iMax = weight;
-    if(iMin > weight || iMin == 0) iMin = weight;
-  });
-  let step = (max - min)/(iMax - iMin);
-  $(where).each(function() {
-    let weight = $(this).attr("rel") - iMin;
-    $(this).css({"font-size": min + (weight * step) + 'px'});
-  });
-};
-</script>
-</div>
-
-      <div class="widget">
     <h3 class="widget-title"> 分类</h3>
     <div class="widget-body">
         <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/mac/" class="category-list-link">mac</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/windows/" class="category-list-link">windows</a><span class="category-list-count">1</span></li>
         </ul>
     </div>
 </div>
@@ -184,6 +157,18 @@ function tagCloud(where, min, max) {
     <h3 class="widget-title"> 标签</h3>
     <div class="widget-body">
         <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/c/" class="tag-list-link">c</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/c&#43;&#43;/" class="tag-list-link">c&#43;&#43;</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/java/" class="tag-list-link">java</a><span
+                    class="tag-list-count">1</span></li>
             
         </ul>
 
@@ -226,15 +211,57 @@ function tagCloud(where, min, max) {
     <article class="article article-categories article-type-list" itemscope="">
         <header class="article-header">
             <h1 itemprop="name" class="hidden-xs">Categories</h1>
-            <p class="text-muted hidden-xs">共 0 个分类</p>
+            <p class="text-muted hidden-xs">共 2 个分类</p>
             <nav role="navigation" id="nav-main" class="okayNav">
                 <ul>
                     <li><a href="https://www.xhxha.one/categories">All</a></li>
+                    <li><a href="https://www.xhxha.one/categories/mac/">Mac</a></li>
+                    <li><a href="https://www.xhxha.one/categories/windows/">Windows</a></li>
                 </ul>
             </nav>
         </header>
         
         <div class="article-body">
+            <div class="panel panel-default b-no">
+                <div class="panel-heading" role="tab">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse140c1f12feeb2c52dfbeb2da6066a73a" aria-expanded="true">
+                            <i class="icon icon-folder text-active"></i><i class="icon icon-folder-open text"></i>mac
+                        </a>
+                        <small class="text-muted">(Total1 articles)</small>
+                    </h3>
+                </div>
+                <div id="collapse140c1f12feeb2c52dfbeb2da6066a73a" class="panel-collapse collapse in" role="tabpanel"
+                    aria-labelledby="headingmac ">
+                    <div class="panel-body">
+                        <div class="collection"><a href="https://www.xhxha.one/2022/06/first/" class="collection-item" itemprop="url" target="_blank">
+    <time datetime="2022-06-12 17:00:26 &#43;0800 CST" itemprop="datePublished" style="margin-right: 5px;">2022-06-12
+    </time>First
+</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default b-no">
+                <div class="panel-heading" role="tab">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse0f4137ed1502b5045d6083aa258b5c42" aria-expanded="true">
+                            <i class="icon icon-folder text-active"></i><i class="icon icon-folder-open text"></i>windows
+                        </a>
+                        <small class="text-muted">(Total1 articles)</small>
+                    </h3>
+                </div>
+                <div id="collapse0f4137ed1502b5045d6083aa258b5c42" class="panel-collapse collapse in" role="tabpanel"
+                    aria-labelledby="headingwindows ">
+                    <div class="panel-body">
+                        <div class="collection"><a href="https://www.xhxha.one/2022/06/first/" class="collection-item" itemprop="url" target="_blank">
+    <time datetime="2022-06-12 17:00:26 &#43;0800 CST" itemprop="datePublished" style="margin-right: 5px;">2022-06-12
+    </time>First
+</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </article>
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">

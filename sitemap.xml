@@ -3,6 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.xhxha.one/tags/c/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/c&#43;&#43;/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.xhxha.one/2022/06/first/</loc>
     <lastmod>2022-06-12T17:00:26+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -10,7 +31,35 @@
   </url>
   
   <url>
+    <loc>https://www.xhxha.one/tags/java/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/mac/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.xhxha.one/posts/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/</loc>
+    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/windows/</loc>
     <lastmod>2022-06-12T17:00:26+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -31,19 +80,7 @@
   </url>
   
   <url>
-    <loc>https://www.xhxha.one/categories/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xhxha.one/series/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

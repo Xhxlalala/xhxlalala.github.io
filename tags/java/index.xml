@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Series on Xtar&#39;s blog</title>
-    <link>https://www.xhxha.one/series/</link>
-    <description>Recent content in Series on Xtar&#39;s blog</description>
+    <title>Java on Xtar&#39;s blog</title>
+    <link>https://www.xhxha.one/tags/java/</link>
+    <description>Recent content in Java on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>CC BY 4.0 CN</copyright>
+    <lastBuildDate>Sun, 12 Jun 2022 17:00:26 +0800</lastBuildDate>
     
-        <atom:link href="https://www.xhxha.one/series/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://www.xhxha.one/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
