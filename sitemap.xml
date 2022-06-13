@@ -3,78 +3,50 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.xhxha.one/tags/c/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/c&#43;&#43;/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xhxha.one/categories/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/2022/06/first/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/java/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/categories/mac/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/posts/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/tags/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/categories/windows/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/</loc>
-    <lastmod>2022-06-12T17:00:26+08:00</lastmod>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.xhxha.one/2022/06/test/</loc>
-    <lastmod>2022-06-12T16:39:11+08:00</lastmod>
+    <loc>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/</loc>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2022-06-13T19:07:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
