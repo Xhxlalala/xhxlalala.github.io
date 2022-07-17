@@ -20,7 +20,7 @@
     <meta http-equiv="window-target" content="_top" />
     
     
-    <meta name="description" content="1. 介绍 图神经网络（GNNs）通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
+    <meta name="description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
     <meta name="generator" content="Hugo 0.100.2 with theme pure" />
     <title>论文阅读2:《Membership Inference Attack on Graph Neural Networks》 - Xtar&#39;s blog</title>
     
@@ -30,19 +30,19 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
     <meta property="og:title" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》" />
-<meta property="og:description" content="1. 介绍 图神经网络（GNNs）通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
+<meta property="og:description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-07-17T21:45:27+08:00" />
 <meta property="article:modified_time" content="2022-07-17T21:45:27+08:00" />
 
 <meta itemprop="name" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》">
-<meta itemprop="description" content="1. 介绍 图神经网络（GNNs）通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"><meta itemprop="datePublished" content="2022-07-17T21:45:27+08:00" />
+<meta itemprop="description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"><meta itemprop="datePublished" content="2022-07-17T21:45:27+08:00" />
 <meta itemprop="dateModified" content="2022-07-17T21:45:27+08:00" />
 <meta itemprop="wordCount" content="1808">
 <meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》"/>
-<meta name="twitter:description" content="1. 介绍 图神经网络（GNNs）通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"/>
+<meta name="twitter:description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"/>
 
     <!--[if lte IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -282,7 +282,7 @@
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
       <h1 id="1-介绍">1. 介绍</h1>
-<p><strong>图神经网络（GNNs）<strong>通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训练GNN模型的时候是否会泄露用来训练模型的成员节点的信息。具体来说，就是回答这样一个问题：给定一个图，能否确定某些节点被用来训练该图模型。本文实验环境为黑盒环境，通过实验证明了大部分GNN模型都存在着隐私泄露问题。最后，作者发现GNN模型额外的</strong>结构信息</strong>是其隐私泄露关键因素。</p>
+<p><strong>图神经网络（GNNs）</strong> 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训练GNN模型的时候是否会泄露用来训练模型的成员节点的信息。具体来说，就是回答这样一个问题：给定一个图，能否确定某些节点被用来训练该图模型。本文实验环境为黑盒环境，通过实验证明了大部分GNN模型都存在着隐私泄露问题。最后，作者发现GNN模型额外的<strong>结构信息</strong>是其隐私泄露关键因素。</p>
 <h1 id="2-背景知识">2. 背景知识</h1>
 <h3 id="21-图神经网络gnns">2.1 图神经网络（GNNs）</h3>
 <p>图神经网络由<strong>图卷积网络</strong>(GCNs)及其变体推广而来，其灵感来源于<strong>卷积神经网络</strong>(CNN)的成功，将CNN推广到了对不规则图数据的卷积运算。这些方法利用邻域聚合和特征传播策略将图结构直接编码到模型中。特别地，节点表示是通过其邻居特征表示的递归聚集和转换来计算的。</p>
@@ -352,11 +352,11 @@ W：模型需要训练的参数</p>
 <h3 id="42-攻击过程">4.2 攻击过程</h3>
 <p>攻击主要可分为3个阶段：</p>
 <p><img src="https://s2.loli.net/2022/07/17/SXyzF4vn2kDRbdw.png" alt="image.png"></p>
-<p><strong>(1) shadow model training</strong>
+<p><strong>(1) Shadow model training</strong><br>
 假设敌人可以访问由和目标模型的顶点集 $V_t$ 有相同基础分布的影子点集 $V_{shadow}$ 组成的图，然后敌人使用影子模型点集的子集作为训练集训练影子模型。为了模仿目标模型的行为，我们使用目标模型对当影子模型训练集作为输入时的输出的类概率作为基本事实来训练影子模型。</p>
-<p><strong>(2)Attack model training</strong>
+<p><strong>(2)Attack model training</strong><br>
 我们分别使用 $V_{shadow}$ 中的训练集以及非训练集输入训练好的影子模型，并获得对应的后验输出类概率。对于每个节点，我们把后验类概率作为攻击模型的输入特征向量，并且同时把训练集中的节点打标签1非训练集中的节点打标签0也作为攻击模型的基本事实数据输入 。</p>
-<p><strong>(3)Membership inference</strong>
+<p><strong>(3)Membership inference</strong><br>
 为了判断一个给定的节点是否属于训练集，敌人首先把节点 $v$ 和他所知的邻居输入目标模型获得后验概率，然后把后验概率输入攻击模型来进行成员推理。</p>
 <h1 id="5-总结">5. 总结</h1>
 <p>本文通过实验研究来展示和比较GNN模型对成员推断攻击的脆弱性。攻击模型是一个二分类器，它利用目标GNN模型的预测类概率或后验概率来区分成员节点和非成员节点。研究表明，所有模型都容易受到成员推断攻击。</p>
