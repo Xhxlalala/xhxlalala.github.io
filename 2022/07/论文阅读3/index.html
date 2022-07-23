@@ -39,7 +39,7 @@
 <meta itemprop="name" content="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》">
 <meta itemprop="description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统"><meta itemprop="datePublished" content="2022-07-23T21:43:46+08:00" />
 <meta itemprop="dateModified" content="2022-07-23T21:43:46+08:00" />
-<meta itemprop="wordCount" content="1270">
+<meta itemprop="wordCount" content="1286">
 <meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》"/>
 <meta name="twitter:description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统"/>
@@ -276,7 +276,7 @@
     <a class="article-tag-link" href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/"> 推理攻击 </a>
   </span>
 
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1270字</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1286字</span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3分 </span>
       </div>
     </div>
@@ -304,7 +304,7 @@
 <p>在这个框架中可以预先设定：(1) 假设空间 H ; (2) 第一步中生成数据的分布; (3) 第六步中的优化器。</p>
 <h1 id="3-针对该模型的推理攻击">3. 针对该模型的推理攻击</h1>
 <p><strong>攻击目标：</strong></p>
-<p>敌手的目标是获得要推理的人口统计特征数据 $\hat{s}=\left{\hat{s}<em>{1}, \ldots, \hat{s}</em>{n}\right}$ ，其中 $\hat{s}_{i}$ 表示要推断的个人 $x_i$ 的特征信息。</p>
+<p>敌手的目标是获得要推理的人口统计特征数据 $\hat{s}=\left{\hat{s}<em>{1}, \ldots, \hat{s}</em>{n}\right}$，其中 $\hat{s}_{i}$ 表示要推断的个人 $x_i$ 的特征信息。</p>
 <p><strong>敌手能获得的信息：</strong></p>
 <ul>
 <li>learner 和 third party 间交换的信息，包含所有的预测向量以及返回的索引</li>
@@ -329,7 +329,7 @@
 <h3 id="defense-1-perturb-covariance-evaluation-pce">Defense 1: Perturb Covariance Evaluation (PCE)</h3>
 <p>主要受到差分隐私中拉普拉斯机制启发：</p>
 <blockquote>
-<p>拉普拉斯机制：给定轮询函数 $f: \mathbb{N}^{|\mathcal{X}|} \rightarrow \mathbb{R}^{k}$ , 拉普拉斯机制可以表示为：$$\mathcal{M}<em>{L}(x, f(\cdot), \epsilon)=f(x)+\left(Y</em>{1}, Y_{2}, \ldots, Y_{k}\right)$$</p>
+<p>拉普拉斯机制：给定轮询函数 $f: \mathbb{N}^{|\mathcal{X}|} \rightarrow \mathbb{R}^{k}$ , 拉普拉斯机制可以表示为：$\mathcal{M}<em>{L}(x, f(\cdot), \epsilon)=f(x)+\left(Y</em>{1}, Y_{2}, \ldots, Y_{k}\right)$</p>
 <p>其中 $Y_{i}$ 是独立同分布变量。</p>
 </blockquote>
 <p><strong>具体方案：</strong></p>
