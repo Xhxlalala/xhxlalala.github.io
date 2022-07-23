@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</title>
+      <link>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</link>
+      <pubDate>Sat, 23 Jul 2022 21:43:46 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</guid>
+      <description>1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统</description>
+    </item>
+    
+    <item>
       <title>论文阅读2:《Membership Inference Attack on Graph Neural Networks》</title>
       <link>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</link>
       <pubDate>Sun, 17 Jul 2022 21:45:27 +0800</pubDate>
