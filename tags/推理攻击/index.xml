@@ -6,10 +6,19 @@
     <description>Recent content in 推理攻击 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>CC BY 4.0 CN</copyright>
-    <lastBuildDate>Sat, 23 Jul 2022 21:43:46 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Aug 2022 18:07:15 +0800</lastBuildDate>
     
         <atom:link href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</title>
+      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
+      <pubDate>Tue, 02 Aug 2022 18:07:15 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</guid>
+      <description>1. 文章概述 本文阐释了 Collaborative learning 的参数更新过程存在无意地泄露用户训练数据信息的漏洞，并且本文采用了消极和积极的两种攻击方式来利用这个漏洞。首先，利用</description>
+    </item>
     
     <item>
       <title>论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</title>
