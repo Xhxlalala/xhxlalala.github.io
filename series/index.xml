@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</title>
+      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</link>
+      <pubDate>Mon, 15 Aug 2022 16:22:14 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</guid>
+      <description>1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是：</description>
+    </item>
+    
+    <item>
       <title>论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</title>
       <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
       <pubDate>Tue, 02 Aug 2022 18:07:15 +0800</pubDate>
