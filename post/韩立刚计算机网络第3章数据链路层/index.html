@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>
+        韩立刚《计算机网络》| 第3章 数据链路层 - Xtar&#39;s blog
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="3.1 基本概念 (1) 信道类型 点对点信道（一对一） 广播信道（一对多） (2) 链路——点到点的物理线路段 (3) 数据链路——把实现通信协议的硬件和软件加到链路上，构" />
+    <meta name="generator" content="Hugo 0.100.2 with theme pure" />
+    <title>韩立刚《计算机网络》| 第3章 数据链路层 - Xtar&#39;s blog</title>
+    
+    
+    <link rel="stylesheet" href="https://www.xhxha.one/css/style.min.a85959a41e7abcc0db1f81f44bd264649303417f91b536e87dcde644340fea6d.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="韩立刚《计算机网络》| 第3章 数据链路层" />
+<meta property="og:description" content="3.1 基本概念 (1) 信道类型 点对点信道（一对一） 广播信道（一对多） (2) 链路——点到点的物理线路段 (3) 数据链路——把实现通信协议的硬件和软件加到链路上，构" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-06-18T19:48:33+08:00" />
+<meta property="article:modified_time" content="2022-06-18T19:48:33+08:00" />
+
+<meta itemprop="name" content="韩立刚《计算机网络》| 第3章 数据链路层">
+<meta itemprop="description" content="3.1 基本概念 (1) 信道类型 点对点信道（一对一） 广播信道（一对多） (2) 链路——点到点的物理线路段 (3) 数据链路——把实现通信协议的硬件和软件加到链路上，构"><meta itemprop="datePublished" content="2022-06-18T19:48:33+08:00" />
+<meta itemprop="dateModified" content="2022-06-18T19:48:33+08:00" />
+<meta itemprop="wordCount" content="1862">
+<meta itemprop="keywords" content="计算机网络," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="韩立刚《计算机网络》| 第3章 数据链路层"/>
+<meta name="twitter:description" content="3.1 基本概念 (1) 信道类型 点对点信道（一对一） 广播信道（一对多） (2) 链路——点到点的物理线路段 (3) 数据链路——把实现通信协议的硬件和软件加到链路上，构"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xhxlalala" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.xhxha.one/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xhx</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">且乐生前一杯酒</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Hangzhou, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="想要查找什么..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> 分类</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-list-link">计算机基础</a><span class="category-list-count">18</span></li>
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="category-list-link">论文阅读</a><span class="category-list-count">12</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> 标签</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/gan/" class="tag-list-link">gan</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/" class="tag-list-link">推理攻击</a><span
+                    class="tag-list-count">11</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/" class="tag-list-link">推理攻击联邦学习</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="tag-list-link">计算机网络</a><span
+                    class="tag-list-count">18</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/" class="title">论文阅读7:《Label-Only Membership Inference Attacks》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:45:42 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/" class="title">论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:06:39 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" class="title">论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-15 16:22:14 &#43;0800 CST" itemprop="datePublished">2022-08-15</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/" class="title">论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-02 18:07:15 &#43;0800 CST" itemprop="datePublished">2022-08-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" class="title">论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-07-23 21:43:46 &#43;0800 CST" itemprop="datePublished">2022-07-23</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">文章目录</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"
+    >韩立刚《计算机网络》| 第3章 数据链路层</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" class="article-date">
+  <time datetime="2022-06-18 19:48:33 &#43;0800 CST" itemprop="datePublished">2022-06-18</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"> 计算机基础 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"> 计算机网络 </a>
+  </span>
+
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1862字</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4分 </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h1 id="31-基本概念">3.1 基本概念</h1>
+<p><strong>(1) 信道类型</strong></p>
+<ul>
+<li>点对点信道（一对一）</li>
+<li>广播信道（一对多）</li>
+</ul>
+<p><strong>(2) 链路——点到点的物理线路段</strong></p>
+<p><strong>(3) 数据链路——把实现通信协议的硬件和软件加到链路上，构成数据链路</strong></p>
+<p><strong>(4) 帧——数据链路层传输的是帧</strong></p>
+<h1 id="32-三个基本问题">3.2 三个基本问题</h1>
+<h3 id="1-封装成帧">(1) 封装成帧</h3>
+<p>封装成帧就是在一段数据的前后分别加上首部和尾部，然后就构成了一个帧，确定帧的界限
+<strong>MTU（最大传输单元）= 1500Byte</strong></p>
+<h3 id="2-透明传输">(2) 透明传输</h3>
+<p>用字节填充法解决透明传输问题。发送端的数据链路层在数据中出现控制字符“SOH”或“EOT”的前面插入一个转义字符“ESC”(十六进制数1B)。
+<strong>字节填充</strong>(byte stuffing)或<strong>字符填充</strong>(character stuffing)——接收端的数据链路层在数据送往网络层之前删除插入的转义字符。
+如果转义字符也出现在数据之中，那么应该在转义字符前插入一个转义字符。当接收端收到连续的两个转义字符时，就删除前面的那一个。
+<img src="https://img-blog.csdnimg.cn/20200313183806729.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="字节填充法"></p>
+<h3 id="3-差错控制">(3) 差错控制</h3>
+<h4 id="循环冗余检验">循环冗余检验</h4>
+<p><strong>冗余码计算：</strong>
+<img src="https://img-blog.csdnimg.cn/2020031318390988.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="冗余码计算"></p>
+<blockquote>
+<p>余数位数 = 原添加位数 = 除数位数 -1；即设除数位数为n，则先在被除数后加n-1个0，再除以除数，所得余数作为冗余码，加到原数据后；除法规则是各位亦或</p>
+</blockquote>
+<p><strong>FCS（帧检验序列）</strong></p>
+<p>仅用CRC差错检测技术只能做到无差错接受，要做到可靠传输必须加入<strong>确认和重传</strong>机制</p>
+<h1 id="33-两种情况的数据链路层">3.3 两种情况的数据链路层</h1>
+<h3 id="1-使用点到点信道的数据链路层ppp协议">(1) 使用点到点信道的数据链路层（PPP协议）</h3>
+<p>用户使用<strong>拨号电话线</strong>接入因特网时，一般都是使用PPP协议</p>
+<h4 id="三个组成部分">三个组成部分</h4>
+<ul>
+<li>一个将 IP 数据报封装到串行链路的方法</li>
+<li>网络控制协议（NCP）</li>
+<li>链路控制协议（LCP）</li>
+</ul>
+<p><strong>高级数据链路控制协议（HDLC）</strong></p>
+<p>ppp帧格式（FF 03固定）
+<img src="https://img-blog.csdnimg.cn/20200313184347755.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="PPP帧格式"></p>
+<blockquote>
+<p>协议字段：</p>
+<p>0x0021——ip数据报<br>
+0xC021——链路控制数据<br>
+0x8021——网络控制数据<br>
+0xC023——安全性认证<br>
+PAP0xC025——LQR<br>
+0xC223——安全认证CHAP</p>
+</blockquote>
+<p>​</p>
+<h4 id="透明传输">透明传输</h4>
+<ul>
+<li><strong>字节填充</strong><br>
+0x7E &mdash;&gt; (0x7D，0x5E)<br>
+0x7D &mdash;&gt; (0x7D，0x5D)<br>
+数值小于0x20的字符 &mdash;&gt; (0x7D，0x..)</li>
+<li><strong>零比特填充法</strong><br>
+在5个连1后加入一个0</li>
+</ul>
+<h3 id="2--使用广播信道的数据链路层">(2)  使用广播信道的数据链路层</h3>
+<h4 id="1-局域网">[1] 局域网</h4>
+<p>特点：网络为一个单位所拥有，且地理范围和节点数目均有限
+优点：具有广播功能；便于扩展；可靠性、可用性、生存性</p>
+<h4 id="以太网使用csmacd协议载波监听多点接入碰撞检测">以太网使用CSMA/CD协议（载波监听多点接入/碰撞检测）</h4>
+<ul>
+<li><strong>多点接入</strong>：表示许多计算机以多点接入的方式连接在一根总线上</li>
+<li><strong>载波监听</strong>：指每一个站在发送数据之前先要检测一下总线上是否有其他计算机在发送数据，如果有，则暂时不要发送数据，以免发生碰撞</li>
+<li><strong>碰撞检测</strong>：就是计算机边发送数据边检测信道上的信号电压大小，也称冲突检测
+<img src="https://img-blog.csdnimg.cn/20200313184726846.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="碰撞检测"></li>
+</ul>
+<h4 id="争用期通常取512微秒">争用期（通常取51.2微秒）</h4>
+<p>最先发送数据帧的站，在发送数据帧后至多经过时间 2t （两倍的端到端往返时延）就可知道发送的数据帧是否遭受了碰撞。
+以太网的端到端往返时延 2t 称为<strong>争用期</strong>，或<strong>碰撞窗口</strong>。
+经过争用期这段时间还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
+<h3 id="最短有效帧长">最短有效帧长</h3>
+<p>以太网规定了最短有效帧长为 <strong>64</strong> 字节，凡长度小于 64 字节的帧都是由	于冲突而异常中止的无效帧　　</p>
+<h4 id="二进制指数类型退避算法">二进制指数类型退避算法</h4>
+<p><img src="https://img-blog.csdnimg.cn/20200313184939458.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="二进制指数退避算法"></p>
+<h4 id="2-以太网">[2] 以太网</h4>
+<h4 id="两个标准">两个标准</h4>
+<ul>
+<li>DIX Ethernet V2</li>
+<li>IEEE的802.3标准</li>
+</ul>
+<h4 id="两个子层">两个子层</h4>
+<ul>
+<li>逻辑链路控制（LLC）子层</li>
+<li>媒体接入控制（MAC）子层</li>
+</ul>
+<h4 id="10base-t">10Base-T</h4>
+<p>通信距离短，每个站到集线器的距离不超过100m</p>
+<h4 id="信道利用率">信道利用率</h4>
+<p>发送一帧所需的平均时间
+<img src="https://img-blog.csdnimg.cn/20200313185125118.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="信道利用率"></p>
+<p><strong>参数a</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200313185233294.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="参数a"></p>
+<p><strong>极限信道利用率</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200313185333411.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="极限信道利用率"></p>
+<h4 id="mac地址48位">MAC地址（48位）</h4>
+<p>在局域网中，硬件地址又称为物理地址或MAC地址，<strong>MAC地址唯一</strong><br>
+网卡能收到的数据帧：</p>
+<ul>
+<li>单播帧（一对一）</li>
+<li>广播帧（一对全体）</li>
+<li>多播帧（一对多）</li>
+</ul>
+<p><strong>以太网MAC帧格式</strong>
+<img src="https://img-blog.csdnimg.cn/20200313185507346.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="以太网MAC帧格式"></p>
+<h1 id="35-扩展以太网">3.5 扩展以太网</h1>
+<h3 id="在物理层扩展以太网">在物理层扩展以太网</h3>
+<p>多个集线器</p>
+<h3 id="在数据链路层扩展以太网">在数据链路层扩展以太网</h3>
+<p><strong>网桥</strong></p>
+<ul>
+<li>目前使用最多的是透明网桥</li>
+<li>自学习算法和转发帧步骤<br>
+<img src="https://img-blog.csdnimg.cn/20200313185618102.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+<p><strong>交换机</strong><br>
+多接口网桥<br>
+透明网桥使用生成树算法——<strong>避免成环</strong></p>
+<h3 id="虚拟局域网">虚拟局域网</h3>
+<p>虚拟局域网vlan是由一些局域网网段构成的与物理位置无关的逻辑组</p>
+<h1 id="36-高速以太网">3.6 高速以太网</h1>
+<h3 id="100base-t-以太网">100BASE-T 以太网</h3>
+<p>速率达到或超过 100 Mb/s 的以太网称为<strong>高速以太网</strong>
+100BASE-T 以太网又称为<strong>快速以太网</strong>(Fast Ethernet)</p>
+<h3 id="特点">特点</h3>
+<ul>
+<li>可在全双工方式下工作而无冲突发生。因此，不使用 CSMA/CD 协议。</li>
+<li>MAC 帧格式仍然是 802.3 标准规定的。</li>
+<li>保持最短帧长不变，但将一个网段的最大电缆长度减小到 100 m。</li>
+<li>帧间时间间隔从原来的 9.6 us 改为现在的 0.96 us。</li>
+</ul>
+<h3 id="吉比特以太网">吉比特以太网</h3>
+<ul>
+<li>允许在 1 Gb/s 下全双工和半双工两种方式工作。</li>
+<li>使用 802.3 协议规定的帧格式。</li>
+<li>在半双工方式下使用 CSMA/CD 协议（全双工方式不需要使用 CSMA/CD 协议）。</li>
+<li>与 10BASE-T 和 100BASE-T 技术向后兼容。</li>
+</ul>
+<h3 id="10-吉比特以太网">10 吉比特以太网</h3>
+<ul>
+<li>10 吉比特以太网与 10 Mb/s，100 Mb/s 和 1 Gb/s 以太网的帧格式完全相同。</li>
+<li>10 吉比特以太网还保留了 802.3 标准规定的以太网最小和最大帧长，便于升级。</li>
+<li>10 吉比特以太网不再使用铜线而只使用光纤作为传输媒体。</li>
+<li>10 吉比特以太网只工作在全双工方式，因此没有争用问题，也不使用 CSMA/CD 协议</li>
+</ul>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接: </strong>
+      <a href="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" title="韩立刚《计算机网络》| 第3章 数据链路层" target="_blank" rel="external">https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License: </strong>
+        <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xhxlalala" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.xhxha.one/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xhxlalala" target="_blank"><span class="text-dark">xhx</span><small class="ml-1x">且乐生前一杯酒</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" title="韩立刚《计算机网络》| 第3章 数据链路层"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;下一篇</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%82/"
+                    title="韩立刚《计算机网络》| 第4章 网络层"><span>上一篇&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="文章目录" role="button">
+                    <span>[&nbsp;</span><span>文章目录</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xhxlalala" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.xhxha.one/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2022
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+    
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.xhxha.one/js/application.min.a2959bb9e3b3c9e8aa6e358e6bb7090585dcf6831387b734c9459b13f23b1834.js"></script>
+<script src="https://www.xhxha.one/js/plugin.min.29680208905b16ba17da3c502ae2847f8396e8a4a95bec73e9a0981ed3746b23.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(未命名)',
+            },
+            ROOT_URL: 'https:\/\/www.xhxha.one\/',
+            CONTENT_URL: 'https:\/\/www.xhxha.one\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.xhxha.one/js/insight.min.bd9ece370823766409517a6402191cfc0f35dd406ecd994a5ba78e40fea79c37c67a579ebc6bf2f1101d2bf15c5e50fa4f04aec9abea19edeb112813034367af.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

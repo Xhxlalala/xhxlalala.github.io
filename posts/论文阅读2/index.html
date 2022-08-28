@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>
+        论文阅读2:《Membership Inference Attack on Graph Neural Networks》 - Xtar&#39;s blog
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="keywords"
+      content="Hugo, theme, even" /><meta name="description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
+    <meta name="generator" content="Hugo 0.100.2 with theme pure" />
+    <title>论文阅读2:《Membership Inference Attack on Graph Neural Networks》 - Xtar&#39;s blog</title>
+    
+    
+    <link rel="stylesheet" href="https://www.xhxha.one/css/style.min.a85959a41e7abcc0db1f81f44bd264649303417f91b536e87dcde644340fea6d.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》" />
+<meta property="og:description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-17T21:45:27+08:00" />
+<meta property="article:modified_time" content="2022-07-17T21:45:27+08:00" />
+
+<meta itemprop="name" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》">
+<meta itemprop="description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"><meta itemprop="datePublished" content="2022-07-17T21:45:27+08:00" />
+<meta itemprop="dateModified" content="2022-07-17T21:45:27+08:00" />
+<meta itemprop="wordCount" content="1808">
+<meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读2:《Membership Inference Attack on Graph Neural Networks》"/>
+<meta name="twitter:description" content="1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header"><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder=""
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                  <span class="menu-title"></span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/post/">
+                  <span class="menu-title"></span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                  <span class="menu-title"></span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                  <span class="menu-title"></span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+    
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/"
+    >论文阅读2:《Membership Inference Attack on Graph Neural Networks》</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/" class="article-date">
+  <time datetime="2022-07-17 21:45:27 &#43;0800 CST" itemprop="datePublished">2022-07-17</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/"> 推理攻击 </a>
+  </span>
+
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h1 id="1-介绍">1. 介绍</h1>
+<p><strong>图神经网络（GNNs）</strong> 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训练GNN模型的时候是否会泄露用来训练模型的成员节点的信息。具体来说，就是回答这样一个问题：给定一个图，能否确定某些节点被用来训练该图模型。本文实验环境为黑盒环境，通过实验证明了大部分GNN模型都存在着隐私泄露问题。最后，作者发现GNN模型额外的<strong>结构信息</strong>是其隐私泄露关键因素。</p>
+<h1 id="2-背景知识">2. 背景知识</h1>
+<h3 id="21-图神经网络gnns">2.1 图神经网络（GNNs）</h3>
+<p>图神经网络由<strong>图卷积网络</strong>(GCNs)及其变体推广而来，其灵感来源于<strong>卷积神经网络</strong>(CNN)的成功，将CNN推广到了对不规则图数据的卷积运算。这些方法利用邻域聚合和特征传播策略将图结构直接编码到模型中。特别地，节点表示是通过其邻居特征表示的递归聚集和转换来计算的。</p>
+<p><strong>图：由边和节点构成的一种数据结构</strong></p>
+<p><img src="https://s2.loli.net/2022/07/17/E64qzTxM7rsLWlA.png" alt="0.png"></p>
+<p><strong>GNN流程：</strong></p>
+<p><strong>(1) 聚合</strong></p>
+<p>对于A，它的邻居是B、C、D，经过一次聚合后得到的邻居信息$N = c_1 * (2,2,2,2,2) + c_2 * (3,3,3,3,3) + c_3 * (4,4,4,4,4)$<br>
+根据A本身的信息无法对其进行分类，因为B、C、D是A的邻居对A都有影响，所有对邻居信息进行聚合。</p>
+<p><strong>(2) 更新</strong> 
+更新A的信息 =   $\sigma(W((1,1,1,1)+\alpha*N))$</p>
+<blockquote>
+<p>$\sigma$：激活函数(ReLU, sigmoid等等)<br>
+$\alpha$：attention或自定义<br>
+W：模型需要训练的参数</p>
+</blockquote>
+<p><strong>多层GNN操作：</strong><br>
+经过一次聚合后A中有B，C，D的信息；B中有A，C的信息；C中有A, B, D, E的信息；D中有A, C的信息；E中有C的信息 ;<br>
+第二次聚合之后，节点将获得二阶邻居的信息，如A聚合C的时候，C中有上一层聚合到的E的信息，所以此时A便获得了E的特征信息。</p>
+<p><strong>GNN家族：</strong></p>
+<ul>
+<li>图卷积网络（GCN）</li>
+<li>朴素图卷积网络（SGC）</li>
+<li>图注意力网络（GAT）</li>
+<li>智慧图（SAGE）</li>
+</ul>
+<p>这几种模型的不同主要在于aggregation和transformation的过程。</p>
+<h3 id="22-针对机器学习的攻击">2.2 针对机器学习的攻击</h3>
+<p>主要有四种攻击：</p>
+<ul>
+<li>成员推理：推断数据样本是否是用于训练模型的数据的一部分；</li>
+<li>属性推理：在给定数据记录的部分信息和机器学习模型访问权的情况下，重建缺失的属性；</li>
+<li>模型反演：利用模型的输出来提取模型某个类的特征；</li>
+<li>模型提取：窃取模型参数和超参数，以复制或模仿目标模型的功能</li>
+</ul>
+<h1 id="3-问题描述">3. 问题描述</h1>
+<p>GNN模型被训练用于节点分类任务，对基于图的模型有两种训练-测试环境：</p>
+<ul>
+<li>
+<p><strong>Transductive：</strong> 使用完整图 $𝐺$ 进行训练，其中只有部分节点打了标签（以彼例推此例）</p>
+</li>
+<li>
+<p><strong>Inductive：</strong> 图中所有节点都被用来训练（先学习过往，再总结出一般规律，最后预测)</p>
+</li>
+</ul>
+<p><strong>本文实验环境：</strong><br>
+<strong>(1) two inductive settings</strong>   </p>
+<ul>
+<li>in the first setting which we call the <em>TSTF setting</em>, in which the whole graph $𝐺$ is available to the adversary but she is not aware of the subgraph $G_𝑡$ used for training the target model</li>
+<li>in our second setting TSTS setting, the target graph $𝐺_𝑡$ is an isolated component of $𝐺$. The adversary also does not have full access to $𝐺$ but only to the induced edges among the train/test nodes.</li>
+</ul>
+<p><strong>(2) model access</strong></p>
+<ul>
+<li>She knows the architecture of the GNN model</li>
+<li>She has a black-box access to the trained model.</li>
+</ul>
+<p><strong>问题描述：</strong> </p>
+<blockquote>
+<p>Let a GNN model $M$ be trained using the graph $𝐺_𝑡  =  (𝑉_𝑡, 𝐸_𝑡)$. Given a node $𝑣$ and its $𝐿-hop$ neighborhood, determine if $G_{t}=\left(V_{t}, E_{t}\right)$</p>
+</blockquote>
+<h1 id="4-攻击">4. 攻击</h1>
+<h3 id="41-攻击介绍">4.1 攻击介绍</h3>
+<p>攻击模型：binary classifier<br>
+衡量指标：precision , recall<br>
+数据集获取：a labelled training dataset with ground truth information<br>
+影子模型：the shadow model uses the same ML algorithm and has the same hyperparameters as the target model.</p>
+<h3 id="42-攻击过程">4.2 攻击过程</h3>
+<p>攻击主要可分为3个阶段：</p>
+<p><img src="https://s2.loli.net/2022/07/17/SXyzF4vn2kDRbdw.png" alt="image.png"></p>
+<p><strong>(1) Shadow model training</strong><br>
+假设敌人可以访问由和目标模型的顶点集 $V_t$ 有相同基础分布的影子点集 $V_{shadow}$ 组成的图，然后敌人使用影子模型点集的子集作为训练集训练影子模型。为了模仿目标模型的行为，我们使用目标模型对当影子模型训练集作为输入时的输出的类概率作为基本事实来训练影子模型。</p>
+<p><strong>(2)Attack model training</strong><br>
+我们分别使用 $V_{shadow}$ 中的训练集以及非训练集输入训练好的影子模型，并获得对应的后验输出类概率。对于每个节点，我们把后验类概率作为攻击模型的输入特征向量，并且同时把训练集中的节点打标签1非训练集中的节点打标签0也作为攻击模型的基本事实数据输入 。</p>
+<p><strong>(3)Membership inference</strong><br>
+为了判断一个给定的节点是否属于训练集，敌人首先把节点 $v$ 和他所知的邻居输入目标模型获得后验概率，然后把后验概率输入攻击模型来进行成员推理。</p>
+<h1 id="5-总结">5. 总结</h1>
+<p>本文通过实验研究来展示和比较GNN模型对成员推断攻击的脆弱性。攻击模型是一个二分类器，它利用目标GNN模型的预测类概率或后验概率来区分成员节点和非成员节点。研究表明，所有模型都容易受到成员推断攻击。</p>
+<p>本文的另一个主要发现是：虽然攻击模型不使用底层图的结构信息，但大多数时候会给相连的节点分配相同的标签。这表明GNN模型为连接节点返回的后验信息高度相关。此外本文也证明了过拟合并不总会提升成员推理攻击的成功率。</p>
+<p>​</p>
+
+    </div>
+    <div class="article-footer">
+
+    </div>
+  </article>
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="论文阅读1:《Membership Inference Attacks Against Machine Learning Models》"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/"
+                    title="论文阅读2:《Membership Inference Attack on Graph Neural Networks》"><span>&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+        </ul>
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+  <div class="copyright">
+    &copy;2021  -
+    2022
+    <div class="publishby">
+         <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a><a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+    
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.xhxha.one/js/application.min.a2959bb9e3b3c9e8aa6e358e6bb7090585dcf6831387b734c9459b13f23b1834.js"></script>
+<script src="https://www.xhxha.one/js/plugin.min.29680208905b16ba17da3c502ae2847f8396e8a4a95bec73e9a0981ed3746b23.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '',
+                PAGES: '',
+                CATEGORIES: '',
+                TAGS: '',
+                UNTITLED: '',
+            },
+            ROOT_URL: 'https:\/\/www.xhxha.one\/',
+            CONTENT_URL: 'https:\/\/www.xhxha.one\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.xhxha.one/js/insight.min.bd9ece370823766409517a6402191cfc0f35dd406ecd994a5ba78e40fea79c37c67a579ebc6bf2f1101d2bf15c5e50fa4f04aec9abea19edeb112813034367af.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

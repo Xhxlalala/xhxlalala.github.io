@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>
+        论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》 - Xtar&#39;s blog
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是：" />
+    <meta name="generator" content="Hugo 0.100.2 with theme pure" />
+    <title>论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》 - Xtar&#39;s blog</title>
+    
+    
+    <link rel="stylesheet" href="https://www.xhxha.one/css/style.min.a85959a41e7abcc0db1f81f44bd264649303417f91b536e87dcde644340fea6d.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》" />
+<meta property="og:description" content="1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-15T16:22:14+08:00" />
+<meta property="article:modified_time" content="2022-08-15T16:22:14+08:00" />
+
+<meta itemprop="name" content="论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》">
+<meta itemprop="description" content="1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是："><meta itemprop="datePublished" content="2022-08-15T16:22:14+08:00" />
+<meta itemprop="dateModified" content="2022-08-15T16:22:14+08:00" />
+<meta itemprop="wordCount" content="1718">
+<meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》"/>
+<meta name="twitter:description" content="1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是："/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xhxlalala" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.xhxha.one/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xhx</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">且乐生前一杯酒</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Hangzhou, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="想要查找什么..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> 分类</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-list-link">计算机基础</a><span class="category-list-count">18</span></li>
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="category-list-link">论文阅读</a><span class="category-list-count">12</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> 标签</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/gan/" class="tag-list-link">gan</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/" class="tag-list-link">推理攻击</a><span
+                    class="tag-list-count">11</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/" class="tag-list-link">推理攻击联邦学习</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="tag-list-link">计算机网络</a><span
+                    class="tag-list-count">18</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/" class="title">论文阅读7:《Label-Only Membership Inference Attacks》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:45:42 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/" class="title">论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:06:39 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" class="title">论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-15 16:22:14 &#43;0800 CST" itemprop="datePublished">2022-08-15</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/" class="title">论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-02 18:07:15 &#43;0800 CST" itemprop="datePublished">2022-08-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" class="title">论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-07-23 21:43:46 &#43;0800 CST" itemprop="datePublished">2022-07-23</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">文章目录</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/"
+    >论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" class="article-date">
+  <time datetime="2022-08-15 16:22:14 &#43;0800 CST" itemprop="datePublished">2022-08-15</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/"> 推理攻击 </a>
+  </span>
+
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1718字</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4分 </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h1 id="1-文章概述">1. 文章概述</h1>
+<ul>
+<li>首次对针对生成模型的成员推理攻击进行了分类</li>
+<li>提供了一种有理论根据的攻击校准技术</li>
+</ul>
+<h1 id="2-背景知识">2. 背景知识</h1>
+<h3 id="21-generative-model">2.1 Generative Model：</h3>
+<p>生成模型主要有两种，分别是：<strong>生成对抗网络（GANs）<strong>以及</strong>变分自编码器（VAE）</strong></p>
+<p><strong>(1) Generative Adversarial Networks (GANs)(生成对抗网络)</strong>：</p>
+<p>GANs由两部分组成：一个生成器G，一个判别器D</p>
+<ul>
+<li>生成器 generator 以随机噪声 z（潜码）为输入，生成与训练数据分布近似的样本</li>
+<li>判别器 discriminator 将生成器生成的样本与训练数据对比并区分两种数据源</li>
+</ul>
+<p>在整个训练过程中，两个模块互相竞争并进化</p>
+<p><strong>目标方程:</strong> </p>
+<p><img src="https://s2.loli.net/2022/08/15/1jIMDxhakWuSoL4.png" alt="image-20220729201023562"></p>
+<p><strong>(2) Variational Autoencoder(VAE)(变化自编码器)：</strong></p>
+<p>VAE 是另一种广泛使用的生成框架，包含两部分：一个编码器和一个解码器；他们两个级联在一起使用预定义的相似度量 (eg. L1/L2 loss) 来重建数据。编码器将数据映射到潜在空间，而解码器将编码过的潜在表示映射会数据空间。</p>
+<p>VAE 的<strong>目标方程</strong>由重构误差与隐代码分布的先验正则化组成：</p>
+<p><img src="https://s2.loli.net/2022/08/15/mOv3f1VkR9PByMt.png" alt="image-20220729201205840"></p>
+<p>其中 $z$ 表示潜在代码，$x$ 表示输入数据，$q_{\phi}(z \mid x)$ 是由参数化的概率编码器，它被引入以近似难以处理的真实后验，$p_{\theta}(x \mid z)$ 表示由 $\theta$ 参数化的概率解码器，$K L(\cdot | \cdot)$ 表示KL散度。</p>
+<p><strong>(3) Hybrid Model(混合模型)：</strong></p>
+<p><strong>VAEGAN</strong>：GAN与VAE的混合</p>
+<h3 id="22-membership-inference">2.2 Membership Inference：</h3>
+<p>我们把成员推理攻击当做一个二分类任务，攻击者的目标是分类一个样本x是否被用于训练目标的生成模型:</p>
+<p>$\mathcal{A}:(x, \mathcal{M}(\theta)) \rightarrow{0,1}$</p>
+<p>如果 x 在训练集中输出 1 ，否则输出 0 ；忽略对 M 的依赖，从贝叶斯角度，最优攻击者旨在计算概率并预测查询样本是否在训练集中，如果对数似然比为非负，即查询样本更有可能包含在训练集中。
+<img src="https://s2.loli.net/2022/08/15/BXGqE1iwC2Y3KTs.png" alt="image-20220729202232984"></p>
+<h1 id="3-攻击分类">3. 攻击分类</h1>
+<p>根据敌手能否访问生成器与辨别器可以将攻击分为四类：</p>
+<p><img src="https://s2.loli.net/2022/08/15/Qt1IPGqF8grn9sb.png" alt="image-20220729202600025"></p>
+<h3 id="31-accessible-discriminatorfull-model">3.1 Accessible Discriminator(Full Model)</h3>
+<p>攻击者能获得 generator 以及 discriminator 。这种情况只有在开发者将整个 GAN 模型与源代码一起发布，并允许进行微调时才会发生。这种情况很少出现，因为当一个 GAN 训练好时， discriminator 就被抛弃了。</p>
+<h3 id="32-white-box-generator">3.2 White-box Generator</h3>
+<p>攻击者能获得 generator 的内部以及 latent code</p>
+<h3 id="33-partial-black-box-generatorknown-input-out-pair">3.3 Partial Black-box Generator(Known Input-out Pair)</h3>
+<p>攻击者无法获得 generator 的内部，但能够获得 generator 输出的样本以及输入的 latent code</p>
+<h3 id="34-full-black-box-generatorknown-output-only">3.4 Full Black-box Generator(Known Output Only)</h3>
+<p>攻击者只知道从训练好的生成器中生成的样本集</p>
+<h1 id="4-攻击模型">4. 攻击模型</h1>
+<h3 id="41-generic-attack-model通用攻击模型">4.1 Generic Attack Model(通用攻击模型)</h3>
+<p>在前边我们知道最优攻击者的目标是计算概率 $P(m_i=1|x_i,\theta_v)$ .对于生成模型，我们假设这个概率与 query sample 能被生成器生成的概率是成正比的。这个假设是站得住脚的，因为生成模型就是被训练来近似训练数据的。所以如果 query sample 被目标生成器生成的概率大，这个query sample 就很大可能是被用来训练生成器。</p>
+<p><img src="https://s2.loli.net/2022/08/15/iSgzRWapF3cHE12.png" alt="image-20220729203004919"></p>
+<p>然而，计算精确概率是棘手的，所以我们采用 Pazen window 密度评估以及近似概率如下：</p>
+<p><img src="https://s2.loli.net/2022/08/15/lRc3XPhSALMEF4n.png" alt="image-20220729203118298"></p>
+<p>$\phi(&rsquo;,&rsquo;)$表示核心方程，$L(&rsquo;,&rsquo;)$表示通用距离度量，k 代表样本的数量。通过只使用一小部分样本，计算可以进一步简化和更好近似，因为等式 3 中累加的项中除了一小部分外大部分都是可以忽略的，因为 $\phi(x,y)$ 随着 x, y 距离指数减小。</p>
+<h3 id="42-full-black-box-attack">4.2 Full Black-box Attack</h3>
+<p><img src="https://s2.loli.net/2022/08/15/mRQyXxN8LHbW7ad.png" alt="image-20220729203508353"></p>
+<p>我们使用 $\left{\mathcal{G}<em>{v}(\cdot)</em>{i}\right}<em>{i=1}^{k}$ 中 $x$ 的最近邻居给出的最大项来近似公式 4 中的概率。$\left{\mathcal{G}</em>{v}(\cdot)<em>{i}\right}</em>{i=1}^{k}$ 表示生成的 1 到 k 个样本。</p>
+<p><img src="https://s2.loli.net/2022/08/15/SGfRpcUZTwxX5Hn.png" alt="image-20220729203405206"></p>
+<p>这个近似从下面限制了完整的 Parzen 窗口，但是在实践中我们发现对于一个固定的k,在求和中加入更多项是几乎没有差别。然而我们发现估计对k更加敏感，通常来说一个大的k将导致一个更好的重建，但代价是更高的查询和计算成本。</p>
+<h3 id="43-partial-black-box-attack">4.3 Partial Black-box Attack</h3>
+<p>因为我们能够访问 latent code <strong>z</strong>， 所以我们提议利用 𝑧 以找到更好的查询样本重构，从而改进 $P_{G_{v}}\left(x \mid \theta_{v}\right)$ 估计。</p>
+<p><img src="https://s2.loli.net/2022/08/15/EIBoMaAG1C93qTf.png" alt="image-20220729203647858"></p>
+<p>我们建议通过<strong>鲍威尔共轭方向</strong>方法来近似最优。</p>
+<h3 id="44-white-box-attack">4.4 White-box Attack</h3>
+<p><img src="https://s2.loli.net/2022/08/15/wZLCY7iaHxE1tFR.png" alt="image-20220729203805918"></p>
+<p>在白盒环境下，我们的重建公式与部分黑盒攻击中的相同。但是我们可以访问 $G_v$ 的内部，通过访问梯度信息，可以通过先进的一阶优化算法更准确地解决优化问题。</p>
+<h3 id="45-距离度量">4.5 距离度量</h3>
+<p><img src="https://s2.loli.net/2022/08/15/idKYlbavBOoxXjg.png" alt="image-20220729204016506"></p>
+<p>距离度量$L(&rsquo;,&rsquo;)$包含三部分：</p>
+<ul>
+<li>(1) the element-wise(pixel-wise) difference term L2 targets low-frequency components;</li>
+<li>(2) the deep image feature term Llpips targets realism details;</li>
+<li>(3) the regularization term penalizes latent code far from the prior distribution.</li>
+</ul>
+<h1 id="5-攻击校准">5. 攻击校准</h1>
+<p>我们注意到重建误差是查询相关的，因此，我们建议通过首先使用相关但不相交的数据集独立训练参考 GAN $G_r$，然后根据参考重建误差校准我们的基础重建误差来减轻查询依赖性。</p>
+<p><img src="https://s2.loli.net/2022/08/15/JvncpBu35fAYRkL.png" alt="image-20220729204147550"></p>
+<p>具体来说，推断 query sample $x_i$ 隶属关系近似于计算 $P\left(m_{i}=1 \mid \theta_{v}, x_{i}, S\right)$ 的值。我们可以通过以下理论证明我们的校准损失很好地近似这个概率：</p>
+<p><img src="https://s2.loli.net/2022/08/15/DsPVENYT61Su9hF.png" alt="image-20220729204339764"></p>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接: </strong>
+      <a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" title="论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》" target="_blank" rel="external">https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License: </strong>
+        <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xhxlalala" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.xhxha.one/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xhxlalala" target="_blank"><span class="text-dark">xhx</span><small class="ml-1x">且乐生前一杯酒</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" title="论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;下一篇</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/"
+                    title="论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》"><span>上一篇&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="文章目录" role="button">
+                    <span>[&nbsp;</span><span>文章目录</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xhxlalala" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.xhxha.one/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2022
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+    
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.xhxha.one/js/application.min.a2959bb9e3b3c9e8aa6e358e6bb7090585dcf6831387b734c9459b13f23b1834.js"></script>
+<script src="https://www.xhxha.one/js/plugin.min.29680208905b16ba17da3c502ae2847f8396e8a4a95bec73e9a0981ed3746b23.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(未命名)',
+            },
+            ROOT_URL: 'https:\/\/www.xhxha.one\/',
+            CONTENT_URL: 'https:\/\/www.xhxha.one\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.xhxha.one/js/insight.min.bd9ece370823766409517a6402191cfc0f35dd406ecd994a5ba78e40fea79c37c67a579ebc6bf2f1101d2bf15c5e50fa4f04aec9abea19edeb112813034367af.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

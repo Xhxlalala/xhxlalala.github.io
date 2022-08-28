@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>
+        论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》 - Xtar&#39;s blog
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统" />
+    <meta name="generator" content="Hugo 0.100.2 with theme pure" />
+    <title>论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》 - Xtar&#39;s blog</title>
+    
+    
+    <link rel="stylesheet" href="https://www.xhxha.one/css/style.min.a85959a41e7abcc0db1f81f44bd264649303417f91b536e87dcde644340fea6d.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》" />
+<meta property="og:description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-23T21:43:46+08:00" />
+<meta property="article:modified_time" content="2022-07-23T21:43:46+08:00" />
+
+<meta itemprop="name" content="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》">
+<meta itemprop="description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统"><meta itemprop="datePublished" content="2022-07-23T21:43:46+08:00" />
+<meta itemprop="dateModified" content="2022-07-23T21:43:46+08:00" />
+<meta itemprop="wordCount" content="1333">
+<meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》"/>
+<meta name="twitter:description" content="1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xhxlalala" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.xhxha.one/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xhx</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">且乐生前一杯酒</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Hangzhou, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="想要查找什么..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> 分类</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-list-link">计算机基础</a><span class="category-list-count">18</span></li>
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="category-list-link">论文阅读</a><span class="category-list-count">12</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> 标签</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/gan/" class="tag-list-link">gan</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/" class="tag-list-link">推理攻击</a><span
+                    class="tag-list-count">11</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/" class="tag-list-link">推理攻击联邦学习</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="tag-list-link">计算机网络</a><span
+                    class="tag-list-count">18</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/" class="title">论文阅读7:《Label-Only Membership Inference Attacks》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:45:42 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/" class="title">论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:06:39 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" class="title">论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-15 16:22:14 &#43;0800 CST" itemprop="datePublished">2022-08-15</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/" class="title">论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-02 18:07:15 &#43;0800 CST" itemprop="datePublished">2022-08-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" class="title">论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-07-23 21:43:46 &#43;0800 CST" itemprop="datePublished">2022-07-23</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">文章目录</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/"
+    >论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" class="article-date">
+  <time datetime="2022-07-23 21:43:46 &#43;0800 CST" itemprop="datePublished">2022-07-23</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/"> 推理攻击 </a>
+  </span>
+
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1333字</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3分 </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h1 id="1-介绍">1. 介绍</h1>
+<p>公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种<strong>分布式框架</strong>来学习公平的预测模型同时保护用户的人口统计特征。本文主要研究了该模型面对推理攻击的脆弱性并提出了两种防御策略。在攻击模型的温和假设下，作者首先提出了一种推理策略，并将其表述为<strong>整数规划</strong>（IP）的任务。当足够的信息在分布式参与方之间交换时，该攻击就可以获得较高的推断精度。然后，作者在一方提出了两种防御策略，一种干扰其对模型公平性的评估，另一种随机化其选择公平模型的过程。</p>
+<h1 id="2-文章回顾">2. 文章回顾</h1>
+<h3 id="21-参数声明">2.1 参数声明</h3>
+<ul>
+<li>$(x, s, y)$: 一条数据记录
+<ul>
+<li>$s$: 敏感特征;</li>
+<li>$x$: 非敏感特征;</li>
+<li>$y$: label</li>
+</ul>
+</li>
+<li><strong>a fair model $f$</strong> : ${x} → {y}$, which takes non-sensitive feature $x$ as input and outputs label $y$</li>
+<li><strong>H</strong> : 从中学习 $f$ 的推测集</li>
+</ul>
+<h3 id="22-构架介绍">2.2 构架介绍</h3>
+<p><img src="https://s2.loli.net/2022/07/23/r9zU1u3PjAhGfpK.png" alt="image.png"></p>
+<p>learner 设置一个公平模型 $f$ ，输入不敏感的特征 $x$，输出标签 $y$，learner 无权访问敏感特征 $s$ ，敏感特征由 third party 保存。</p>
+<p><strong>工作流程：</strong></p>
+<p><img src="https://s2.loli.net/2022/07/23/kxs3UZ6hbJg5FEY.png" alt="image.png"></p>
+<p>在这个框架中可以预先设定：(1) 假设空间 H ; (2) 第一步中生成数据的分布; (3) 第六步中的优化器。</p>
+<h1 id="3-针对该模型的推理攻击">3. 针对该模型的推理攻击</h1>
+<p><strong>攻击目标：</strong></p>
+<p>敌手的目标是获得要推理的人口统计特征数据$\hat{s}=\left{\hat{s}<em>{1},\ldots,\hat{s}</em>{n}\right}$，其中$\hat{s}_{i}$表示要推断的个人$x_i$的特征信息。</p>
+<p><strong>敌手能获得的信息：</strong></p>
+<ul>
+<li>learner 和 third party 间交换的信息，包含所有的预测向量以及返回的索引</li>
+<li>当且仅当 $\operatorname{cov}\left(\hat{Y}_{t}, s\right) \leq \rho$ 时，可以知道返回索引 $t$</li>
+<li>知道 $\rho$ 的值</li>
+</ul>
+<p><strong>攻击方法：（整数规划问题）</strong></p>
+<p>基于上边的假设，一个简单的推理方法是：对于返回的所有的索引 $t$ 寻找满足 $\operatorname{cov}\left(\hat{Y}<em>{t}, s\right) \leq \rho$ 的 $\hat{s}$ ；对于未返回的所有的索引 $t’$ 寻找满足 $\operatorname{cov}\left(\hat{Y}</em>{t}, s\right) &gt; \rho$ 的 $\hat{s}$ ；</p>
+<p>将其转化为整数规划问题即：</p>
+<p>$$\begin{array}{ll}
+\max <em>{\hat{s}} 1, \
+\text { s.t. } \operatorname{cov}\left(\hat{Y}</em>{i}, \hat{s}\right) \leq \rho, &amp; i=r_{1}, \ldots, r_{k} \
+\operatorname{cov}\left(\hat{Y}<em>{j}, \hat{s}\right)&gt;\rho, &amp; j={1, \ldots, m} /\left{r</em>{1}, \ldots, r_{k}\right} \
+\hat{s}_{k} \in{0,1}, &amp; k=1, \ldots, n,
+\end{array}$$</p>
+<blockquote>
+<p>where ‘/’ is set difference; the first line of constraints are based on returned indices, the second based on unreturned indices, and the last based on the binary assumption of $s$.</p>
+</blockquote>
+<p><strong>具体算法：</strong></p>
+<p><img src="https://s2.loli.net/2022/07/23/hWLNMyVPEtKOGv3.png" alt="image.png"></p>
+<h1 id="4-防御方法">4. 防御方法</h1>
+<h3 id="defense-1-perturb-covariance-evaluation-pce">Defense 1: Perturb Covariance Evaluation (PCE)</h3>
+<p>主要受到差分隐私中拉普拉斯机制启发：</p>
+<blockquote>
+<p>拉普拉斯机制：给定轮询函数 $f: \mathbb{N}^{|\mathcal{X}|} \rightarrow \mathbb{R}^{k}$ , 拉普拉斯机制可以表示为：$\mathcal{M}<em>{L}(x, f(\cdot), \epsilon)=f(x)+\left(Y</em>{1}, Y_{2}, \ldots, Y_{k}\right)$</p>
+<p>其中 $Y_{i}$ 是独立同分布变量。</p>
+</blockquote>
+<p><strong>具体方案：</strong></p>
+<p>将算法 1 中的第 4 步替换为：</p>
+<p><img src="https://s2.loli.net/2022/07/23/zK6YrE7SloCFTMx.png" alt="image.png"></p>
+<p>这个扰动将改变索引发给学习者的预测集从而本质上改变(8)中的不等式关系，从而阻止求解器解出准确的求解方案。</p>
+<h3 id="defense-2-soft-threshold-policy-stp">Defense 2: Soft-Threshold Policy (STP)</h3>
+<p>主要利用差分隐私中的指数机制：</p>
+<blockquote>
+<p>指数机制：设随机化算法 $M$ 输入为数据集 $X$ ，输出为一个实体对象 $r \in \mathcal{R}$， $\mu(X, \mathcal{R})$ 为可用性函数，$\triangle \mu$ 为函数 $\mu(x, \mathcal{R})$ 的敏感度，若以正比于 $\exp \left(\frac{\epsilon \cdot u(x, r)}{2 \Delta u}\right)$ 的概率从输入中选择并输出 $r$，则算法 $M$ 是 $\epsilon-{DP}$ 的.</p>
+</blockquote>
+<p><strong>具体方案：</strong></p>
+<p>当 $\operatorname{cov}\left({h}_{t}, s\right) \leq \rho$ 时，我们不再返回 $t$ ，而是在 $cov(h_t, s)$ 较小时以更高的概率返回 $t$（反之亦然）。</p>
+<p>将算法 1 中的第 4 步替换为：</p>
+<p><img src="https://s2.loli.net/2022/07/23/mca1RB39ZqoMICA.png" alt="image.png"></p>
+<h1 id="5-总结">5. 总结</h1>
+<p>在本文中，作者研究了之前发布的分布式私有公平学习框架在推理攻击下的脆弱性。本文提出一种推断攻击，它被表述为一个整数规划(IP)任务，同时还提出了两种防御策略 PCE 和 STP，分别利用了差分隐私中的拉普拉斯机制和指数机制。实验表明，该标准框架确实容易受到该攻击，推理误差达到10 - 20%。另外实验还表明，所提出的防御策略可以有效地阻止标准 IP 求解器找到任何可行的解。但是通过增加一些模式差异，实际上是在隐私保护和公平之间进行trade-off。</p>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接: </strong>
+      <a href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" title="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》" target="_blank" rel="external">https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License: </strong>
+        <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xhxlalala" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.xhxha.one/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xhxlalala" target="_blank"><span class="text-dark">xhx</span><small class="ml-1x">且乐生前一杯酒</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" title="论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;下一篇</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/"
+                    title="论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》"><span>上一篇&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="文章目录" role="button">
+                    <span>[&nbsp;</span><span>文章目录</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xhxlalala" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.xhxha.one/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2022
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+    
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.xhxha.one/js/application.min.a2959bb9e3b3c9e8aa6e358e6bb7090585dcf6831387b734c9459b13f23b1834.js"></script>
+<script src="https://www.xhxha.one/js/plugin.min.29680208905b16ba17da3c502ae2847f8396e8a4a95bec73e9a0981ed3746b23.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(未命名)',
+            },
+            ROOT_URL: 'https:\/\/www.xhxha.one\/',
+            CONTENT_URL: 'https:\/\/www.xhxha.one\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.xhxha.one/js/insight.min.bd9ece370823766409517a6402191cfc0f35dd406ecd994a5ba78e40fea79c37c67a579ebc6bf2f1101d2bf15c5e50fa4f04aec9abea19edeb112813034367af.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

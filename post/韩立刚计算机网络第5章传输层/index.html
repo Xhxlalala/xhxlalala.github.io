@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>
+        韩立刚《计算机网络》| 第5章 传输层 - Xtar&#39;s blog
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="5.1 上边三层协议 应用层：HTTP HTTPS DNS FTP SMTP POP3 RDP 传输层：TCP UDP 网络层：IP（RIP OSPF BGP）、ICMP、IGMP、ARP 5.2 TCP、UDP应用场景" />
+    <meta name="generator" content="Hugo 0.100.2 with theme pure" />
+    <title>韩立刚《计算机网络》| 第5章 传输层 - Xtar&#39;s blog</title>
+    
+    
+    <link rel="stylesheet" href="https://www.xhxha.one/css/style.min.a85959a41e7abcc0db1f81f44bd264649303417f91b536e87dcde644340fea6d.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="韩立刚《计算机网络》| 第5章 传输层" />
+<meta property="og:description" content="5.1 上边三层协议 应用层：HTTP HTTPS DNS FTP SMTP POP3 RDP 传输层：TCP UDP 网络层：IP（RIP OSPF BGP）、ICMP、IGMP、ARP 5.2 TCP、UDP应用场景" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-06-18T19:48:57+08:00" />
+<meta property="article:modified_time" content="2022-06-18T19:48:57+08:00" />
+
+<meta itemprop="name" content="韩立刚《计算机网络》| 第5章 传输层">
+<meta itemprop="description" content="5.1 上边三层协议 应用层：HTTP HTTPS DNS FTP SMTP POP3 RDP 传输层：TCP UDP 网络层：IP（RIP OSPF BGP）、ICMP、IGMP、ARP 5.2 TCP、UDP应用场景"><meta itemprop="datePublished" content="2022-06-18T19:48:57+08:00" />
+<meta itemprop="dateModified" content="2022-06-18T19:48:57+08:00" />
+<meta itemprop="wordCount" content="1328">
+<meta itemprop="keywords" content="计算机网络," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="韩立刚《计算机网络》| 第5章 传输层"/>
+<meta name="twitter:description" content="5.1 上边三层协议 应用层：HTTP HTTPS DNS FTP SMTP POP3 RDP 传输层：TCP UDP 网络层：IP（RIP OSPF BGP）、ICMP、IGMP、ARP 5.2 TCP、UDP应用场景"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xhxlalala" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.xhxha.one/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xhx</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">且乐生前一杯酒</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Hangzhou, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="想要查找什么..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> 分类</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-list-link">计算机基础</a><span class="category-list-count">18</span></li>
+            <li class="category-list-item"><a href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="category-list-link">论文阅读</a><span class="category-list-count">12</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> 标签</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/gan/" class="tag-list-link">gan</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/" class="tag-list-link">推理攻击</a><span
+                    class="tag-list-count">11</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/" class="tag-list-link">推理攻击联邦学习</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.xhxha.one/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="tag-list-link">计算机网络</a><span
+                    class="tag-list-count">18</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/" class="title">论文阅读7:《Label-Only Membership Inference Attacks》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:45:42 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/" class="title">论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-28 20:06:39 &#43;0800 CST" itemprop="datePublished">2022-08-28</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/" class="title">论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-15 16:22:14 &#43;0800 CST" itemprop="datePublished">2022-08-15</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/" class="title">论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-08-02 18:07:15 &#43;0800 CST" itemprop="datePublished">2022-08-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/" class="title">论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-07-23 21:43:46 &#43;0800 CST" itemprop="datePublished">2022-07-23</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">文章目录</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/"
+    >韩立刚《计算机网络》| 第5章 传输层</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" class="article-date">
+  <time datetime="2022-06-18 19:48:57 &#43;0800 CST" itemprop="datePublished">2022-06-18</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"> 计算机基础 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"> 计算机网络 </a>
+  </span>
+
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1328字</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3分 </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h1 id="51-上边三层协议">5.1 上边三层协议</h1>
+<ul>
+<li>应用层：HTTP HTTPS DNS FTP SMTP POP3 RDP</li>
+<li>传输层：TCP UDP</li>
+<li>网络层：IP（RIP OSPF BGP）、ICMP、IGMP、ARP</li>
+</ul>
+<h1 id="52-tcpudp应用场景">5.2 TCP、UDP应用场景</h1>
+<ul>
+<li>TCP ：分段 编号 流量控制 建立会话（netstat -n：查看会话）全双工 <strong>可靠传输 面向字节流</strong></li>
+<li>UDP： 一个数据包就能完成数据通信 不建立会话 多播 <strong>不可靠传输 面向报文</strong></li>
+</ul>
+<h1 id="53-传输层和应用层之间的关系">5.3 传输层和应用层之间的关系</h1>
+<p><strong>应用层协议 = 传输层协议 + 端口号</strong></p>
+<ul>
+<li>HTTP  = TCP + 80</li>
+<li>HTTPS  =  TCP + 443</li>
+<li>FTP  =  TCP + 21</li>
+<li>SMTP(发邮件)  =  TCP + 25</li>
+<li>PoP3(收邮件)  =  TCP +110</li>
+<li>RDP(远程桌面协议)  =  TCP + 3389</li>
+<li>共享文件夹  =  TCP + 445</li>
+<li>SQL  =  TCP + 1433</li>
+<li>DNS  =  UDP + 53 or TCP + 53</li>
+<li>登记端口：<code>1024-49151</code> 客户端端口：<code>49152-65535</code></li>
+</ul>
+<h1 id="54-应用层协议和服务之间的关系">5.4 应用层协议和服务之间的关系</h1>
+<p>服务运行后在TCP或UDP的某个端口侦听客户端请求</p>
+<p><strong>安全策略：更改服务器的默认端口</strong></p>
+<h2 id="tcpudp">TCP、UDP</h2>
+<ul>
+<li>两个运输实体在通信时传送的数据单位叫作运输协议单元</li>
+<li>TCP运送的协议数据单元是<strong>TCP报文段</strong></li>
+<li>UDP运送的协议数据单元是<strong>UDP报文或用户数据报</strong></li>
+</ul>
+<h3 id="udp报文首部格式">UDP报文首部格式</h3>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvMDAwZDFiY2EtNDI0ZS00ZjEyLWE1NTEtZDUwNGE1N2NkY2U2LTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<h3 id="tcp">TCP</h3>
+<p>每一条TCP连接有两个端点。端点叫作：<strong>套接字（socket） = IP地址 ： 端口号</strong></p>
+<p><strong>TCP报文段首部格式</strong></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvOTM5OTM2ZWQtODc2Yi00OTQ2LTk3ZjUtZWNiYzg3OWYzZGViLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<h3 id="可靠传输">可靠传输</h3>
+<p><strong>停止等待</strong></p>
+<ul>
+<li>
+<p>优点：简单</p>
+</li>
+<li>
+<p>缺点：信道利用率太低</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvN2VlYWJkOGQtYWFiMi00N2I3LWIxMzEtYjdmNTZlNTg3Y2UwLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+</li>
+<li>
+<p>信道利用率</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvNWM1OGVjODMtOTI5ZC00NmM5LTk4NDItNjgyM2ZmZjJmMjc0LTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+</li>
+<li>
+<p>自动重传请求ARQ——重传请求自动进行</p>
+</li>
+<li>
+<p>提高信道利用率：流水线传输</p>
+<ul>
+<li>
+<p>发送方可连续发送多个分组，不必每发完一个分组就停顿下来等待对方的确认；</p>
+</li>
+<li>
+<p>连续ARQ协议：使用滑动窗口实现可靠传输</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvODZjMGIwMjgtNmVkZC00OGIwLTk1MzYtOTJkY2QwYjNhMmEyLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+</li>
+<li>
+<p>累积确认</p>
+<ul>
+<li>接收方一般采用<strong>累积确认</strong>的方式。即不必对收到的分组逐个发送确认，而是对按序到达的最后一个分组发送确认，这样就表示：<strong>到这个分组为止的所有分组都已正确收到了</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>以字节为单位的滑动窗口</strong><br>
+<img src="https://img-blog.csdnimg.cn/20200328180930120.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200328180954147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200328181020752.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200328181037122.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMTc1MTI2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>注意</strong></p>
+<ul>
+<li>A 的发送窗口并不总是和 B 的接收窗口一样大（因为有一定的时间滞后）。</li>
+<li>TCP 标准没有规定对不按序到达的数据应如何处理。通常是先临时存放在接收窗口中，等到字节流中所缺少的字节收到后，再按序交付上层的应用进程。</li>
+<li>TCP 要求接收方必须有累积确认的功能，这样可以减小传输开销</li>
+</ul>
+<p><strong>流量控制</strong><br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvZjRmNWNkZmYtYzZhZC00ZjdiLTgwNWQtMDA3OTA4YTE5NWRlLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img">
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvZGE2YmQxYTItNmY2My00NjExLWJhODctZWIwZWY1OTY0ZmExLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<p>调整滑动窗口为0暂停发送，实现流量控制</p>
+<h3 id="避免网络拥塞">避免网络拥塞</h3>
+<p>出现资源拥塞的条件：<strong>对资源需求的总和 &gt; 可用资源</strong></p>
+<p>拥塞控制所起的作用:<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvN2MyZDM3ZWItZTljOC00ODJlLWJjMDQtMDc5NTdiM2YzMWM4LTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<p><strong>拥塞控制算法</strong></p>
+<ul>
+<li>慢开始和拥塞避免</li>
+</ul>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvM2Y0ZGJhNmYtNGNhOS00MmY5LTgwMjctMTJlOWFhZTViOTM1LTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<ul>
+<li>快重传和快恢复</li>
+</ul>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvZWY2ZWEwZjEtYmM0Mi00YmMxLWIyYjUtMTFhYWU4Y2E1NjQ1LTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<p><strong>快重传</strong></p>
+<ul>
+<li>快重传算法首先要求接收方每收到一个失序的报文段后就立即发出重复确认。这样做可以让发送方及早知道有报文段没有到达接收方。</li>
+<li>发送方只要一连收到三个重复确认就应当立即重传对方尚未收到的报文段。</li>
+<li>不难看出，快重传并非取消重传计时器，而是在某些情况下可更早地重传丢失的报文段</li>
+</ul>
+<p><strong>快恢复</strong></p>
+<ul>
+<li>(1) 当发送端收到连续三个重复的确认时，就执行“乘法减小”算法，把慢开始门限 ssthresh减半。但接下去不执行慢开始算法。</li>
+<li>(2)由于发送方现在认为网络很可能没有发生拥塞，因此现在不执行慢开始算法，即拥塞窗口cwnd 现在不设置为 1，而是设置为慢开始门限 ssthresh 减半后的数值，然后开始执行拥塞避免算法（“加法增大”），使拥塞窗口缓慢地线性增大。</li>
+</ul>
+<p><strong>发送窗口的上限值</strong></p>
+<blockquote>
+<p>发送窗口的上限值 = Min [rwnd, cwnd]</p>
+</blockquote>
+<h1 id="55-tcp的传输连接管理">5.5 TCP的传输连接管理</h1>
+<h2 id="三个阶段">三个阶段</h2>
+<p>连接建立、数据传送、连接释放</p>
+<h2 id="tcp连接的建立都是采用客户服务器方式">TCP连接的建立都是采用客户服务器方式</h2>
+<ul>
+<li>主动发起连接建立的应用进程叫做<strong>客户</strong></li>
+<li>被动等待连接建立的应用进程叫做<strong>服务器</strong></li>
+</ul>
+<h3 id="tcp连接建立三次握手">TCP连接建立（三次握手）</h3>
+<p><strong>建立过程</strong>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvZTBkZjdlOWQtNGI1MS00ZDQ1LWExMjktMmYxZTdhYmFiMWNkLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img">
+<strong>建立连接时的各状态</strong><br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvZGU0ZjM5NjMtYzEzZC00NTI4LWIzYmMtYTE3NjM2MTBiOGQwLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+<h3 id="释放连接四次握手">释放连接(四次握手)</h3>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVidS5jb20vZG9jdW1lbnRfaW1hZ2UvYmFjNzk5ZGMtOGE3MC00MDM3LWJmZWYtODFiOGZkNWZiMDdhLTUwNDExNzQuanBn?x-oss-process=image/format,png" alt="img"></p>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接: </strong>
+      <a href="https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" title="韩立刚《计算机网络》| 第5章 传输层" target="_blank" rel="external">https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License: </strong>
+        <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xhxlalala" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.xhxha.one/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xhxlalala" target="_blank"><span class="text-dark">xhx</span><small class="ml-1x">且乐生前一杯酒</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC5%E7%AB%A0%E4%BC%A0%E8%BE%93%E5%B1%82/" title="韩立刚《计算机网络》| 第5章 传输层"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;下一篇</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/"
+                    title="韩立刚《计算机网络》| 第6章 应用层"><span>上一篇&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="文章目录" role="button">
+                    <span>[&nbsp;</span><span>文章目录</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xhxlalala" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.xhxha.one/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2022
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+    
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.xhxha.one/js/application.min.a2959bb9e3b3c9e8aa6e358e6bb7090585dcf6831387b734c9459b13f23b1834.js"></script>
+<script src="https://www.xhxha.one/js/plugin.min.29680208905b16ba17da3c502ae2847f8396e8a4a95bec73e9a0981ed3746b23.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(未命名)',
+            },
+            ROOT_URL: 'https:\/\/www.xhxha.one\/',
+            CONTENT_URL: 'https:\/\/www.xhxha.one\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.xhxha.one/js/insight.min.bd9ece370823766409517a6402191cfc0f35dd406ecd994a5ba78e40fea79c37c67a579ebc6bf2f1101d2bf15c5e50fa4f04aec9abea19edeb112813034367af.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>
