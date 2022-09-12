@@ -49,7 +49,7 @@
 <meta itemprop="name" content="论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》">
 <meta itemprop="description" content="1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便"><meta itemprop="datePublished" content="2022-08-28T20:06:39+08:00" />
 <meta itemprop="dateModified" content="2022-08-28T20:06:39+08:00" />
-<meta itemprop="wordCount" content="2449">
+<meta itemprop="wordCount" content="2445">
 <meta itemprop="keywords" content="推理攻击，联邦学习," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》"/>
 <meta name="twitter:description" content="1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便"/>
@@ -167,7 +167,7 @@ code.has-jax {
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 2449 字 </span>
+          <span class="more-meta"> 约 2445 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -259,7 +259,7 @@ code.has-jax {
 </ul>
 <p>注意：$D_{honest}$中A的分布敌手是不可知的</p>
 <h1 id="3-数据模型">3 数据模型</h1>
-<p>我们用**~**表示随机变量间相关；用$\perp$ 表示无关；</p>
+<p>我们用 ~ 表示随机变量间相关；用$\perp$ 表示无关；</p>
 <h3 id="1-y-perp-a">(1) $Y \perp A$</h3>
 <p>根据剩下的特征是否与敏感特征A有关分成两种情况：$(X \perp A, Y \perp A)$与$(X \sim A, Y \perp A)$ </p>
 <h3 id="2-y-sim-a">(2) $Y \sim A$</h3>
@@ -275,8 +275,8 @@ code.has-jax {
 <li>我们通过将“攻击特征”序列 $F$ 设置为 f 在$D_{attack}$ 上返回的跨类的后验概率向量</li>
 </ul>
 <h3 id="shadow-models-and-attack-meta-classifier">Shadow models and attack meta-classifier</h3>
-<p><img src="https://s2.loli.net/2022/08/28/enup2lD1QdwbEZB.png" alt="image.png">
-攻击者训练了 n 个类似 f 的“影子模型”。训练集 $D_{shadow}^{i}$ 中一半包含特定的属性一半不包含，分别记为 $p,\bar{p}$ .每个影子模型 $f_{i}^{shadow}$ 使用与目标模型 f 一样的训练方式在联合数据集 $D_{\text {shadow }}^{i} \bigcup D_{\mathrm{adv}}$ 上进行训练。一旦 $f_{i}^{shadow}$ 训练完，攻击者就使用 $D_{attack}$ 查询它并结合推理结果形成与 $p$ 或 $\bar{p}$ 相关联的特征向量 $F_{i}$ ，具体取决于其训练数据。在训练完所有影子模型后，敌手获得一组特征 $F_{i}$ ，其属性标签为 $p_{i} \in{p, \bar{p}}$. 然后，对手使用任何二元分类算法根据 $\left{\left(\mathcal{F}<em>{i}, p</em>{i}\right)\right}_{i}$ 训练元分类器。</p>
+<p><img src="https://s2.loli.net/2022/08/28/enup2lD1QdwbEZB.png" alt="image.png"></p>
+<p>攻击者训练了 n 个类似 f 的“影子模型”。训练集 $D_{shadow}^{i}$ 中一半包含特定的属性一半不包含，分别记为 $p,\bar{p}$ .每个影子模型 $f_{i}^{shadow}$ 使用与目标模型 f 一样的训练方式在联合数据集 $D_{\text {shadow }}^{i} \bigcup D_{\mathrm{adv}}$ 上进行训练。一旦 $f_{i}^{shadow}$ 训练完，攻击者就使用 $D_{attack}$ 查询它并结合推理结果形成与 $p$ 或 $\bar{p}$ 相关联的特征向量 $F_{i}$ ，具体取决于其训练数据。在训练完所有影子模型后，敌手获得一组特征 $F_{i}$ ，其属性标签为 $p_{i} \in{p, \bar{p}}$. 然后，对手使用任何二元分类算法根据 $\{(F_{i}, p_{i})\}_{i}$ 训练元分类器。</p>
 <p><img src="https://s2.loli.net/2022/08/28/tygu4i2soahMcBK.png" alt="image2.png"></p>
 <p>当目标模型使用诚实方和攻击方的联合数据训练完后，攻击者使用 $D_{attack}$ 来查询获得目标模型的特征代表$F$, 然后将 $F$ 输入到元分类器并获得对敏感特征的属性预测 $p(a_{honest})$</p>
 <h3 id="single-party-attack">Single-party attack</h3>
@@ -374,8 +374,15 @@ code.has-jax {
 
 
 <script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
-
-
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 
 

@@ -49,7 +49,7 @@
 <meta itemprop="name" content="论文阅读9:《Property Inference Attacks Against GANs》">
 <meta itemprop="description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。"><meta itemprop="datePublished" content="2022-09-04T21:43:52+08:00" />
 <meta itemprop="dateModified" content="2022-09-04T21:43:52+08:00" />
-<meta itemprop="wordCount" content="1699">
+<meta itemprop="wordCount" content="1694">
 <meta itemprop="keywords" content="推理攻击,GAN,属性推理," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读9:《Property Inference Attacks Against GANs》"/>
 <meta name="twitter:description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。"/>
@@ -167,7 +167,7 @@ code.has-jax {
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 1699 字 </span>
+          <span class="more-meta"> 约 1694 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -232,9 +232,7 @@ code.has-jax {
 <li>敌手构建一个属性分类器 $f_P$ 用来对生成的样本根据其感兴趣的属性分类(eg.若目标属性是训练数据集中潜在的性别分布，那么属性分类器就预测每个样本的性别)</li>
 <li>敌手基于属性分类器的输出预测目标属性 $P_{infer}$ ，具体来说敌手通过一个函数对属性分类器的预测进行计算。</li>
 </ol>
-<p>$$
-\phi\left(\left{f_{\mathcal{P}}\left(\mathrm{G}<em>{\text {target }}\left(z</em>{i}\right)\right)\right}_{i=1}^{|\mathbf{X}|}\right)
-$$</p>
+<p><img src="https://s2.loli.net/2022/09/12/N6rWbxfTwlRtduX.png" alt="image.png"></p>
 <p>在本文中，攻击关注在推断一个一般属性作为某一属性的分布，如目标基础训练数据集的性别分布。因此，$\phi$ 被实现为一个求和目标属性分布的函数。</p>
 <h3 id="1-完全黑盒攻击">(1) 完全黑盒攻击</h3>
 <p>对于完全黑盒，敌手只能从目标 GAN 盲目地获得生成的样本。这些从随机潜在码集中获得的样本 X ，经过$f_P$ 计算，再经过 $\phi$ ，得到攻击结果 $P_{infer}$ ，正如基本攻击策略所示。</p>
@@ -343,8 +341,15 @@ $$</p>
 
 
 <script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
-
-
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 
 

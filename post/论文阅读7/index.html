@@ -49,7 +49,7 @@
 <meta itemprop="name" content="论文阅读7:《Label-Only Membership Inference Attacks》">
 <meta itemprop="description" content="1 介绍 以往的成员推理攻击利用的是模型在训练集和测试集上置信值的不同。如果敌手只能获得标签而无法获得具体的置信值，这种攻击就无法得到应用了。本"><meta itemprop="datePublished" content="2022-08-28T20:45:42+08:00" />
 <meta itemprop="dateModified" content="2022-08-28T20:45:42+08:00" />
-<meta itemprop="wordCount" content="2369">
+<meta itemprop="wordCount" content="2363">
 <meta itemprop="keywords" content="推理攻击," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读7:《Label-Only Membership Inference Attacks》"/>
 <meta name="twitter:description" content="1 介绍 以往的成员推理攻击利用的是模型在训练集和测试集上置信值的不同。如果敌手只能获得标签而无法获得具体的置信值，这种攻击就无法得到应用了。本"/>
@@ -167,7 +167,7 @@ code.has-jax {
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 2369 字 </span>
+          <span class="more-meta"> 约 2363 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -232,11 +232,11 @@ code.has-jax {
 <p>迁移学习是一种用于在low-data状态中提高泛化的常用技术。通过利用来自源任务的数据，可以将知识转移到目标任务。迁移学习的一种常见方法是在源任务的数据上训练模型，然后在输出任务的数据上对该模型进行微调。就神经网络而言，通常会对整个模型或最后一层进行微调。</p>
 <h3 id="3member-inference">(3)Member inference</h3>
 <ul>
-<li>**使用Label-only方法  **</li>
+<li><strong>使用Label-only方法</strong></li>
 </ul>
 <p>Yeom等人提出了一个简单的基准攻击：当分类器h正确分类数据点x的时候，敌手预测数据点x属于训练集的一个成员。该基准攻击的准确性直接反映了模型的训练和测试准确性的差距:如果h对其训练数据过拟合，并在其训练数据上获得更高的准确性，则该基准攻击将实现非微不足道的成员推理。我们称之为gap attack。我们的目标是研究如何超越这个简单的基准，以实现与使用模型置信值的攻击相同的仅标签成员推理攻击。</p>
 <ul>
-<li>**间接的成员推理 **</li>
+<li><strong>间接的成员推理</strong></li>
 </ul>
 <p>Long等人的工作研究了通过间接访问进行成员推断的可能性，其中对手只能对与x有关的输入x&rsquo;查询h，但不能直接查询x。我们在本文中提出的纯标签攻击类似地利用从查询与x相关的数据点的模型中收集的信息(具体地说，x的各种扰动版本)</p>
 <h1 id="3-威胁模型">3 威胁模型</h1>
@@ -345,8 +345,15 @@ code.has-jax {
 
 
 <script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
-
-
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 
 
