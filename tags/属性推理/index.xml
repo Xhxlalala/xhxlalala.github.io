@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>属性推理 on Xtar&#39;s blog</title>
+    <link>https://www.xhxha.one/tags/%E5%B1%9E%E6%80%A7%E6%8E%A8%E7%90%86/</link>
+    <description>Recent content in 属性推理 on Xtar&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 04 Sep 2022 21:43:52 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E5%B1%9E%E6%80%A7%E6%8E%A8%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读9:《Property Inference Attacks Against GANs》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</link>
+      <pubDate>Sun, 04 Sep 2022 21:43:52 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</guid>
+      <description>1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。</description>
+    </item>
+    
+    <item>
+      <title>论文阅读9:《Property Inference Attacks Against GANs》</title>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</link>
+      <pubDate>Sun, 04 Sep 2022 21:43:52 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</guid>
+      <description>1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。</description>
+    </item>
+    
+  </channel>
+</rss>

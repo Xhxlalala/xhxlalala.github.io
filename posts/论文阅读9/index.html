@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>论文阅读9:《Property Inference Attacks Against GANs》 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="论文阅读9:《Property Inference Attacks Against GANs》" />
+<meta property="og:description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-04T21:43:52+08:00" />
+<meta property="article:modified_time" content="2022-09-04T21:43:52+08:00" />
+
+<meta itemprop="name" content="论文阅读9:《Property Inference Attacks Against GANs》">
+<meta itemprop="description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。"><meta itemprop="datePublished" content="2022-09-04T21:43:52+08:00" />
+<meta itemprop="dateModified" content="2022-09-04T21:43:52+08:00" />
+<meta itemprop="wordCount" content="1803">
+<meta itemprop="keywords" content="推理攻击,GAN,属性推理," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读9:《Property Inference Attacks Against GANs》"/>
+<meta name="twitter:description" content="1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <div class="post-content">
+    <h1 id="1-介绍">1 介绍</h1>
+<p>本文提出了第一个针对GANs的 <strong>属性推理攻击。</strong> 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。一个成功的属性推理攻击将使敌手能够获得目标GAN模型训练数据集的额外信息，从而危害模型拥有者的知识产权。 此外，作者还显示了本文的攻击还可以用来增强针对GAN的成员推理攻击。</p>
+<p>此攻击的直觉是 <strong>一个GAN模型的生成样本可以反映其潜在的数据集属性</strong> 。例如，仅使用白人女性图片训练的WGAN生成的图片也基本为白人女性，然而，用一个分散种群背景图片训练的模型生成的图片也是分散的。</p>
+<p><img src="https://s2.loli.net/2022/09/04/nD6N9C1kXURoyxY.png" alt="Untitled.png"></p>
+<p>本文提出了两种攻击环境， <strong>全黑盒环境</strong> 以及 <strong>部分黑盒环境</strong> 。对于前者，假设敌手只能盲目地从目标 GAN 的生成器获取样本。对于后者，敌手可以决定目标 GAN 生成器的输入，即 latent code 。注意，两种攻击环境敌手都无法访问目标 GAN 的参数。</p>
+<h1 id="2-预备知识">2 预备知识</h1>
+<h3 id="属性推理攻击">属性推理攻击</h3>
+<p>属性推断攻击的目的是提取目标ML模型训练数据集的一些目标模型所有者不打算共享的一般属性。这些属性可以与目标 GAN 的原始时机目的不相关。例如，如果目标模型被用来生成人脸图片，推断的属性可以是训练样本中的性别分布。</p>
+<p>Ganju 提出了第一个针对辨别模型的属性推理攻击，在全连接神经网络下。敌手假设有目标模型的 <strong>白盒</strong> 访问且使用一个元分类器来预测相关训练数据集的属性。与之不同，本文提出的攻击更具现实意义，因为本文中的目标 GAN 模型只能完全黑盒或部分黑盒的访问。而且本文是第一个针对生成模型的属性推理攻击。</p>
+<h3 id="威胁模型">威胁模型</h3>
+<p>敌手的目标是推测目标模型训练数据集 $D_{target}$ 是否有一个确定的属性$P$ . 首先假设敌手有一个辅助数据集 $D_{auxiliary}$，与目标数据集来自同一分布。敌手利用这个辅助数据集来建立本地 Shadow GANs 以及攻击所需的分类器，注意 $\mathcal{D}<em>{\text {auxiliary }}=\mathcal{D}</em>{\text {shadow }} \cup \mathcal{D}_{\text {classifier }}$. 此外，还假设在两种环境下进行攻击： <strong>全黑盒以及部分黑盒</strong></p>
+<ul>
+<li>全黑盒环境：在这种设置中，敌手只能从目标黑盒生成器$G_{target}$盲目地获取生成的样本。</li>
+<li>部分黑盒环境：在这种环境下敌手也没有目标 GAN 模型的参数知识，但是可以构造 latent code z 来从 $G_{target}$ 生成对应的样本。</li>
+</ul>
+<p>同时假设敌手也知道目标 GAN 的结构以及训练算法。</p>
+<h1 id="3-攻击方法">3 攻击方法</h1>
+<h3 id="攻击流程">攻击流程</h3>
+<p><img src="https://s2.loli.net/2022/09/04/vzZsHa78Jx5w43h.png" alt="Untitled 1.png"></p>
+<p>攻击可分为以下三步进行：</p>
+<ol>
+<li>敌手查询目标生成器 $G_{target}$ 产生生成的样本$\mathbf{X}=\left{\mathrm{G}\left(z_{1}\right), \mathrm{G}\left(z_{2}\right), \cdots, \mathrm{G}\left(z_{|\mathrm{X}|}\right)\right}$, 其中$G(z_i)$表示对应与latent code $z_i$生成的样本。</li>
+<li>敌手构建一个属性分类器 $f_P$ 用来对生成的样本根据其感兴趣的属性分类(eg.若目标属性是训练数据集中潜在的性别分布，那么属性分类器就预测每个样本的性别)</li>
+<li>敌手基于属性分类器的输出预测目标属性 $P_{infer}$ ，具体来说敌手通过一个函数对属性分类器的预测进行计算。</li>
+</ol>
+<p>$$
+\phi\left(\left{f_{\mathcal{P}}\left(\mathrm{G}<em>{\text {target }}\left(z</em>{i}\right)\right)\right}_{i=1}^{|\mathbf{X}|}\right)
+$$</p>
+<p>在本文中，攻击关注在推断一个一般属性作为某一属性的分布，如目标基础训练数据集的性别分布。因此，$\phi$ 被实现为一个求和目标属性分布的函数。</p>
+<h3 id="1-完全黑盒攻击">(1) 完全黑盒攻击</h3>
+<p>对于完全黑盒，敌手只能从目标 GAN 盲目地获得生成的样本。这些从随机潜在码集中获得的样本 X ，经过$f_P$计算，再经过 $\phi$ ，得到攻击结果 $P_{infer}$ ，正如基本攻击策略所示。</p>
+<h3 id="2部分黑盒攻击">(2)部分黑盒攻击</h3>
+<p>在部分黑盒环境下，敌手首先构造一个独特的潜码集来让目标 GAN 生成对应的样本，这些样本可以帮助敌手实现高效的属性推理。为了构造这个潜码集，敌手需要建立一个影子模型集合来模仿用不同属性训练集训练的 GAN 模型。</p>
+<p><img src="https://s2.loli.net/2022/09/04/2WZx6dMarh8lGVs.png" alt="Untitled 2.png"></p>
+<p>构建潜码集的过程可以分为三个阶段：</p>
+<ol>
+<li>敌手生成影子训练数据集用于训练影子 GAN</li>
+<li>敌手用对应的影子训练数据集 $D_k$ 训练每个本地影子 GAN $G_k$</li>
+<li>敌手在 M Shadow GANs 上生成一个优化的潜码集，表示为 $\left{z_{i}^{*}\right}_{i=1}^{|\mathbf{X}|}$。</li>
+</ol>
+<p>有了这个潜码集，敌手就像在黑盒环境的攻击一样对目标属性进行攻击。</p>
+<h1 id="4-实验">4 实验</h1>
+<ul>
+<li><strong>MNIST</strong>：推理用来训练GAN模型的0和1的比例，具体来说就是作者用6.9K 0s和7.8K 1s构建了一个子集MNIST01，然后推理0的比例</li>
+<li><strong>CelebA</strong>：推理用于训练GAN模型的性别分布</li>
+<li><strong>AFAD</strong>：推测性别分布和年龄分布</li>
+<li><strong>US Census Income</strong>：推测高收入的分布比例</li>
+</ul>
+<h1 id="5-增强成员推理攻击">5 增强成员推理攻击</h1>
+<p>成员推理攻击目的是推测一个目标样本是否属于ML模型的训练集，针对 GAN 模型的成员推理攻击即判断特定样本是否属于 GAN 模型训练集的成员。</p>
+<p>通过本文的属性推理攻击增强成员攻击遵循这样的直觉：<strong>当一个样本与目标 GAN 的训练数据集中的大多数样本具有相同的属性时，它成为成员的可能性就更大。</strong></p>
+
+  </div>
+</article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

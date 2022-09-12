@@ -1,32 +1,64 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>推理攻击 on Xtar&#39;s blog</title>
     <link>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</link>
     <description>Recent content in 推理攻击 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>CC BY 4.0 CN</copyright>
-    <lastBuildDate>Sun, 28 Aug 2022 20:45:42 +0800</lastBuildDate>
+    <language>en</language>
+    <lastBuildDate>Sun, 04 Sep 2022 21:43:52 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读9:《Property Inference Attacks Against GANs》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</link>
+      <pubDate>Sun, 04 Sep 2022 21:43:52 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</guid>
+      <description>1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。</description>
+    </item>
     
-        <atom:link href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读9:《Property Inference Attacks Against GANs》</title>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</link>
+      <pubDate>Sun, 04 Sep 2022 21:43:52 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</guid>
+      <description>1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。</description>
+    </item>
     
+    <item>
+      <title>论文阅读8:《 Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</link>
+      <pubDate>Sun, 04 Sep 2022 21:19:19 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</guid>
+      <description>1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或</description>
+    </item>
+    
+    <item>
+      <title>论文阅读8:《 Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》</title>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</link>
+      <pubDate>Sun, 04 Sep 2022 21:19:19 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</guid>
+      <description>1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或</description>
+    </item>
     
     <item>
       <title>论文阅读7:《Label-Only Membership Inference Attacks》</title>
-      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</link>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</link>
       <pubDate>Sun, 28 Aug 2022 20:45:42 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</guid>
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</guid>
       <description>1 介绍 以往的成员推理攻击利用的是模型在训练集和测试集上置信值的不同。如果敌手只能获得标签而无法获得具体的置信值，这种攻击就无法得到应用了。本</description>
     </item>
     
     <item>
-      <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
-      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
-      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
+      <title>论文阅读7:《Label-Only Membership Inference Attacks》</title>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</link>
+      <pubDate>Sun, 28 Aug 2022 20:45:42 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</guid>
-      <description>1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便</description>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</guid>
+      <description>1 介绍 以往的成员推理攻击利用的是模型在训练集和测试集上置信值的不同。如果敌手只能获得标签而无法获得具体的置信值，这种攻击就无法得到应用了。本</description>
     </item>
     
     <item>
@@ -40,10 +72,10 @@
     
     <item>
       <title>论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</title>
-      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</link>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</link>
       <pubDate>Mon, 15 Aug 2022 16:22:14 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</guid>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</guid>
       <description>1. 文章概述 首次对针对生成模型的成员推理攻击进行了分类 提供了一种有理论根据的攻击校准技术 2. 背景知识 2.1 Generative Model： 生成模型主要有两种，分别是：</description>
     </item>
     
@@ -58,10 +90,10 @@
     
     <item>
       <title>论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</title>
-      <link>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
       <pubDate>Tue, 02 Aug 2022 18:07:15 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/08/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</guid>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</guid>
       <description>1. 文章概述 本文阐释了 Collaborative learning 的参数更新过程存在无意地泄露用户训练数据信息的漏洞，并且本文采用了消极和积极的两种攻击方式来利用这个漏洞。首先，利用</description>
     </item>
     
@@ -76,10 +108,10 @@
     
     <item>
       <title>论文阅读3:《Inference Attack and Defense on the Distributed Private Fair Machine Learning Framework》</title>
-      <link>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</link>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</link>
       <pubDate>Sat, 23 Jul 2022 21:43:46 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</guid>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB3/</guid>
       <description>1. 介绍 公平和隐私都是机器学习中重要的社会规范。在本文作者19年的一篇文章中，作者提出了一种分布式框架来学习公平的预测模型同时保护用户的人口统</description>
     </item>
     
@@ -94,10 +126,10 @@
     
     <item>
       <title>论文阅读2:《Membership Inference Attack on Graph Neural Networks》</title>
-      <link>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</link>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</link>
       <pubDate>Sun, 17 Jul 2022 21:45:27 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</guid>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</guid>
       <description>1. 介绍 图神经网络（GNNs） 通常用来生成传统的的深度神经网络或图数据，使用此神经网络可以处理节点分类、链接预测或图分类等任务。本文主要关注训</description>
     </item>
     
@@ -112,83 +144,11 @@
     
     <item>
       <title>论文阅读1:《Membership Inference Attacks Against Machine Learning Models》</title>
-      <link>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
+      <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
       <pubDate>Tue, 05 Jul 2022 11:34:47 +0800</pubDate>
       
-      <guid>https://www.xhxha.one/2022/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
+      <guid>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
       <description>1. 介绍 本文主要介绍了一种机器学习模型的推理攻击 &amp;mdash; 成员推理攻击。成员推理攻击即：给定一个数据记录以及对模型的黑盒访问，推断该数据记录是否在模型</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第9章 无线网络</title>
-      <link>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC9%E7%AB%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/</link>
-      <pubDate>Sat, 18 Jun 2022 19:50:35 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC9%E7%AB%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/</guid>
-      <description>9.1 几种无线网络比较 (1) PAN ZigBee 802.15.4 蓝牙 802.15.1 超宽带 802.15.3 (2) LAN Wi-Fi 802.11 a/g/b/n/ac (3) MAN WiMAX 802.16 (1) WAN 2G/3G/4G移动通信 9.2 无线局域网的组成 AP：接入点 BSS：基本服务集 ESS</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第9章 无线网络</title>
-      <link>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC9%E7%AB%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/</link>
-      <pubDate>Sat, 18 Jun 2022 19:50:35 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC9%E7%AB%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/</guid>
-      <description>9.1 几种无线网络比较 (1) PAN ZigBee 802.15.4 蓝牙 802.15.1 超宽带 802.15.3 (2) LAN Wi-Fi 802.11 a/g/b/n/ac (3) MAN WiMAX 802.16 (1) WAN 2G/3G/4G移动通信 9.2 无线局域网的组成 AP：接入点 BSS：基本服务集 ESS</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第8章 Internet上的音频视频</title>
-      <link>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC8%E7%AB%A0internet%E4%B8%8A%E7%9A%84%E9%9F%B3%E9%A2%91%E8%A7%86%E9%A2%91/</link>
-      <pubDate>Sat, 18 Jun 2022 19:50:19 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC8%E7%AB%A0internet%E4%B8%8A%E7%9A%84%E9%9F%B3%E9%A2%91%E8%A7%86%E9%A2%91/</guid>
-      <description>8.1 在Internet上传输音频视频面临哪些问题？ 音频视频 ：占用的带宽高，要求网速恒定、延迟低 数据信息 ：对带宽、网速是否恒定， 延迟要求不高 延迟</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第8章 Internet上的音频视频</title>
-      <link>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC8%E7%AB%A0internet%E4%B8%8A%E7%9A%84%E9%9F%B3%E9%A2%91%E8%A7%86%E9%A2%91/</link>
-      <pubDate>Sat, 18 Jun 2022 19:50:19 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC8%E7%AB%A0internet%E4%B8%8A%E7%9A%84%E9%9F%B3%E9%A2%91%E8%A7%86%E9%A2%91/</guid>
-      <description>8.1 在Internet上传输音频视频面临哪些问题？ 音频视频 ：占用的带宽高，要求网速恒定、延迟低 数据信息 ：对带宽、网速是否恒定， 延迟要求不高 延迟</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第7章 网络安全</title>
-      <link>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC7%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link>
-      <pubDate>Sat, 18 Jun 2022 19:49:39 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC7%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</guid>
-      <description>7.1 安全包括哪些方面 数据存储安全 应用程序安全 操作系统安全 网络安全 物理安全 7.2 网络面临的四种威胁 （1）截获：信息在通信过程中被第三方截获 （2）中断</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第7章 网络安全</title>
-      <link>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC7%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link>
-      <pubDate>Sat, 18 Jun 2022 19:49:39 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC7%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</guid>
-      <description>7.1 安全包括哪些方面 数据存储安全 应用程序安全 操作系统安全 网络安全 物理安全 7.2 网络面临的四种威胁 （1）截获：信息在通信过程中被第三方截获 （2）中断</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第6章 应用层</title>
-      <link>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</link>
-      <pubDate>Sat, 18 Jun 2022 19:49:22 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/post/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</guid>
-      <description>6.1 应用层协议 HTTP——Web 服务 FTP——文件传输协议 DNS——域名系统 DHCP——动态主机配置协议 TELNET——远程终端协议 RDP——</description>
-    </item>
-    
-    <item>
-      <title>韩立刚《计算机网络》| 第6章 应用层</title>
-      <link>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</link>
-      <pubDate>Sat, 18 Jun 2022 19:49:22 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/2022/06/%E9%9F%A9%E7%AB%8B%E5%88%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%82/</guid>
-      <description>6.1 应用层协议 HTTP——Web 服务 FTP——文件传输协议 DNS——域名系统 DHCP——动态主机配置协议 TELNET——远程终端协议 RDP——</description>
     </item>
     
   </channel>
