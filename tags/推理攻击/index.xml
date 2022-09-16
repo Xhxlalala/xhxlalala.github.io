@@ -62,6 +62,15 @@
     </item>
     
     <item>
+      <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
+      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</guid>
+      <description>1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便</description>
+    </item>
+    
+    <item>
       <title>论文阅读5:《GAN-Leaks: A Taxonomy of Membership Inference Attacks against Generative Models》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB5/</link>
       <pubDate>Mon, 15 Aug 2022 16:22:14 +0800</pubDate>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>联邦学习 on Xtar&#39;s blog</title>
+    <link>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</link>
+    <description>Recent content in 联邦学习 on Xtar&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 28 Aug 2022 20:06:39 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
+      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</guid>
+      <description>1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便</description>
+    </item>
+    
+    <item>
+      <title>论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
+      <pubDate>Tue, 02 Aug 2022 18:07:15 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</guid>
+      <description>1. 文章概述 本文阐释了 Collaborative learning 的参数更新过程存在无意地泄露用户训练数据信息的漏洞，并且本文采用了消极和积极的两种攻击方式来利用这个漏洞。首先，利用</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -9,15 +9,6 @@
     <lastBuildDate>Sun, 28 Aug 2022 20:06:39 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
-      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
-      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</guid>
-      <description>1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便</description>
-    </item>
-    
-    <item>
-      <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
       <link>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
       <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
       

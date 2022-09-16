@@ -25,5 +25,32 @@
       <description>1 介绍 本文提出了第一个针对GANs的 属性推理攻击。 具体来说，敌手试着去推测宏观的训练数据集属性，例如用来训练GAN模型的某一属性的样本分布。</description>
     </item>
     
+    <item>
+      <title>论文阅读8:《 Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</link>
+      <pubDate>Sun, 04 Sep 2022 21:19:19 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB8/</guid>
+      <description>1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或</description>
+    </item>
+    
+    <item>
+      <title>论文阅读6:《Leakage of Dataset Properties in Multi-Party Machine Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</link>
+      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB6/</guid>
+      <description>1 介绍 本文主要介绍了针对中心化多参与方机器学习环境下数据集属性的推理攻击，主要是 population-level 的数据集属性推理。安全多方机器学习提供参与方黑盒的访问以便</description>
+    </item>
+    
+    <item>
+      <title>论文阅读4:《Exploiting Unintended Feature Leakage in Collaborative Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</link>
+      <pubDate>Tue, 02 Aug 2022 18:07:15 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB4/</guid>
+      <description>1. 文章概述 本文阐释了 Collaborative learning 的参数更新过程存在无意地泄露用户训练数据信息的漏洞，并且本文采用了消极和积极的两种攻击方式来利用这个漏洞。首先，利用</description>
+    </item>
+    
   </channel>
 </rss>
