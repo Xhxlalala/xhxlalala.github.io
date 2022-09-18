@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>论文阅读10:《Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》 - Xtar&#39;s blog</title>
+  <title>论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》 - Xtar&#39;s blog</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -39,20 +39,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="论文阅读10:《Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》" />
-<meta property="og:description" content="1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或" />
+<meta property="og:title" content="论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》" />
+<meta property="og:description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB10/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-09-16T10:40:24+08:00" />
-<meta property="article:modified_time" content="2022-09-16T10:40:24+08:00" />
+<meta property="article:published_time" content="2022-09-18T16:42:36+08:00" />
+<meta property="article:modified_time" content="2022-09-18T16:42:36+08:00" />
 
-<meta itemprop="name" content="论文阅读10:《Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》">
-<meta itemprop="description" content="1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或"><meta itemprop="datePublished" content="2022-09-16T10:40:24+08:00" />
-<meta itemprop="dateModified" content="2022-09-16T10:40:24+08:00" />
-<meta itemprop="wordCount" content="2976">
-<meta itemprop="keywords" content="推理攻击,属性推理," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="论文阅读10:《Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》"/>
-<meta name="twitter:description" content="1 介绍 本文主要介绍了针对全连接神经网络（FCNNs）的 白盒 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或"/>
+<meta itemprop="name" content="论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》">
+<meta itemprop="description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过"><meta itemprop="datePublished" content="2022-09-18T16:42:36+08:00" />
+<meta itemprop="dateModified" content="2022-09-18T16:42:36+08:00" />
+<meta itemprop="wordCount" content="1716">
+<meta itemprop="keywords" content="成员推理,防御," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》"/>
+<meta name="twitter:description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -160,15 +160,15 @@ code.has-jax {
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">论文阅读10:《Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations》</h1>
+      <h1 class="post-title">论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2022-09-16 </span>
+        <span class="post-time"> 2022-09-18 </span>
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 2976 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 1716 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
     </header>
@@ -179,83 +179,107 @@ code.has-jax {
     <nav id="TableOfContents">
   <ul>
     <li><a href="#1-介绍">1 介绍</a></li>
-    <li><a href="#2-背景知识">2 背景知识</a>
+    <li><a href="#2-成员推理攻击的防御">2 成员推理攻击的防御</a></li>
+    <li><a href="#3-memguard">3 MemGuard</a>
       <ul>
         <li>
           <ul>
-            <li><a href="#deepsets">DeepSets</a></li>
-            <li><a href="#硬件表现计数器hpcs">硬件表现计数器（HPCs）</a></li>
+            <li><a href="#31-符号说明">3.1 符号说明</a></li>
+            <li><a href="#32-防御目标">3.2 防御目标</a></li>
+            <li><a href="#33-memguard">3.3 MemGuard</a></li>
           </ul>
         </li>
       </ul>
     </li>
-    <li><a href="#3-问题声明">3 问题声明</a></li>
-    <li><a href="#4-属性推理攻击策略">4 属性推理攻击策略</a></li>
-    <li><a href="#5-置换相等性">5 置换相等性</a></li>
-    <li><a href="#6-具体方法">6 具体方法</a>
-      <ul>
-        <li>
-          <ul>
-            <li><a href="#神经元排序">神经元排序</a></li>
-            <li><a href="#使用基于集合的表示">使用基于集合的表示</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
+    <li><a href="#4-总结">4 总结</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <h1 id="1-介绍">1 介绍</h1>
-<p>本文主要介绍了针对全连接神经网络（FCNNs）的 <strong>白盒</strong> 环境下的属性推理攻击。具体来说就是推理训练数据集的全局属性，例如数据被生产的环境或来自某一特定类的数据所占的比例。</p>
-<p>属性推理攻击由 Ateniese 等人首次提出。攻击需要训练一个元分类器来根据目标分类器是否有一个属性 P 对其分类。为了实现这个目的，敌手创建了一个 <strong>影子分类器</strong> 或 <strong>代理分类器</strong> 集合，使用与目标分类器相同的任务进行训练，每个影子分类器用与目标分类器相似但明确构造为具有或不具有属性 P 的数据进行训练。影子分类器的参数然后被用来训练元分类器。Ateniese 等人展示了针对隐马尔可夫模型以及支持向量机的属性推理攻击，同时表明提供 record-level 隐私保护的差分隐私机制不能提供有效的防御。</p>
-<p>然而，上边提出的属性推理攻击并不能对深度神经网络起到好的效果。因为深度神经网络通常有上千个参数，使得难以训练一个元分类器。本文首先关注于全连接深度神经网络。本文一个重要的观察是 <strong>当使用矩阵表示时，FCNN 在节点置换下是不变的：对 FCNN 的每个隐藏层应用任意置换，并相应地调整权重，得到等效的 FCNN。</strong>  这种不变性对元分类器的学习是一个挑战，特别是考虑到可以产生的阴影分类器的数量的限制，因为训练每个分类器会产生很高的计算成本。为了解决这个问题，作者提出了两种技术：(1)将FCNN排列成规范形式，以便 FCNN 的所有等价排列产生相同的特征表示。(2)将 FCNN 的每一层表示为一个集合，而不是一个有序的向量，并利用 DeepSets 架构来开发集合上的元分类器。</p>
-<p>作者在一些标准数据集（MNIST, CelebA）上进行了一系列实验并取得了很好地效果。其中基于集合的方案针对不同的任务准确率可以达到 <strong>85%-100%</strong> ，且内存开销低，需要训练的阴影分类器更少。</p>
-<h1 id="2-背景知识">2 背景知识</h1>
-<h3 id="deepsets">DeepSets</h3>
-<p>DeepSets是一个为定义在集合上的机器学习任务设计的神经网络架构。对于在集合X上定义的任何函数 f ，该网络强制其满足以下要求：</p>
-<blockquote>
-<p>Property 2.1. A function f acting on sets must be permutation invariant to the order of objects in the set; i.e., f (x1, x2, . . . , xn) = f (xσ (1), xσ (2), . . . , xσ (n)) for any permutation σ .</p>
-</blockquote>
-<p>为了使用神经网络学会这样的一个函数，这个架构被拆分为两个神经网络 $\phi$ 以及 $\rho$ 。
-$\phi$ 函数被用来获得一个元素级表示，而 $\rho$ 函数被用来获得一个最终的对集合的预测。</p>
-<p><img src="https://s2.loli.net/2022/09/16/7oOinkHCJLVzw1v.png" alt="Pasted image 20220512203459.png"></p>
-<p>DeepSets 已经被证明在困难的基于集合的任务上有很好的表现，例如在一个给定但单词集合上查找相似的词或者给定一个数字图片集合找出数字的总和。需要注意的一点是 $\phi$ 只处理集合中的每个元素而不是整个集合， $\rho$ 只处理每个元素经过处理的特征的和。因此，与其他体系结构相比，该体系结构具有更少的参数，使其具有更高的计算效率和更容易训练。</p>
-<h3 id="硬件表现计数器hpcs">硬件表现计数器（HPCs）</h3>
-<p>在计算机中，硬件性能计数器(HPCs)是一组内置在现代微处理器中的专用寄存器，用于存储计算机系统中硬件事件的计数。计数器包括执行指令、页面错误、上下文切换、缓存丢失的计数等。</p>
-<p>硬件性能计数器可以记录和表示正在执行的程序的运行时行为和特征。因此，高级用户可以使用这些计数器来进行简单的性能分析或调优。</p>
-<h1 id="3-问题声明">3 问题声明</h1>
-<p>考虑这样一种情况，模型的生产者在一个训练集 $D$ 上训练一个全连接神经网络 $f$ 来做一些分类任务。在这个模型训练训练好之后，生产者把模型开放给模型消费者使用，从而使得消费者无需训练他们自己的模型就可以使用生产者提供的模型进行预测。在本文中主要回答以下问题： <strong>给定一个模型 $f$ , 敌手（在这个例子中是模型消费者）是否能推断出一些模型生产者不想共享的训练集 $D$ 的一些属性。</strong></p>
-<p>我们假设敌手拥有目标模型 $f$ 的白盒知识(即，对参数和体系结构的全部知识)。同时假设敌手不能干扰目标模型的训练过程以及训练数据集的收集过程。请注意，虽然以前的许多工作都集中在泄漏关于组成训练数据集的单个记录的信息的可能性上，但我们转而关注训练集的非预期的全局属性。</p>
-<h1 id="4-属性推理攻击策略">4 属性推理攻击策略</h1>
-<p>属性推理攻击主要利用以下想法：使用相似训练方法在相似数据集上训练的机器学习模型将表现出相似的函数功能。这些函数的相似性应作为其参数的一些共同固有模式反映在训练模型中。敌手的目标是识别目标模型中的这些模式，以揭示模型生产者可能不希望发布的某些属性。</p>
-<p><img src="https://s2.loli.net/2022/09/16/3gXlfsb2Byj9axr.png" alt="Pasted image 20220512210944.png"></p>
-<p>攻击主要分为以下几步进行：</p>
-<p>(1) 为 k 个影子分类器获取训练数据。为了实现这个目的，敌手一个数据集集合 $D = (D_1,&hellip;,D_k)$ ，他们中一半包含属性 $P$, 一半不包含。这些数据集可以从更大的数据集中抽样获得，也可以简单地获得更多的数据。<br>
-(2) 使用对应的数据集 $D_i$ 来训练每个影子分类器 $f_i$.<br>
-(3) 训练完影子分类器后，敌手获取每个影子分类器 $f_i$ 的特征表示来建立元训练集。<br>
-(4) 最后，敌手为元分类器构建一个元训练集 $D_{meta} = (F_1, F_2,&hellip;,F_k)$, 每个样本都对应的标签有属性P或没属性P($P$ or $\bar{P}$)，然后敌手使用任意流行的训练算法训练这个元分类器。<br>
-(5)一旦获得了训练好的元分类器，敌手可以把 $f_{target}$的特征表示 $F_{target}$ 输入到分类器中，从而预测目标模型的目标属性的存在。</p>
-<h1 id="5-置换相等性">5 置换相等性</h1>
-<p>如上所述，可以使用所有参数(即权值和偏差)的平铺向量作为全连接神经网络的特征表示。这种表示形式在实践中表现得并不好，其中一个原因是排列等价神经网络的存在，平铺的特征向量表示不能解决这个问题。为了定义这种等价性，我们首先定义了一种层内节点(或神经元)的特定排列。</p>
-<p>全连接神经网络通常是包含多层的集合 $f=\left(h_{1}, h_{2}, \ldots, h_{|f|}\right)$, 每一层 $h_t$ 是神经元的一个集合 $h_{t}=\left(n_{1}^{t}, n_{2}^{t}, \ldots, n_{\left|h_{t}\right|}^{t}\right)$ , 每个神经元有对应的偏置 $b_i^t$ 以及与上一个隐层神经元相连的权重集合 $w_{i *}^{t}=\left(w_{i 1}^{t}, w_{i 2}^{t}, \ldots, w_{i\left|h_{t-1}\right|}^{t}\right)$ . 置换函数作用在一个元素向量 $X = (x_1, x_2,&hellip;,x_k)$  , 输出 $\left(x_{\sigma(1)}, x_{\sigma(2)}, \ldots, x_{\sigma(k)}\right)$ . 定义一个节点置换，在隐层 $h_t$ 作为层上的变换，节点被置换 $\sigma$ 重新排序，同时保持连通权重不变。</p>
-<blockquote>
-<p>Proposition 5.1 (Permutation Eqivalence). Consider a neural network f and a new neural network f ′ obtained from f by a series of node permutations on its hidden layers. Then, for every input x, we have f (x) = f ′(x).</p>
-</blockquote>
-<p><img src="https://s2.loli.net/2022/09/16/NqGpQ8h1IRgrid6.png" alt="Pasted image 20220513153705.png"></p>
-<h1 id="6-具体方法">6 具体方法</h1>
-<h3 id="神经元排序">神经元排序</h3>
-<p>置换等价的属性推断任务可以与旋转图像的计算机视觉任务相比较。例如，一个面部识别模型若不考虑面部图像的旋转可能会在期望见到一个耳朵时看到一个眼睛，从而在人脸识别上表现不好。一种常见的处理方法是，首先以规范的姿态对齐图像，例如，对齐脸部，使其与图像边缘有些平行。被这种技术启发，作者提出了一种处理置换等价的方案， <strong>即将所有影子分类器转换为标准形式，使同一分类器的不同排列等价项具有相同的标准形式。</strong></p>
-<p><img src="https://s2.loli.net/2022/09/16/fQTUt5jYh6lHKWP.png" alt="Pasted image 20220513154842.png"></p>
-<p>其中具体操作如算法1所示：</p>
-<p><img src="https://s2.loli.net/2022/09/16/aMEfS1lrePbuJqo.png" alt="Pasted image 20220513154929.png"></p>
-<p>对于每一个隐层，为其每一个节点计算一个 metric ，然后找出一个排列为这些 metrics 排序。最后将该置换作为节点置换应用到同一层，并将其排序平铺权重和偏差加到F。第 10 和 11 行中使用的 flatten 函数从排序好的层中获得一个权重和偏置的线性向量。然后，我们移动到下一层，重复这些步骤。通过这种方式，我们通过对每一层进行单独排序，得到分类器的有序规范形式。</p>
-<h3 id="使用基于集合的表示">使用基于集合的表示</h3>
-<p>首先强调vector和set之间的区别：vector有其元素的特定顺序，而set可能有也可能没有顺序。因此，一个 vector 可以有多种排列，unordered set 则不会。</p>
-<p><img src="https://s2.loli.net/2022/09/16/qiMuBZSUFzpjtwK.png" alt="Pasted image 20220513155908.png"></p>
-<p>对于一个有 $|f| - 1$ 个隐层和一个输出层的神经网络 $f$ ，基于集合的表示将会对应的有 $|f|$ 个集合。首先，对于 $h_t$ 层中的每个节点，将其权重和偏置平铺为一个向量。然后，我们将这个向量输入到层对应的网络中，得到它的节点级表示。我们把这一步称为 <strong>node processing</strong> . 这一步完成后紧接着的一步是 <strong>layer summation</strong> ，在这一步，每个神经元的节点表示被累加为一层的表示：$L_{t}=\sum_{i} N_{i}^{t}$ . 最后，这些层的表示通过串联作为 $\rho$ 网络的输入来获得预测，在本文中是输入分类器的属性 $P$ 或者 $\bar{P}$. 具体过程如算法 2 所示：</p>
-<p><img src="https://s2.loli.net/2022/09/16/LJG2B864U3MQAqK.png" alt="Pasted image 20220513163141.png"></p>
+<p>成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过拟合。以往针对成员推理攻击的方法有两个关键的限制：(1)没有对置信值向量的正式效用损失保证；(2)实现了次优的隐私效用平衡。
+在这种背景下，作者提出了一种叫做 <strong>MemGuard</strong> 的防御方法，主要思想是在置信值向量中添加一个精心制作的噪声使其变为带噪声的对抗样本，从而使攻击模型判断该样本成员关系的概率为 0.5(random guess).这是<strong>第一个</strong>具有<strong>正式效用损失保证的防御</strong>，以防止<strong>黑盒</strong>成员推断攻击。</p>
+<h1 id="2-成员推理攻击的防御">2 成员推理攻击的防御</h1>
+<p><strong>防御目标：</strong></p>
+<ul>
+<li>攻击者的攻击分类器对目标分类器训练数据集成员/非成员的推断不准确，即保护训练数据集的隐私。</li>
+<li>置信值向量的 utility-loss 是有界的</li>
+</ul>
+<p><strong>现有的方法：</strong></p>
+<ul>
+<li>L1正则化</li>
+<li>Max-min game</li>
+<li>dropout</li>
+<li>Model Steasking</li>
+<li>差分隐私</li>
+</ul>
+<h1 id="3-memguard">3 MemGuard</h1>
+<h3 id="31-符号说明">3.1 符号说明</h3>
+<p><img src="https://s2.loli.net/2022/03/01/YadQP9SrNZsxfcB.png" alt="Pasted image 20220228214021.png"></p>
+<h3 id="32-防御目标">3.2 防御目标</h3>
+<p><img src="https://s2.loli.net/2022/03/01/zglMpA8cxuZnUQK.png" alt="Pasted image 20220228214319.png"></p>
+<p>其中，(1)表示 s 添加噪声 n 后，防御器得到的判断是否为训练集样本的分值尽可能接近 0.5，M 表示将噪声 n 加入 s 的概率。限制条件(2)保证了添加噪声后的样本预测结果和原样本一样，即原查询数据样本的预测标签不改变; 限制条件(3)确保了置信值的变形是有界的(小的); 限制条件(4)确保添加噪声后的置信值向量仍然满足概率分布。</p>
+<h3 id="33-memguard">3.3 MemGuard</h3>
+<ul>
+<li>
+<p><strong>情景1：</strong> $g(s)=0.5$</p>
+<ul>
+<li>以概率1添加噪声向量0的最优随机噪声添加机制</li>
+</ul>
+</li>
+<li>
+<p><strong>情景2：</strong> $g(s) \ne 0.5$</p>
+<ul>
+<li>将噪声空间分为两组，添加第一组噪声后通过g预测是成员的概率为0.5，添加第二组噪声后通过g预测是成员的概率不是0.5</li>
+<li>即：$g(s+n)=0.5$ 是一组; $g(s+n) \ne 0.5$是另一组</li>
+<li>分为两个阶段求解：
+<ul>
+<li>第一：求解代表性的变形尽可能小的噪声向量</li>
+<li>第二：求解随机噪声添加机制的概率</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>第一阶段：提出优化问题(找到 r )</strong></p>
+<p>目标是找到一个噪声向量r满足：(1)置信值向量的效用损失尽可能小；(2)输入噪声置信值向量时 g输出是成员的概率为 0.5.可以转化为如下最优化问题：</p>
+<p><img src="https://s2.loli.net/2022/03/01/ePm8UAHK25vq7Qn.png" alt="Pasted image 20220301110018.png"></p>
+<p><strong>(1) 通过改变变量消除概率分布的限制</strong></p>
+<p>因为目标分类器是一个神经网络，输出层是一个 softmax 层，真正的置信值向量s是一些向量 z 的 softmax 函数输出。z是神经网络倒数第二层的输出，通常称为神经网络的 $logits$.
+对噪声向量建模如下：
+$$
+s+r = softmax(z + e)
+$$
+e 是一个新的向量变量。则原最优化问题可以转化为如下问题：</p>
+<p><img src="https://s2.loli.net/2022/03/01/zVynPkYRZrJKboF.png" alt="Pasted image 20220301110925.png"></p>
+<p>求出上述最优化问题的 e 后，噪声向量 r 如下：
+$$r = softmax(z+e) - softmax(z)$$</p>
+<p><strong>(2) 将限制条件转化为优化问题</strong></p>
+<p>防御者的二分分类器是一个神经网络，其输出层有一个单一的神经元，激活函数为 $sigmoid$，所以限制条件(15)可以转化为：
+$$g(\operatorname{sof} \operatorname{tmax}(\mathrm{z}+\mathbf{e}))=\frac{1}{1+\exp (-h(\operatorname{softmax}(\mathrm{z}+\mathbf{e})))}$$
+再进一步可以转化为：
+$$L1 = |h(softmax(z+e))|$$
+若用 $l$ 表示查询数据的预测标签，即 $l = argmax_j{s_j} = argmax_j{z_j}$，则限制条件(14)意味着 $z_l + e_l$ 是向量 $z+e$ 中最大的项，所以有<img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220918170209913.png" alt="image-20220918170209913">，更进一步限制条件(14)可以转换为如下损失函数:<br>
+<img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220918170312421.png" alt="image-20220918170312421"></p>
+<p>所以，最终的优化问题为：<img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220918170415044.png" alt="image-20220918170415044">
+其中 $L_3 = d(softmax(z), softmax(z+e))$</p>
+<p>算法过程如下所示：</p>
+<p><img src="https://s2.loli.net/2022/03/01/myDneJ3Xh8iTZdK.png" alt="Pasted image 20220301112800.png"></p>
+<h4 id="第二阶段添加噪声的概率">第二阶段：添加噪声的概率</h4>
+<p>在阶段1之后可以得到两个代表性的噪声向量，一个是 $0$，一个是 $r$.在阶段2，假设防御者以p的概率选择噪声向量 $r$，以 1-p 的概率选择噪声向量 0.经过这样的简化，可以把等式 1 中的优化问题转化为下面的优化问题：</p>
+<p><img src="https://s2.loli.net/2022/03/01/KfjLzEbmuJnkAvo.png" alt="Pasted image 20220301162725.png"></p>
+<p>限制条件意味者预期的置信变形是有界的。注意：我们忽略了限制条件(2)(4)(5)，因为两种噪声向量本身就满足这三个限制。上面的优化问题经过分析，可以得到如下解：</p>
+<p><img src="https://s2.loli.net/2022/03/01/cZqrBJRjGi7TxC6.png" alt="Pasted image 20220301163228.png"></p>
+<p><strong>One-time randomness:</strong></p>
+<p>假设攻击者从目标分类器查询同一数据样本 n 次，收到置信值向量 $s_1$ m次，收到置信值向量 $s_2$ n-m 次。一个置信值向量是 s+r, 另一个置信值向量是真实置信值向量为s。由这两个向量，攻击者利用上面的式子可以计算出p。攻击者还可以估计防御者返回的置信值向量 $s_1,s_2$ 的概率分别为: $\frac{m}{n}, \frac{n-m}{n}$.若 $\frac{m}{n}$ 接近于p, 那么攻击者就可以判断 $s_2$ 是真实的置信值向量。</p>
+<p>为了解决这个问题，作者提出了在防御者采样代表噪声的时候使用 one-time randomness，从而防御者对于相同的查询样本数据总是返回相同的置信值向量。主要步骤如下：</p>
+<ul>
+<li>计算查询样本的 hash ，将 hash 作为 seed 利用伪随机数生成器生成 $p&rsquo; \in [0,1]$</li>
+<li>当 $p&rsquo; &lt; p$ 时添加 $r$，否则不添加</li>
+</ul>
+<h1 id="4-总结">4 总结</h1>
+<p>论文提出了一个很有意思的攻击解决方法，通过对目标模型得到的置信评分向量以一定的概率添加噪声得到一个随机噪声添加机制，并且让防御者模拟攻击者的攻击分类器形成防御分类器，进而提出优化问题并且求解。</p>
 
     </div>
 
@@ -267,7 +291,7 @@ $\phi$ 函数被用来获得一个元素级表示，而 $\rho$ 函数被用来�
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2022-09-16
+        2022-09-18
         
     </span>
   </p>
@@ -276,11 +300,15 @@ $\phi$ 函数被用来获得一个元素级表示，而 $\rho$ 函数被用来�
 </div>
 <footer class="post-footer">
       <div class="post-tags">
-          <a href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/">推理攻击</a>
-          <a href="/tags/%E5%B1%9E%E6%80%A7%E6%8E%A8%E7%90%86/">属性推理</a>
+          <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
+          <a href="/tags/%E9%98%B2%E5%BE%A1/">防御</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/">
             <span class="next-text nav-default">论文阅读9:《Property Inference Attacks Against GANs》</span>
             <span class="next-text nav-mobile">下一篇</span>
@@ -302,8 +330,7 @@ $\phi$ 函数被用来获得一个元素级表示，而 $\rho$ 函数被用来�
     <footer id="footer" class="footer">
       <div class="social-links">
       <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
-      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
-      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
   <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 

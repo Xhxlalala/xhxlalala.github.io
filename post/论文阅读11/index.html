@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》" />
+<meta property="og:description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-18T17:07:41+08:00" />
+<meta property="article:modified_time" content="2022-09-18T17:07:41+08:00" />
+
+<meta itemprop="name" content="论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》">
+<meta itemprop="description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用"><meta itemprop="datePublished" content="2022-09-18T17:07:41+08:00" />
+<meta itemprop="dateModified" content="2022-09-18T17:07:41+08:00" />
+<meta itemprop="wordCount" content="1513">
+<meta itemprop="keywords" content="成员推理,防御," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》"/>
+<meta name="twitter:description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-09-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+            </div>
+          <span class="more-meta"> 约 1513 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-介绍">1 介绍</a></li>
+    <li><a href="#2-具体方法">2 具体方法</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#21-mixup-的定义">2.1 Mixup 的定义</a></li>
+            <li><a href="#22-emt">2.2 EMT</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-实验介绍">3 实验介绍</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1-介绍">1 介绍</h1>
+<p>MIA 通常利用 <strong>model-based</strong> 或者 <strong>metric-based</strong> 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷：</p>
+<ul>
+<li>当前的防御措施主要用来防御 model-based 的攻击而无法抵抗其他类型的攻击</li>
+<li>这些措施都做了不切实际的前提假设，即防御者已经知道了攻击者的攻击策略</li>
+</ul>
+<p>在这篇文章中，作者提出了一种 <strong>增强混合训练(EMT)</strong> 的方法。具体来说，EMT主要受益于循环混合训练，即通过在训练过程中使用设计好的增强混合机制来混合训练数据。与现存的防御方法相比，EMT根本性地提高了目标模型的准确性和泛化性，从而能更高效的降低 MIAs 的风险。</p>
+<p>本文提出的方法受启发于 Mixup 方法在提升ML模型泛化性上的成功。原始的 Mixup 方法混合两个样本不能抵御MIA，因为仍保留了样本间的线性关系。作者做的提升是在训练过程中递归的混合训练数据。具体来说就是相当于给 loss function 添加一个数据自适应的正则化项。依据这种类似正则化的方法，降低了成员样本与非成员样本之间的泛化差异，防止分类器记住过多的成员样本知识，从而有效地抵抗成员推理攻击。</p>
+<p>作者的贡献主要如下：</p>
+<ul>
+<li>提出了一种通用的方法(称为 EMT )，在不牺牲精度的情况下对抗基于模型和基于度量的黑盒攻击</li>
+<li>EMT是实用的和适应性的，因为它完成了防御部署，而无需任何事先假设的对手的攻击策略。</li>
+<li>作者从理论上证明了EMT对应于一种特定类型的数据自适应正则化。并在Location30、Purchase100 和 Texas100 数据集上与 MemGuard 和 AdvReg 进行了实验比较。评估结果表明，EMT 能够成功防御基于模型和基于度量的攻击，而 Memguard 和 AdvReg 则不能很好地防御基于度量的攻击。</li>
+</ul>
+<h1 id="2-具体方法">2 具体方法</h1>
+<h3 id="21-mixup-的定义">2.1 Mixup 的定义</h3>
+<p>Mixup是我们的EMT的构建块，它通过混合样本和标签来构建虚拟训练示例。简单的定义如下所示：</p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220129232059.png)</p>
+<p>其中，$\lambda \sim B E T A(\alpha, \beta)$ 且 $\lambda \in [0,1]$,$\alpha, \beta \in(0, \infty)$.(xi,yi) 及 (xj,yj) 是从训练集中随机选择的两个隐私样本。Mixup 通过融合线性先验知识扩展训练分布。输出特征向量的插值应导致相关对象的线性插值。$\alpha$ 控制目标特征对之间的插值强度。 但是，仅使用 Mixup 并不能取得预期的防御效果，作者基于Mixup 做了一些改动设计出了 <strong>EMT</strong> 方法。</p>
+<h3 id="22-emt">2.2 EMT</h3>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206171021.png)</p>
+<p>如图所示，EMI每轮保存训练数据的一部分，并且在下一次迭代过程中继续混合从而使EMI包含更多的样本信息。最终，可以使用这些混合的数据样本代替原有的数据样本来训练模型，使模型可以防御成员推理攻击。研究显示，该方法是一种数据增强方法，但是它也可以作为一种正则化方式。</p>
+<p>我们在输入样本中构建EMI。首先，对于训练集 D，在每一个 epoch 中我们使用 mini-batch 去训练模型模型。假设 mini-batch 的数量是 m，我们有如下 batchs:</p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206173535.png)</p>
+<p>我们构建EMI去训练模型F，对于 epoch i，复制且切分 $batch_i$ p 次产生新的条目$e_p(batch_{copyij}, \lambda)$ 从而获得EMI $b_{mixi}$ . $b_{mixi}$ 用来在每个 epoch 中进行训练。 p是每个 $B_{mixup}$ 的迭代数目 $batch_{copyij}$ 表示 $batch_i$ 的第 j 次复制。</p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206180918.png)</p>
+<p>对于一个混合的 batch，我们在原始的 $batch_i$ 中随机地切分样本获得p个不同的复制。之后，对每一轮的的样本进行 Mixup 操作，这可以部分增强混合的程度。注意 p 越大，防御的程度越高。我们使用 m 个 batch 去迭代地构建混合条目：</p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206181536.png)</p>
+<p>z 是 $batch_{mixi}$ 中的一个样本, j 迭代更新中自适应的衰减因子。我们使用 $z_{mixi}$ 代替原始的私有样本 $x_i$.事实上,这种方法是用一种巧妙的正则化方式混合数据的方法，其迭代构建混合条目的方法是构建损失函数的惩罚项。这种正则化方法提升的模型的泛化能力，提升了模型的鲁棒性，从而降低了 MIAs 的风险。</p>
+<h1 id="3-实验介绍">3 实验介绍</h1>
+<p><strong>Enhanced Mixup Training算法：</strong></p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183054.png)</p>
+<p><strong>Enhanced Mix Item算法:</strong></p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183152.png)</p>
+<p><strong>实验数据集：</strong> Texas 100、Purchase 100、Location 30<br>
+<strong>实验设置：</strong> 我们比较了EMI方法和Memguard以及AdvReg在两种攻击方法下的表现。
+<strong>实验结果：</strong></p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183253.png)</p>
+<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183319.png)</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-09-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
+          <a href="/tags/%E9%98%B2%E5%BE%A1/">防御</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB10/">
+            <span class="next-text nav-default">论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

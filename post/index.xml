@@ -6,7 +6,25 @@
     <description>Recent content in Posts on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 04 Sep 2022 21:43:52 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Sep 2022 17:07:41 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/</link>
+      <pubDate>Sun, 18 Sep 2022 17:07:41 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/</guid>
+      <description>1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用</description>
+    </item>
+    
+    <item>
+      <title>论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB10/</link>
+      <pubDate>Sun, 18 Sep 2022 16:42:36 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB10/</guid>
+      <description>1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过</description>
+    </item>
+    
     <item>
       <title>论文阅读9:《Property Inference Attacks Against GANs》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB9/</link>
