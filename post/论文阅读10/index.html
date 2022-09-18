@@ -50,7 +50,7 @@
 <meta itemprop="description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过"><meta itemprop="datePublished" content="2022-09-18T16:42:36+08:00" />
 <meta itemprop="dateModified" content="2022-09-18T16:42:36+08:00" />
 <meta itemprop="wordCount" content="1716">
-<meta itemprop="keywords" content="成员推理,防御," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="成员推理,防御方法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读10:《MemGuard：Defending against Black-Box Membership Inference Attacks via Adversarial Examples》"/>
 <meta name="twitter:description" content="1 介绍 成员推理攻击中，攻击者通常训练一个二分类器，输入样本的置信值向量，输出该样本是否为训练集中的成员。成员推理攻击主要利用的是目标模型的过"/>
 
@@ -266,7 +266,7 @@ $$L1 = |h(softmax(z+e))|$$
 其中 $L_3 = d(softmax(z), softmax(z+e))$</p>
 <p>算法过程如下所示：</p>
 <p><img src="https://s2.loli.net/2022/03/01/myDneJ3Xh8iTZdK.png" alt="Pasted image 20220301112800.png"></p>
-<h4 id="第二阶段添加噪声的概率">第二阶段：添加噪声的概率</h4>
+<p><strong>第二阶段：添加噪声的概率</strong></p>
 <p>在阶段1之后可以得到两个代表性的噪声向量，一个是 $0$，一个是 $r$.在阶段2，假设防御者以p的概率选择噪声向量 $r$，以 1-p 的概率选择噪声向量 0.经过这样的简化，可以把等式 1 中的优化问题转化为下面的优化问题：</p>
 <p><img src="https://s2.loli.net/2022/03/01/KfjLzEbmuJnkAvo.png" alt="Pasted image 20220301162725.png"></p>
 <p>限制条件意味者预期的置信变形是有界的。注意：我们忽略了限制条件(2)(4)(5)，因为两种噪声向量本身就满足这三个限制。上面的优化问题经过分析，可以得到如下解：</p>
@@ -301,7 +301,7 @@ $$L1 = |h(softmax(z+e))|$$
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
-          <a href="/tags/%E9%98%B2%E5%BE%A1/">防御</a>
+          <a href="/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/">防御方法</a>
           </div>
       <nav class="post-nav">
         <a class="prev" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/">

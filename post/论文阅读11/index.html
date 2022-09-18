@@ -49,8 +49,8 @@
 <meta itemprop="name" content="论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》">
 <meta itemprop="description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用"><meta itemprop="datePublished" content="2022-09-18T17:07:41+08:00" />
 <meta itemprop="dateModified" content="2022-09-18T17:07:41+08:00" />
-<meta itemprop="wordCount" content="1513">
-<meta itemprop="keywords" content="成员推理,防御," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1486">
+<meta itemprop="keywords" content="成员推理,防御方法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》"/>
 <meta name="twitter:description" content="1 介绍 MIA 通常利用 model-based 或者 metric-based 推理方法来推测一个具体的数据样本是否是目标模型训练集中的成员。现有的防御措施主要有以下两个缺陷： 当前的防御措施主要用"/>
 
@@ -167,8 +167,8 @@ code.has-jax {
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 1513 字 </span>
-          <span class="more-meta"> 预计阅读 4 分钟 </span>
+          <span class="more-meta"> 约 1486 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
     </header>
@@ -212,28 +212,28 @@ code.has-jax {
 <h1 id="2-具体方法">2 具体方法</h1>
 <h3 id="21-mixup-的定义">2.1 Mixup 的定义</h3>
 <p>Mixup是我们的EMT的构建块，它通过混合样本和标签来构建虚拟训练示例。简单的定义如下所示：</p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220129232059.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220129232059.png" alt=""></p>
 <p>其中，$\lambda \sim B E T A(\alpha, \beta)$ 且 $\lambda \in [0,1]$,$\alpha, \beta \in(0, \infty)$.(xi,yi) 及 (xj,yj) 是从训练集中随机选择的两个隐私样本。Mixup 通过融合线性先验知识扩展训练分布。输出特征向量的插值应导致相关对象的线性插值。$\alpha$ 控制目标特征对之间的插值强度。 但是，仅使用 Mixup 并不能取得预期的防御效果，作者基于Mixup 做了一些改动设计出了 <strong>EMT</strong> 方法。</p>
 <h3 id="22-emt">2.2 EMT</h3>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206171021.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206171021.png" alt=""></p>
 <p>如图所示，EMI每轮保存训练数据的一部分，并且在下一次迭代过程中继续混合从而使EMI包含更多的样本信息。最终，可以使用这些混合的数据样本代替原有的数据样本来训练模型，使模型可以防御成员推理攻击。研究显示，该方法是一种数据增强方法，但是它也可以作为一种正则化方式。</p>
 <p>我们在输入样本中构建EMI。首先，对于训练集 D，在每一个 epoch 中我们使用 mini-batch 去训练模型模型。假设 mini-batch 的数量是 m，我们有如下 batchs:</p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206173535.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206173535.png" alt=""></p>
 <p>我们构建EMI去训练模型F，对于 epoch i，复制且切分 $batch_i$ p 次产生新的条目$e_p(batch_{copyij}, \lambda)$ 从而获得EMI $b_{mixi}$ . $b_{mixi}$ 用来在每个 epoch 中进行训练。 p是每个 $B_{mixup}$ 的迭代数目 $batch_{copyij}$ 表示 $batch_i$ 的第 j 次复制。</p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206180918.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206180918.png" alt=""></p>
 <p>对于一个混合的 batch，我们在原始的 $batch_i$ 中随机地切分样本获得p个不同的复制。之后，对每一轮的的样本进行 Mixup 操作，这可以部分增强混合的程度。注意 p 越大，防御的程度越高。我们使用 m 个 batch 去迭代地构建混合条目：</p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206181536.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206181536.png" alt=""></p>
 <p>z 是 $batch_{mixi}$ 中的一个样本, j 迭代更新中自适应的衰减因子。我们使用 $z_{mixi}$ 代替原始的私有样本 $x_i$.事实上,这种方法是用一种巧妙的正则化方式混合数据的方法，其迭代构建混合条目的方法是构建损失函数的惩罚项。这种正则化方法提升的模型的泛化能力，提升了模型的鲁棒性，从而降低了 MIAs 的风险。</p>
 <h1 id="3-实验介绍">3 实验介绍</h1>
 <p><strong>Enhanced Mixup Training算法：</strong></p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183054.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206183054.png" alt=""></p>
 <p><strong>Enhanced Mix Item算法:</strong></p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183152.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206183152.png" alt=""></p>
 <p><strong>实验数据集：</strong> Texas 100、Purchase 100、Location 30<br>
 <strong>实验设置：</strong> 我们比较了EMI方法和Memguard以及AdvReg在两种攻击方法下的表现。
 <strong>实验结果：</strong></p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183253.png)</p>
-<p>![](<a href="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted">https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/Pasted</a> image 20220206183319.png)</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206183253.png" alt=""></p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/20220206183319.png" alt=""></p>
 
     </div>
 
@@ -255,7 +255,7 @@ code.has-jax {
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
-          <a href="/tags/%E9%98%B2%E5%BE%A1/">防御</a>
+          <a href="/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/">防御方法</a>
           </div>
       <nav class="post-nav">
         
