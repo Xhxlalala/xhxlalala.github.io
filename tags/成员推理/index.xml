@@ -6,7 +6,25 @@
     <description>Recent content in 成员推理 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Sep 2022 17:07:41 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Sep 2022 21:12:44 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/</link>
+      <pubDate>Sun, 25 Sep 2022 21:12:44 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/</guid>
+      <description>1 介绍 给定一个无标签的图片集或者(图片，文本)对集，对比学习试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下</description>
+    </item>
+    
+    <item>
+      <title>论文阅读12:《Membership Inference Attacks Against Recommender Systems》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB12/</link>
+      <pubDate>Sun, 25 Sep 2022 20:32:27 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB12/</guid>
+      <description>1 介绍 近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数</description>
+    </item>
+    
     <item>
       <title>论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/</link>

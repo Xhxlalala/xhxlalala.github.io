@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>论文阅读12:《Membership Inference Attacks Against Recommender Systems》 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB12/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="论文阅读12:《Membership Inference Attacks Against Recommender Systems》" />
+<meta property="og:description" content="1 介绍 近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB12/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-25T20:32:27+08:00" />
+<meta property="article:modified_time" content="2022-09-25T20:32:27+08:00" />
+
+<meta itemprop="name" content="论文阅读12:《Membership Inference Attacks Against Recommender Systems》">
+<meta itemprop="description" content="1 介绍 近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数"><meta itemprop="datePublished" content="2022-09-25T20:32:27+08:00" />
+<meta itemprop="dateModified" content="2022-09-25T20:32:27+08:00" />
+<meta itemprop="wordCount" content="2098">
+<meta itemprop="keywords" content="推理攻击,成员推理,推荐系统," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读12:《Membership Inference Attacks Against Recommender Systems》"/>
+<meta name="twitter:description" content="1 介绍 近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">论文阅读12:《Membership Inference Attacks Against Recommender Systems》</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-09-25 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+            </div>
+          <span class="more-meta"> 约 2098 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-介绍">1 介绍</a></li>
+    <li><a href="#2-方法">2 方法</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#21-定义">2.1 定义</a></li>
+            <li><a href="#22-威胁模型">2.2 威胁模型</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#23-推荐系统">2.3 推荐系统</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#24-攻击">2.4 攻击</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-防御">4 防御</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1-介绍">1 介绍</h1>
+<p>近年来，推荐系统取得了良好的表现，成为应用最广泛的网络应用之一。然而，推荐系统通常使用高度敏感的用户数据进行训练，从而推荐系统潜在的数据泄露可能会导致严重的隐私问题。在本文中，作者提出了首个针对推荐系统的成员推理攻击。作者提出的成员推理攻击与传统的成员推理攻击主要有两个不同：一是作者的攻击是在<strong>用户层面</strong>的而不是在数据层面的；二是敌手<strong>只能从推荐系统中获得有序的推荐项</strong>而无法获得像后验概率那样的预测结果。为了解决这一挑战作者提出了一种新的方法，即从相关项中表示用户。此外还需要一个影子推荐模型来获得攻击模型训练所需的带标签的数据。实验证明，作者的攻击可以取得很好的攻击效果。</p>
+<h1 id="2-方法">2 方法</h1>
+<h3 id="21-定义">2.1 定义</h3>
+<ul>
+<li><strong>目标推荐器:</strong> 使用目标数据集训练，是敌手攻击的推荐系统</li>
+<li><strong>影子推荐器:</strong> 使用影子数据集训练，是一个建立用来推理目标推荐器成员关系并且为攻击模型生成训练数据的推荐系统</li>
+<li><strong>成员/非成员:</strong> 成员即那些数据被用来训练推荐系统的用户；非成员即数据没被用来训练推荐系统的用户</li>
+<li><strong>个性化推荐算法/非个性化推荐算法:</strong> 个性化推荐算法即从历史行为（交互）中学习用户的偏好；非个性化推荐算法主要基于预先设定好的规则，例如选择最受欢迎的或排名最高的</li>
+<li><strong>特征向量:</strong> 显示了项目属性或用户偏好的潜在特征</li>
+<li><strong>攻击模型:</strong> 用来推理目标用户是否是一个成员，根据影子推荐器生成的数据集进行训练</li>
+</ul>
+<h3 id="22-威胁模型">2.2 威胁模型</h3>
+<p><strong>(1) 敌手的目标</strong></p>
+<p>敌手的目的是推测一个用户的数据是否被用来训练目标推荐器。事实上，知道某个用户的数据被推荐系统使用，就会直接泄露他们的私人信息。此外，知道用户是数据集的一部分也可以让对手获得目标推荐者数据集的额外信息。这直接侵犯了目标推荐器的知识产权，因为收集高质量的训练数据非常昂贵。</p>
+<p><strong>(2) 敌手的知识</strong></p>
+<p>作者假设攻击者只有对目标推荐器的黑盒访问，即只能得到对一个目标用户的推荐项以及用户的历史(交互)，例如投票以及消费。在这种情况下敌手需要根据用户的交互和推荐来分析用户。同时，还需要一个影子推荐器为攻击模型生成带标签的数据。</p>
+<h1 id="23-推荐系统">2.3 推荐系统</h1>
+<p>推荐算法根据从输入中学到的信息输出推荐项。本文主要介绍两种推荐算法：个性化推荐算法以及非个性化推荐算法。对于成员来说，主要依据成员的偏好来进行推荐。由于缺少非成员的数据，对于非成员主要使用非个性化推荐算法推荐最受欢迎的条目。目前主流的个性化推荐算法主要有以下三种：</p>
+<ul>
+<li><strong>Item(Item-Based Collaborative Filtering):</strong> 通过计算条目间的相似性来找到最贴近用户偏好的那些条目</li>
+<li><strong>LFM(Latent Factor Model):</strong> 通过建立一个隐空间来建立用户偏好与条目属性间的桥梁</li>
+<li><strong>NCF(Neural Collaborative Filtering):</strong> 通过将深度学习技术将协作过滤结合来增强推荐表现</li>
+</ul>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925204631263.png" alt="image-20220925204631263"></p>
+<p>通常一个推荐系统可以通过以下公式定义:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925210248703.png" alt="image-20220925210248703"></p>
+<p>其中，$A_{RS}$ 表示一个推荐系统，其从用户的交互行为 $I_{RS}$ 以及额外的知识 $K_{RS}$ 学习用户的偏好，$R_{R S}$ 表示推荐给用户的条目。在本文中作者主要关注用户交互的影响，因此简化为:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925210427150.png" alt="image-20220925210427150"></p>
+<h3 id="24-攻击">2.4 攻击</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925204803911.png" alt="image-20220925204803911"></p>
+<p>如上图所示，攻击主要分为三个步骤：<strong>标签数据生成、攻击模型建立、参数最优化</strong></p>
+<p><strong>(1) 标签数据生成</strong></p>
+<p>作者使用一个影子推荐器来模仿目标推荐器的数据以及推荐算法。由于只能获得来自推荐系统的推荐条目，作者使用<strong>矩阵分解</strong>把用户和推荐条目投射到一个共享的隐空间。具体来说就是根据用户对条目的排名建立一个 $p \times q$ 的用户-条目矩阵 $M^f$ 。矩阵中的值即排名，范围为 1 到 5 ，表示用户对条目的偏爱程度。然后 $M^f$ 被分解为两个低维的矩阵，记为隐用户矩阵 $\mathbf{M}^{u s e r} \in \mathcal{R}^{p \times l}$ 以及隐条目矩阵 $\mathbf{M}^{item} \in \mathcal{R}^{q \times l}$ .应用矩阵分解通过减小如下损失来获得最优 $\mathbf{M}^{u s e r}$ 以及 $\mathbf{M}^{item}$ :</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205003146.png" alt="image-20220925205003146"></p>
+<p>$\hat{\mathbf{M}}^{f}$ 表示一个包含预测的用户对条目的排名的预测用户-条目矩阵。
+将影子数据集分为不相交的两个集合：成员集 $D_{shadow}^{in}$ 与非成员集 $D_{shadow}^{out}$ 。这些数据集由<code>(uID, iID, score)</code> 这样的三元组组成。这两个集合中的排名作为交互，分别记为 $I_{shadow}^{in}$ 以及 $I_{shadow}^{out}$.<br>
+接着，创建 $A_{shadow}$ 来模仿 $A_{target}$ ，根据用户的偏好进行推荐。具体过程如下：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205111664.png" alt="image-20220925205111664"></p>
+<p>$f_{per}$ 表示个性化推荐算法，$f_{pop}$ 表示非个性化推荐算法, R表示有序推荐列表集合。
+使用条目特征表示，将交互集合和推荐集合向量化:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205221325.png" alt="image-20220925205221325"></p>
+<p>假设每个用户都有一个交互列表，并提供了一个有序的推荐列表，那么对手就能够通过用户的相关条目来表示用户。具体来说，对于用户$i$主要有两步操作:</p>
+<p><strong>step1:</strong> 计算交互和推荐向量的中心向量:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205335647.png" alt="image-20220925205335647"></p>
+<p><strong>step2:</strong> 计算两个中心向量间的差异：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205437648.png" alt="image-20220925205437648"></p>
+<p>同时，对用户打标签 1 或 0 ，代表他们是否是成员。则最终可以得到如下训练数据集:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925210740294.png" alt="image-20220925210740294"></p>
+<p><strong>(2) 建立攻击模型</strong></p>
+<p>作者使用一个多层感知机作为攻击模型，模型的输出是一个二维向量，表示成员关系状态。对于第$i$个用户，对其推理过程可以用如下式子表示：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205611300.png" alt="image-20220925205611300"></p>
+<p><strong>(3) 参数优化</strong></p>
+<p>使用随机梯度下降来更新参数，通过降低损失函数 $L_{MLP}$ 的交叉熵损失：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925205708281.png" alt="image-20220925205708281"></p>
+<p>其中 $y_i^*$ 是第 $i$ 个目标用户的基本真值标签。$\mathbf{y}_{i}^{\prime}$ 是第 $i$ 个目标用户属于成员的预测可能性.</p>
+<h1 id="4-防御">4 防御</h1>
+<p>为了降低攻击风险，作者还提出了一种对策，即 <strong>Popularity Randomization</strong>.在原始的设置中，非成员被提供最受欢迎的条目，因此，非成员的特征向量非常相似，很容易与成员区分开来。为了解决这个问题，作者首先从最受欢迎的条目中选了一些候选项，然后再从这些候选项中进行随机选择。作者随机挑选 10% 的候选项作为非成员推荐。这种情况下，对不同非成员的推荐是不同的，从而减少了非成员特征向量之间的相似度。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-09-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/">推理攻击</a>
+          <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
+          <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/">
+            <span class="next-text nav-default">论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

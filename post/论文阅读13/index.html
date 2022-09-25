@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 给定一个无标签的图片集或者(图片，文本)对集，对比学习试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》" />
+<meta property="og:description" content="1 介绍 给定一个无标签的图片集或者(图片，文本)对集，对比学习试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-25T21:12:44+08:00" />
+<meta property="article:modified_time" content="2022-09-25T21:12:44+08:00" />
+
+<meta itemprop="name" content="论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》">
+<meta itemprop="description" content="1 介绍 给定一个无标签的图片集或者(图片，文本)对集，对比学习试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下"><meta itemprop="datePublished" content="2022-09-25T21:12:44+08:00" />
+<meta itemprop="dateModified" content="2022-09-25T21:12:44+08:00" />
+<meta itemprop="wordCount" content="2052">
+<meta itemprop="keywords" content="推理攻击,成员推理,对比学习," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》"/>
+<meta name="twitter:description" content="1 介绍 给定一个无标签的图片集或者(图片，文本)对集，对比学习试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-09-25 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+            </div>
+          <span class="more-meta"> 约 2052 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-介绍">1 介绍</a></li>
+    <li><a href="#2-关于对比学习的背景知识">2 关于对比学习的背景知识</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#21-预训练一个编码器">2.1 预训练一个编码器</a></li>
+            <li><a href="#22-训练下游分类器">2.2 训练下游分类器</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-问题定义">3 问题定义</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#31-威胁模型">3.1 威胁模型</a></li>
+            <li><a href="#32-成员推理">3.2 成员推理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-encodermi">4 EncoderMI</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-创建推理分类器">4.1 创建推理分类器</a></li>
+            <li><a href="#42-推理成员关系">4.2 推理成员关系</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#5-防御措施">5 防御措施</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1-介绍">1 介绍</h1>
+<p>给定一个无标签的图片集或者(图片，文本)对集，<strong>对比学习</strong>试着去预训练一个图片编码器，作为众多下游任务的特征提取器。给定一个图片编码器，下游任务只需要很少或无标签的训练数据，然而编码器的预训练却通常需要消耗大量数据和计算资源。因此，通常一个强大的编码器供应商(如 OpenAI 、谷歌)预先训练编码器，然后向下游客户(如资源较少的组织、终端用户)提供服务。</p>
+<p>在这篇文章中，作者提出了 <strong>EncoderMI</strong> ，第一个针对对比学习中预训练的图片分类器的成员推理方法。针对对比学习的成员推理主要有两方面的应用：</p>
+<p>[1] 数据归属者可以使用成员推理方法验证自己的公开数据是否未经授权被用来预训练图片编码器<br>
+[2] 攻击者可以使用成员推理方法侵害数据的隐私，当预训练使用的数据是私人的/敏感的时</p>
+<h1 id="2-关于对比学习的背景知识">2 关于对比学习的背景知识</h1>
+<p>给定大量未标记的图像或(图像，文本)对(称为预训练数集)，对比学习的目的是对神经网络(称为图像编码器)进行训练，该神经网络可用作许多下游任务(如图像分类)的特征提取器。 给定一个输入图像，预先训练的图像编码器为它输出一个<strong>特征向量</strong> 。</p>
+<h3 id="21-预训练一个编码器">2.1 预训练一个编码器</h3>
+<p>对比学习中最基本的一个模块是<strong>数据增强</strong>: 输入一张图片，数据增强模块可以通过一系列随机的操作如随机灰度缩放、随机调整大小的剪切等来产生另外的随机输入（称为<strong>增强输入</strong>） 通俗来说，对比学习就是去预训练一个图片编码器，可以针对通过相同（或不同）的输入产生的两个增强输入产生相似（或不相似）的特征向量。对比学习把这种相似性定义为<strong>对比损失</strong>，编码器试图降低这种损失。三种流行的对比学习算法如下：</p>
+<ol>
+<li>Moco: an image encoder, a momentum encoder, a dictionary</li>
+<li>SimCLR: an image encoder</li>
+<li>CLIP: an image encoder, a text encoder</li>
+</ol>
+<p><strong>重要观察:</strong> 我们观察到，这些对比学习算法尝试对图像编码器进行预训练，使其为从相同输入创建的两个增广输入输出类似的特征向量。</p>
+<h3 id="22-训练下游分类器">2.2 训练下游分类器</h3>
+<p>假设我们有一个带标签的数据集(称为下游数据集)。我们首先使用图像编码器为下游数据集的输入提取特征向量。然后,我们按照标准的监督学习来训练分类器 (称为下游分类器)使用提取的特征向量以及相应的标签。</p>
+<h1 id="3-问题定义">3 问题定义</h1>
+<h3 id="31-威胁模型">3.1 威胁模型</h3>
+<p><strong>推理者的目标:</strong></p>
+<p>给定一个输入图像x，推断器的目的是推断它是否在图像编码器(称为目标编码器)的预训练数据集中。</p>
+<p><strong>推理者的知识：</strong></p>
+<ul>
+<li>预训练的数据分布：如果推理者知道分布情况，则假设其能访问一个与预训练数据集有相同分布的影子数据集；否则假设其能访问一个与预训练数据集有不同分布的影子数据集</li>
+<li>编码器结构：推理者知道或不知道编码器结构。若不知道，推理者可以假设一个，然后根据假设的编码器进行成员推理</li>
+<li>训练算法：推理者知道或不知道训练算法。若不知道，推理者可以假设一个，然后根据假设的算法进行成员推理</li>
+</ul>
+<h3 id="32-成员推理">3.2 成员推理</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925212024479.png" alt="image-20220925212024479"></p>
+<h1 id="4-encodermi">4 EncoderMI</h1>
+<p>若一个编码器对它的预训练数据集过拟合，则编码器为根据预训练数据集成员(或非训练数据集成员)的输入创建的增强输入产生更多(或更少)相似的特征向量。因此，<strong>如果目标编码器为输入的增广版本生成类似的特征向量，则我们的EncoderMI 推断输入为目标编码器的成员。</strong></p>
+<h3 id="41-创建推理分类器">4.1 创建推理分类器</h3>
+<p>推理者将影子训练集 $D_s$ 分为两个不重叠的子集: 影子成员数据集 $D_{s}^{m}$ 以及影子非成员数据集 $D_{s}^{nm}$ 。 然后，推理者使用影子成员集 $D_{s}^{m}$ 预训练一个影子编码器 $h$</p>
+<p><strong>(1) 提取成员特征</strong></p>
+<p>给定一个输入 x ，首先使用数据增强模块 A 创建 n 个增强的输入 ($x^1,x^2,&hellip;,x^n$)，用这些增强输入来预训练影子编码器。然后，使用影子编码器为每个增强输入 $x^{i}$ 产生一个特征向量 $\tilde{h}(x^{i})$，其中 $i = 1,2,&hellip;,n$ 。针对x的成员关系特征由$n$个特征向量之间成对的相似度得分集组成。则最终可以得到：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925212348634.png" alt="image-20220925212348634"></p>
+<p>$M(x, \tilde{h})$ 是针对输入 x 的成员关系特征，$S(·，·)$ 表示两个特征向量间的相似度，可以是余弦相似度.</p>
+<p><strong>(2) 构建一个推理训练数据集</strong></p>
+<p>给定一个 $x \in D_{s}^{m}$，我们提取其成员关系特征 $M(x, \tilde{h})$ 并把它设置为标签 1 ；给定一个 $x \in D_{s}^{nm}$ ，我们提取其成员关系特征 $M(x, \tilde{h})$ 并把它设置为标签 0 ；则可以得到如下推理训练数据集:</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925212450488.png" alt="image-20220925212450488"></p>
+<p><strong>(3) 创建推理分类器</strong></p>
+<p>3种推理分类器：</p>
+<ul>
+<li><strong>Vector-based classifier(EncoderMI-V)</strong>: 通过把一个输入的成员关系特征集转换为一个向量。具体来说，将 $M(x, \tilde{h})$ 中的 $n·(n-1) / 2$ 个相似值以降序排列，然后训练了一个 Vector-based 分类器。</li>
+<li><strong>Set-based classifier(EncoderMI-S)</strong>: 直接在一个输入的成员关系特征集上操作，分类器接受一个集合(即 $M(x, \tilde{h})$ )作为输入，并预测它的标签( 1 或 0 )。</li>
+<li><strong>Threshold-based classifier(EncoderMI-T):</strong> 使用 $M(x, \tilde{h})$ 的平均相似度值。分类器预测一个输入是成员当且仅当平均相似度值不小于一个阈值</li>
+</ul>
+<h3 id="42-推理成员关系">4.2 推理成员关系</h3>
+<p>给定一个对目标编码器的黑盒访问以及一个输入 x， 使用分类器去预测 x 是否是目标编码器的成员。</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220925212603710.png" alt="image-20220925212603710"></p>
+<h1 id="5-防御措施">5 防御措施</h1>
+<p>EncoderMI 利用目标编码器对其预训练数据集的<strong>过拟合</strong>。然而，与一个分类器的过拟合不同，特征向量本身无法捕获目标编码器对输入的过拟合。当编码器对预训练数据集过拟合时，它将对于预训练数据集中一个数据的增强版本输出更相似的特征向量。作者发现当一个目标编码器训练的轮数越多时越容易过拟合。根据这个发现，作者使用 <strong>early stopping</strong> 来防御这种成员推理攻击。</p>
+<p>通过实验，作者们观察到，基于 early stopping 的防御实现了一种 trade-off，即降低了成员推理的准确度，但也降低了下游分类器的分类准确度。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-09-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/">推理攻击</a>
+          <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
+          <a href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/">对比学习</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB12/">
+            <span class="next-text nav-default">论文阅读12:《Membership Inference Attacks Against Recommender Systems》</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
