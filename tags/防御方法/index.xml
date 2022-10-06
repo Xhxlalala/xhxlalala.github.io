@@ -6,7 +6,16 @@
     <description>Recent content in 防御方法 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Sep 2022 17:07:41 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Oct 2022 21:27:16 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读15:《Defending Label Inference and Backdoor Attacks in Vertical Federated Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/</link>
+      <pubDate>Wed, 05 Oct 2022 21:27:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/</guid>
+      <description>1 介绍 本文主要介绍了纵向联邦学习( VFL )下的标签推理攻击和后门攻击，并提出了一种全新的防御方法。 纵向联邦学习下攻击和防御尤其具有挑战，因为无法</description>
+    </item>
+    
     <item>
       <title>论文阅读11:《Enhanced Mixup Training：a Defense Method Against Membership InferenceAttack》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB11/</link>

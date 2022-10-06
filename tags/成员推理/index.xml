@@ -6,7 +6,16 @@
     <description>Recent content in 成员推理 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 25 Sep 2022 21:12:44 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Oct 2022 21:09:31 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/</link>
+      <pubDate>Wed, 05 Oct 2022 21:09:31 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/</guid>
+      <description>1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。</description>
+    </item>
+    
     <item>
       <title>论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/</link>

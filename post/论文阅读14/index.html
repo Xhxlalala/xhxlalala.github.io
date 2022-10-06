@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》" />
+<meta property="og:description" content="1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-05T21:09:31+08:00" />
+<meta property="article:modified_time" content="2022-10-05T21:09:31+08:00" />
+
+<meta itemprop="name" content="论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》">
+<meta itemprop="description" content="1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。"><meta itemprop="datePublished" content="2022-10-05T21:09:31+08:00" />
+<meta itemprop="dateModified" content="2022-10-05T21:09:31+08:00" />
+<meta itemprop="wordCount" content="1494">
+<meta itemprop="keywords" content="推理攻击,成员推理," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》"/>
+<meta name="twitter:description" content="1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
+            </div>
+          <span class="more-meta"> 约 1494 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-介绍">1 介绍</a></li>
+    <li><a href="#2-预备知识">2 预备知识</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#deep-transfer-learning">Deep Transfer Learning</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-威胁模型">3 威胁模型</a></li>
+    <li><a href="#4-基于迁移影子训练技术的成员推理攻击">4 基于迁移影子训练技术的成员推理攻击</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-迁移影子训练">4.1 迁移影子训练</a></li>
+            <li><a href="#42-攻击算法">4.2 攻击算法</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#5-总结">5 总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="1-介绍">1 介绍</h1>
+<p>迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。具体来说，作者提出了一种 <strong>transfer shadow training</strong> 技术，可以在只能访问有限影子训练数据时显著提升成员推理的表现。作者使用两个真实的数据集进行实验，证明了 TransMIA 可以取得比如今最先进的攻击更好的效果。</p>
+<p>作者贡献：</p>
+<ul>
+<li>提出了 TransMIA ，一种使用迁移学习针对源模型的成员推理方法，主要是迁移影子训练技术，可以把源模型的参数迁移到影子模型上，从而在影子训练数据集小时显著提升推理准确性。</li>
+<li>使用两个真实的数据集进行实验，证明了当攻击者对数据集的先验知识有限时，TransMIA 是具有现实和有效的威胁。</li>
+<li>实验表明基于学习的方法比基于熵的方法具有更高的精度。在阴影训练数据集较小的情况下，使用fine-tuning方法进行攻击可能会导致阴影训练数据集过拟合。</li>
+</ul>
+<h1 id="2-预备知识">2 预备知识</h1>
+<h3 id="deep-transfer-learning">Deep Transfer Learning</h3>
+<p>迁移学习通过迁移源域上的知识到目标域从而提升机器学习任务在目标域上的表现。基于网络的深度迁移学习是迁移学习的一个分支，主要过程为：在源域使用一个大的数据集 $D_{s}^{train}$ 预训练一个深度神经网络 $f_s$ ,然后重复用 $f_s$ 的一部分在目标域上用一个很小的数据集 $D_{t}^{train}$ 训练另一个神经网络 $f_t$ .</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005211839847.png" alt="image-20221005211839847"></p>
+<p>源模型 $f_s$ 首先使用 $D_{s}^{train}$ 进行训练，因为浅层( shallow layers )主要提取任务无关的低级特征(如边，形状，密度等), 而深层( deep layers )提取具体任务的高级特征(如眼，鼻子，嘴等)，所以$f_s$中的浅层可以用到目标模型 $f_t$ 上。</p>
+<p>在本文中，作者使用了两种方案：freezing , fine-turning. 在 freezing 方案中，将浅层 $g_t$ 初始化并固定为 $g_s$ ，在训练目标模型$f_t$只更新深层。而在 fine-turning 方案中则是更新整个网络。</p>
+<h1 id="3-威胁模型">3 威胁模型</h1>
+<p>作者研究了一种针对深度神经网络的成员推理攻击方法，该网络$f_s$由浅层的$g_s$和深层的$h_s$组成，即，$f_s = h_s◦g_s$。攻击目标是判断一个具体的数据点 $(x, y)$ 是否是源训练数据集 $D_{s}^{train}$ 的成员。敌手的限制条件为：(1) 通过 API 对源模型 $f_s$ 的黑盒访问；(2) 去浅层的白盒访问；(3) 无法访问深层 $h_s$ ；(4)可能不一定知道 $h_s$ 的底层架构或超参数</p>
+<p>我们假设敌手A拥有一个影子训练数据集 $D_{shadow}^{train}$ 来训练(可能是多个)阴影模型。$D_{shadow}^{train}$ 的数据元素都来自与源训练数据集相同的分布 $P_s$ ，同时与源训练数据集不相交。敌手同时有一个影子测试数据集 $D_{test}^{train}$ , 与源训练数据集、影子训练数据集来自同一分布又不相交。影子训练集与测试集数据量都很小。</p>
+<h1 id="4-基于迁移影子训练技术的成员推理攻击">4 基于迁移影子训练技术的成员推理攻击</h1>
+<h3 id="41-迁移影子训练">4.1 迁移影子训练</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005212032151.png" alt="image-20221005212032151"></p>
+<p>敌手 A 从小的初创公司 $C_{small}$ 获得浅层 $g_s$ ，然后将这个信息迁移到影子模型使得用小数量的影子训练数据集就获得强的攻击表现。敌手训练多个影子模型来模仿要攻击的源模型的行为。为了构建每个影子模型 $f_{shadow}^{i}$ ,迁移影子训练方法初始化 $g_{shadow}^{i}$ 为 $g_s$ 然后使用 $D_{shadow}^{train,i}$ 训练影子模型。换句话说就是基于基于深度网络的迁移学习来构建影子模型。</p>
+<h3 id="42-攻击算法">4.2 攻击算法</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005212122946.png" alt="image-20221005212122946"></p>
+<p>给定一个输入 $(x, y)\in X × Y_s$，即基于学习的对手 $TransMIA_L$ 通过黑盒访问源模型 $f_s$ 获得 $f_s(x)$ ，输出标签 $A(x, y, f_s (x))$。</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005212217701.png" alt="image-20221005212217701"></p>
+<h1 id="5-总结">5 总结</h1>
+<p>在本文中，作者提出了一种新的成员推理攻击，称为 TransMIA (基于迁移学习的成员推理攻击)，攻击者使用迁移学习对源模型执行成员推理攻击。特别地，作者提出了一种迁移阴影训练技术，将迁移模型的参数迁移到阴影模型中，在阴影训练数据量较小的情况下，显著提高了成员推断的准确性。</p>
+<p>在使用两个真实数据集的实验中，作者证明了他们的成员推理攻击对迁移学习是现实和有效的威胁。具体来说，其成员推断攻击优于不使用迁移阴影训练的最新方法。作者还比较了四种类型的成员推断攻击，并表明基于学习的方法比基于熵的方法有更高的精度，freezing approach 优于 fine-tuning approach。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/">推理攻击</a>
+          <a href="/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/">成员推理</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">论文阅读15:《Defending Label Inference and Backdoor Attacks in Vertical Federated Learning》</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/">
+            <span class="next-text nav-default">论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -3,35 +3,77 @@
   
   <url>
     <loc>https://www.xhxha.one/categories/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/post/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/tags/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/</loc>
+    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
+    <lastmod>2022-10-05T21:09:31+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/</loc>
+    <lastmod>2022-10-05T21:09:31+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</loc>
+    <lastmod>2022-10-05T21:09:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -44,21 +86,7 @@
   </url>
   
   <url>
-    <loc>https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/</loc>
-    <lastmod>2022-09-25T21:12:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</loc>
     <lastmod>2022-09-25T21:12:44+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -74,13 +102,6 @@
   <url>
     <loc>https://www.xhxha.one/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2022-09-25T20:32:27+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2022-09-18T17:07:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -158,13 +179,6 @@
   <url>
     <loc>https://www.xhxha.one/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB7/</loc>
     <lastmod>2022-08-28T20:45:42+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-08-28T20:06:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

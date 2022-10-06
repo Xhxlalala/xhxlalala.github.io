@@ -6,13 +6,40 @@
     <description>Recent content in Tags on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 25 Sep 2022 21:12:44 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Oct 2022 21:27:16 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>防御方法</title>
+      <link>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Wed, 05 Oct 2022 21:27:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>联邦学习</title>
+      <link>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Wed, 05 Oct 2022 21:27:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>成员推理</title>
       <link>https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/</link>
-      <pubDate>Sun, 25 Sep 2022 21:12:44 +0800</pubDate>
+      <pubDate>Wed, 05 Oct 2022 21:09:31 +0800</pubDate>
       
       <guid>https://www.xhxha.one/tags/%E6%88%90%E5%91%98%E6%8E%A8%E7%90%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>推理攻击</title>
+      <link>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</link>
+      <pubDate>Wed, 05 Oct 2022 21:09:31 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</guid>
       <description></description>
     </item>
     
@@ -26,29 +53,11 @@
     </item>
     
     <item>
-      <title>推理攻击</title>
-      <link>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</link>
-      <pubDate>Sun, 25 Sep 2022 21:12:44 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/tags/%E6%8E%A8%E7%90%86%E6%94%BB%E5%87%BB/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>推荐系统</title>
       <link>https://www.xhxha.one/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Sun, 25 Sep 2022 20:32:27 +0800</pubDate>
       
       <guid>https://www.xhxha.one/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>防御方法</title>
-      <link>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</link>
-      <pubDate>Sun, 18 Sep 2022 17:07:41 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/</guid>
       <description></description>
     </item>
     
@@ -67,15 +76,6 @@
       <pubDate>Sun, 04 Sep 2022 21:43:52 +0800</pubDate>
       
       <guid>https://www.xhxha.one/tags/%E5%B1%9E%E6%80%A7%E6%8E%A8%E7%90%86/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>联邦学习</title>
-      <link>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Sun, 28 Aug 2022 20:06:39 +0800</pubDate>
-      
-      <guid>https://www.xhxha.one/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     

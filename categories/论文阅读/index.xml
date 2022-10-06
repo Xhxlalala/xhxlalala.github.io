@@ -6,7 +6,25 @@
     <description>Recent content in 论文阅读 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 25 Sep 2022 21:12:44 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Oct 2022 21:27:16 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文阅读15:《Defending Label Inference and Backdoor Attacks in Vertical Federated Learning》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/</link>
+      <pubDate>Wed, 05 Oct 2022 21:27:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB15/</guid>
+      <description>1 介绍 本文主要介绍了纵向联邦学习( VFL )下的标签推理攻击和后门攻击，并提出了一种全新的防御方法。 纵向联邦学习下攻击和防御尤其具有挑战，因为无法</description>
+    </item>
+    
+    <item>
+      <title>论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》</title>
+      <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/</link>
+      <pubDate>Wed, 05 Oct 2022 21:09:31 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/</guid>
+      <description>1 介绍 迁移学习近些年来很受欢迎。在这篇文章中，作者提出了 TransMIA ，使用transfer learning 在源模型上进行成员推理攻击当敌手只能访问迁移模型的参数时。</description>
+    </item>
+    
     <item>
       <title>论文阅读13:《EncoderMI：Membership Inference against Pre-trainedEncoders in Contrastive Learning》</title>
       <link>https://www.xhxha.one/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB13/</link>
