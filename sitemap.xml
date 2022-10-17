@@ -2,29 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.xhxha.one/post/fluentpython/</loc>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.xhxha.one/categories/</loc>
-    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/post/</loc>
-    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/python/</loc>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/tags/</loc>
-    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.xhxha.one/</loc>
-    <lastmod>2022-10-05T21:27:16+08:00</lastmod>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</loc>
+    <lastmod>2022-10-17T11:22:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

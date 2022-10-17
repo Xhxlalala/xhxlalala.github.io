@@ -49,7 +49,7 @@
 <meta itemprop="name" content="论文阅读15:《Defending Label Inference and Backdoor Attacks in Vertical Federated Learning》">
 <meta itemprop="description" content="1 介绍 本文主要介绍了纵向联邦学习( VFL )下的标签推理攻击和后门攻击，并提出了一种全新的防御方法。 纵向联邦学习下攻击和防御尤其具有挑战，因为无法"><meta itemprop="datePublished" content="2022-10-05T21:27:16+08:00" />
 <meta itemprop="dateModified" content="2022-10-05T21:27:16+08:00" />
-<meta itemprop="wordCount" content="2675">
+<meta itemprop="wordCount" content="2520">
 <meta itemprop="keywords" content="联邦学习,防御方法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="论文阅读15:《Defending Label Inference and Backdoor Attacks in Vertical Federated Learning》"/>
 <meta name="twitter:description" content="1 介绍 本文主要介绍了纵向联邦学习( VFL )下的标签推理攻击和后门攻击，并提出了一种全新的防御方法。 纵向联邦学习下攻击和防御尤其具有挑战，因为无法"/>
@@ -167,7 +167,7 @@ code.has-jax {
         <div class="post-category">
             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"> 论文阅读 </a>
             </div>
-          <span class="more-meta"> 约 2675 字 </span>
+          <span class="more-meta"> 约 2520 字 </span>
           <span class="more-meta"> 预计阅读 6 分钟 </span>
         
       </div>
@@ -204,12 +204,12 @@ code.has-jax {
 <p>纵向联邦学习下攻击和防御尤其具有挑战，因为无法访问其他参与方的特征和模型参数。之前的研究证明了隐私标签能够从每个样本梯度的通信中被重建。在这篇文章中，作者首先证明了即使只有批处理平均梯度而不是样本级梯度被揭示时，隐私标签也可以被重建。此外，我们还证明了 VFL 中的被动方(即没有标签的一方)甚至可以通过梯度置换攻击将主动方对应的标签替换为目标标签。为了防御这种攻击，作者提出了一种新的技术，叫作<strong>混淆自编码器(CoAE)</strong> ，主要是基于自编码器和熵正则化。</p>
 <p>这种防御手段可以成功地防御标签推理攻击，同时与现有技术想比不会损害更多主任务的准确性。作者的 CoAE 技术也能有效地防御梯度替换后门攻击，使其在不改变原有 VFL 协议的情况下成为一种通用且实用的防御策略。</p>
 <h1 id="2-隐私保护的特征分区协同学习框架">2 隐私保护的特征分区协同学习框架</h1>
-<p>在一个典型的 VFL 系统中，K 个数据拥有者基于一个数据集 $\left{\mathbf{x}<em>{i}, y</em>{i}\right}<em>{i=1}^{N}$  协作训练一个机器学习模型，只有一方拥有 labels 。假设特征向量 $x_i$ 可以进一步分解为 K 个块 $\left{x</em>{i}^{k}\right}_{k=1}^{K}$ ，其中每个块属于一个所有者。假设标签位于 k 方，则通常 VFL 问题可表示为：</p>
+<p>在一个典型的 VFL 系统中，K 个数据拥有者基于一个数据集 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095127244.png" alt="image-20221006095127244"> 协作训练一个机器学习模型，只有一方拥有 labels 。假设特征向量 $x_i$ 可以进一步分解为 K 个块 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095238267.png" alt="image-20221006095238267"> 其中每个块属于一个所有者。假设标签位于 k 方，则通常 VFL 问题可表示为：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005213658180.png" alt="image-20221005213658180"></p>
 <p>$\theta_k$ 表示第 $k$ 方的训练参数，$\Theta=\left[\theta_{1} ; \ldots ; \theta_{K}\right]$ , N 表示训练样本的总数, $\gamma(\cdot)$ 表示正则化器，$f(\cdot)$ 表示预测函数，$\lambda$ 是超参数。</p>
 <p>假设每一方都获取一个子模型 $G_k$ 来进行本地的预测。本地的潜在表示记为 $H_{i}^{k}$ ,最终的预测是通过一个非线性操作，例如 softmax 函数聚合 $H_k$ 实现的。即：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005213745708.png" alt="image-20221005213745708"></p>
-<p>我们把有标签的一方叫作 active party, 把没有标签的参与方叫作 passive party。在 VFL 中，每个被动方发送 $\left{H_{i}^{k}\right}$ 给主动方， 主动方计算梯度 $\frac{\partial \ell}{\partial H_{i}}$ 并将其发送给被动方来进行更新。为了保护中间结果的信息泄露，隐私保护技术如<strong>同态加密(HE)</strong>,记作 $[[\cdot]]$ ，通常被用来保护样本级别的信息 $\left{H_{i}^{k}\right}$，梯度的计算通常也是加密的。加密的梯度之后被送到可信的第三方 TTP 来解密。具体算法如下：</p>
+<p>我们把有标签的一方叫作 active party, 把没有标签的参与方叫作 passive party。在 VFL 中，每个被动方发送 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095434794.png" alt="image-20221006095434794"> 给主动方， 主动方计算梯度 $\frac{\partial \ell}{\partial H_{i}}$ 并将其发送给被动方来进行更新。为了保护中间结果的信息泄露，隐私保护技术如<strong>同态加密(HE)</strong>,记作 $[[\cdot]]$ ，通常被用来保护样本级别的信息 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095434794.png" alt="image-20221006095434794">，梯度的计算通常也是加密的。加密的梯度之后被送到可信的第三方 TTP 来解密。具体算法如下：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005213826849.png" alt="image-20221005213826849"></p>
 <h1 id="3-攻击">3 攻击</h1>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005213854016.png" alt="image-20221005213854016"></p>
@@ -222,8 +222,8 @@ code.has-jax {
 <li>攻击者不控制任何善意方的训练，也不控制全局的通信和聚合协议。</li>
 <li>与传统的数据投毒攻击侧重于投毒训练数据不同，协作学习攻击者侧重于从其他方获取敏感信息或投毒协议各方之间通信过程的梯度和模型更新。</li>
 </ul>
-<p>在VFL环境下，攻击者只能获得特征空间的一部分以及他控制的模型参数部分而不能够获得他没控制的主动方的标签。另外而在VFL设置下，后门将在整个通信协议中存活和传播。
-我们的模型和VFL模型之间的区别是我们的威胁模型进一步假设各方之间通信的消息是私有的和加密的，因此每个样本的梯度相关信息无法用于推理，因此我们的攻击是在批处理或群体水平上的。</p>
+<p>在 VFL 环境下，攻击者只能获得特征空间的一部分以及他控制的模型参数部分而不能够获得他没控制的主动方的标签。另外而在 VFL 设置下，后门将在整个通信协议中存活和传播。
+我们的模型和 VFL 模型之间的区别是我们的威胁模型进一步假设各方之间通信的消息是私有的和加密的，因此每个样本的梯度相关信息无法用于推理，因此我们的攻击是在批处理或群体水平上的。</p>
 <h2 id="32-敌手目标">3.2 敌手目标</h2>
 <h3 id="标签推理攻击">标签推理攻击</h3>
 <p>标签推理攻击目标是被动方推测标签相关的信息。</p>
@@ -238,27 +238,27 @@ code.has-jax {
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214116378.png" alt="image-20221005214116378"></p>
 <p>在训练过程中，主动方只需要发送 $\frac{\partial \ell^b}{\partial H_{i}}$ 代替 $\frac{\partial \ell}{\partial H_{i}}$ 即可。</p>
 <p>在本文中，作者专注于更具有挑战性的问题，从被动方进行后门攻击，这些被动方在每次迭代中都无法访问标签或其他被动方的贡献。因此，被动方面临的主要挑战是，如何将目标标签分配给具有触发特性的特定输入数据，而不直接访问标签。</p>
-<p>该后门攻击建立在标签推理攻击的基础上，因为一旦被动方得知每个样本对应的真实标签，它就可以仔细设计通信的消息，用目标标签替换真实标签。等式4 中，如果 f 为 softmax 函数，$\ell$ 为交叉熵损失，则 $g_{H}^{i}=\frac{\partial \ell}{\partial H_{i}}$ 为m维向量，其中m为第j个元素的标签个数:</p>
+<p>该后门攻击建立在标签推理攻击的基础上，因为一旦被动方得知每个样本对应的真实标签，它就可以仔细设计通信的消息，用目标标签替换真实标签。等式 4 中，如果 f 为 softmax 函数，$\ell$ 为交叉熵损失，则 $g_{H}^{i}=\frac{\partial \ell}{\partial H_{i}}$ 为 m 维向量，其中 m 为第 j 个元素的标签个数:</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214137878.png" alt="image-20221005214137878"></p>
 <p>这里我们用 y 表示真实标签的序列，如果 $g_{H}^{i}$ 被揭露了，那么标签的信息就知道了，因为 $g_{H}^{i}$ 的第 y 个元素与其他的相比有完全不同的标识。为了实施攻击，被动方只需要用以下式子代替 $g_{H}^{i}$ 即可：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214253706.png" alt="image-20221005214253706"></p>
 <p>$\tau$ 是目标模型。注意，这个后门注入可以在同态加密环境下实施而无需知道 $S_j$ 的明文值。
 然而，这种后门攻击需要标签推理步骤作为先决条件，这需要首先分别运行和观察 VFL 过程。因此，作者提出了一种新的后门攻击：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214210237.png" alt="image-20221005214210237"></p>
-<p>假设被动攻击者知道一些干净的样本，标签与后门任务的目标标签相同，把这个样本集记为$D_{target}$。攻击主要操作如下：</p>
+<p>假设被动攻击者知道一些干净的样本，标签与后门任务的目标标签相同，把这个样本集记为 $D_{target}$ 。攻击主要操作如下：</p>
 <ul>
-<li>在<strong>前向传播</strong>过程中，攻击者在本地进行$H_{i}^{k}$的计算对于每个毒性样本$i$,随机地从 $D_{target}$ 选择一个样本$j$，用$[[H_{j}^{k}]]<em>{j \in \mathcal{D}</em>{\text {backdoor }}}$代替$[[H_{j}^{k}]]<em>{j \in \mathcal{D}</em>{\text {target}}}$作为中间加密的结果，并且记录$&lt;i,j&gt;$对。</li>
-<li>在<strong>后向传播</strong>过程中，对于每个$&lt;i,j&gt;$对，攻击者将收到的样本$i$的加密中间梯度替换为样本$j$的加密梯度，根据等式5用$\gamma[[g_{j}] \frac{\partial H_{i}^{k}}{\partial \theta_{k}}$更新模型的参数</li>
+<li>在<strong>前向传播</strong>过程中，攻击者在本地进行 $H_{i}^{k}$ 的计算对于每个毒性样本$i$,随机地从 $D_{target}$ 选择一个样本$j$，用 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095835114.png" alt="image-20221006095835114"> 代替 <img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221006095908215.png" alt="image-20221006095908215"> 作为中间加密的结果，并且记录$&lt;i,j&gt;$对。</li>
+<li>在<strong>后向传播</strong>过程中，对于每个$&lt;i,j&gt;$对，攻击者将收到的样本$i$的加密中间梯度替换为样本 $j$ 的加密梯度，根据等式 5 用 $\gamma[[g_{j}] \frac{\partial H_{i}^{k}}{\partial \theta_{k}}$ 更新模型的参数</li>
 </ul>
-<p>在这里$\gamma$是一个放大率，用来调整控制后门攻击等级。通过使用这种策略，被动方将获得目标标签对应的梯度，而不是自己的，从而其本地的后门更新将能成功。</p>
+<p>在这里 $\gamma$ 是一个放大率，用来调整控制后门攻击等级。通过使用这种策略，被动方将获得目标标签对应的梯度，而不是自己的，从而其本地的后门更新将能成功。</p>
 <h1 id="4-防御">4 防御</h1>
 <p>作者提出了一种简单有效的标签伪装技术，即主动方学着把原始标签转换为一个“soft fake labels”集。为了增加混淆，使用一个混淆自编码器(CoAE)来建立一个映射，这样一个标签将以每个选项类概率都高的被转换成一个软标签。例如，一只狗被映射为狗和猫的概率分别为[0.5, 0.5]。</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214323322.png" alt="image-20221005214323322"></p>
-<p>编码器把真实标签 $y$ 作为输入，输出假的标签$\tilde{y}$;解码器输入 $\tilde{y}$，输出重建的原始标签 $\hat{y}$ .为了满足条件， 引入一个比较损失和熵损失：</p>
+<p>编码器把真实标签 $y$ 作为输入，输出假的标签 $\tilde{y}$ ;解码器输入 $\tilde{y}$，输出重建的原始标签 $\hat{y}$ .为了满足条件， 引入一个比较损失和熵损失：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214339869.png" alt="image-20221005214339869"></p>
 <p>CE()是交叉熵损失，则最终的学习目标为：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214400905.png" alt="image-20221005214400905"></p>
-<p>这里的 $L_{contra}$ 是一种对比损失，它使 CoAE 能够从假标签重建真标签，同时迫使假标签与原始标签不同; $L_{entropy}$ 是将每个真实标签映射到多个可选标签的熵损失(“混淆”); $\lambda_s, s \in {1, 2}$ 是损失权重。经过训练后，主动方可以利用CoAE 生成假标签，并利用这些假标签在 VFL 中计算梯度，从而防止标签泄漏和后门攻击(算法5)。在进行推理时，主动方使用解码器将预测的标签转换回真实的标签。</p>
+<p>这里的 $L_{contra}$ 是一种对比损失，它使 CoAE 能够从假标签重建真标签，同时迫使假标签与原始标签不同; $L_{entropy}$ 是将每个真实标签映射到多个可选标签的熵损失(“混淆”); $\lambda_s, s \in {1, 2}$ 是损失权重。经过训练后，主动方可以利用 CoAE 生成假标签，并利用这些假标签在 VFL 中计算梯度，从而防止标签泄漏和后门攻击(算法 5)。在进行推理时，主动方使用解码器将预测的标签转换回真实的标签。</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221005214419044.png" alt="image-20221005214419044"></p>
 
     </div>
@@ -284,7 +284,11 @@ code.has-jax {
           <a href="/tags/%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95/">防御方法</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/fluentpython/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《Fluent Python》知识总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB14/">
             <span class="next-text nav-default">论文阅读14:《TransMIA：Membership Inference Attacks Using Transfer Shadow Training》</span>
             <span class="next-text nav-mobile">下一篇</span>
