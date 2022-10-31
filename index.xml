@@ -6,7 +6,88 @@
     <description>Recent content on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Oct 2022 11:22:48 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 31 Oct 2022 21:38:36 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Effective C&#43;&#43; | 第 9 章 杂项讨论</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_9/</link>
+      <pubDate>Mon, 31 Oct 2022 21:38:36 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_9/</guid>
+      <description>Item 53：不要轻易忽略编译器的警告 严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。 不要过度依</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 定制 new 和 delete</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_8/</link>
+      <pubDate>Mon, 31 Oct 2022 21:38:33 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_8/</guid>
+      <description>Item 49：了解 new-handler 的行为 当 operator new 抛出异常以反映一个未获满足的内存需求前，它会先调用一个客户指定的错误处理函数，一个所谓的 new handler . 为了指定这个“用于处</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 7 章 模板与泛型编程</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_7/</link>
+      <pubDate>Mon, 31 Oct 2022 21:38:26 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_7/</guid>
+      <description>Item 41：了解隐式接口和编译器多态 面向对象编程世界总是以显式接口与运行期多态解决问题： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 class Widget { public: Widget(); virtual ~Widget(); virtual std::size_t size() const;</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 6 章 继承与面向对象设计</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_6/</link>
+      <pubDate>Mon, 31 Oct 2022 21:38:22 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_6/</guid>
+      <description>Item 32：确定你的 public 继承塑模出 is-a 关系 以 C++ 进行面向对象编程，最重要的一个规则是：public inheritance 意味着 “is-a” 的关系。 public 继承和 is-a 之间的等价关系</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 5 章 实现</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_5/</link>
+      <pubDate>Mon, 31 Oct 2022 21:38:15 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_5/</guid>
+      <description>Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 4 章 设计与声明</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_4/</link>
+      <pubDate>Mon, 31 Oct 2022 21:35:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_4/</guid>
+      <description>Item 18：让接口容易被正确使用，不易被误用 理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 3 章 资源管理</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_3/</link>
+      <pubDate>Mon, 31 Oct 2022 21:33:02 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_3/</guid>
+      <description>Item 13：用对象管理资源 为了保证资源被释放，通常把资源放进对象内，依赖 C++ 的“析构函数自动调用机制”。 标准程序库提供了 auto_ptr 来避免潜在的资源泄露，a</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 2 章 构造、析构、赋值</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_2/</link>
+      <pubDate>Mon, 31 Oct 2022 21:30:26 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_2/</guid>
+      <description>Item 5 了解 C++ 默默编写并调用哪些函数 当定义一个空类时，如果自己没有声明，编译器将自己为其生成一个 copy 构造函数 、一个 copy assignment 操作符和一个析构函数。此外如</description>
+    </item>
+    
+    <item>
+      <title>Effective C&#43;&#43; | 第 1 章 适应 C&#43;&#43;</title>
+      <link>https://www.xhxha.one/post/effectivec&#43;&#43;_1/</link>
+      <pubDate>Mon, 31 Oct 2022 21:25:20 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_1/</guid>
+      <description>item 1：把c++当作语言的联邦 c++的四种语言特性： C：c++基于c，块、statements、预处理器、内置数据类型、数组、指针等都来自c 面</description>
+    </item>
+    
     <item>
       <title>《Fluent Python》知识总结</title>
       <link>https://www.xhxha.one/post/fluentpython/</link>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Effective C&#43;&#43; | 第 6 章 继承与面向对象设计 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="Item 32：确定你的 public 继承塑模出 is-a 关系 以 C&#43;&#43; 进行面向对象编程，最重要的一个规则是：public inheritance 意味着 “is-a” 的关系。 public 继承和 is-a 之间的等价关系" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/effectivec&#43;&#43;_6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Effective C&#43;&#43; | 第 6 章 继承与面向对象设计" />
+<meta property="og:description" content="Item 32：确定你的 public 继承塑模出 is-a 关系 以 C&#43;&#43; 进行面向对象编程，最重要的一个规则是：public inheritance 意味着 “is-a” 的关系。 public 继承和 is-a 之间的等价关系" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_6/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-31T21:38:22+08:00" />
+<meta property="article:modified_time" content="2022-10-31T21:38:22+08:00" />
+
+<meta itemprop="name" content="Effective C&#43;&#43; | 第 6 章 继承与面向对象设计">
+<meta itemprop="description" content="Item 32：确定你的 public 继承塑模出 is-a 关系 以 C&#43;&#43; 进行面向对象编程，最重要的一个规则是：public inheritance 意味着 “is-a” 的关系。 public 继承和 is-a 之间的等价关系"><meta itemprop="datePublished" content="2022-10-31T21:38:22+08:00" />
+<meta itemprop="dateModified" content="2022-10-31T21:38:22+08:00" />
+<meta itemprop="wordCount" content="2644">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Effective C&#43;&#43; | 第 6 章 继承与面向对象设计"/>
+<meta name="twitter:description" content="Item 32：确定你的 public 继承塑模出 is-a 关系 以 C&#43;&#43; 进行面向对象编程，最重要的一个规则是：public inheritance 意味着 “is-a” 的关系。 public 继承和 is-a 之间的等价关系"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Effective C&#43;&#43; | 第 6 章 继承与面向对象设计</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 2644 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#item-32确定你的-public-继承塑模出-is-a-关系">Item 32：确定你的 public 继承塑模出 is-a 关系</a></li>
+        <li><a href="#item-33避免遮掩继承而来的名称">Item 33：避免遮掩继承而来的名称</a></li>
+        <li><a href="#item-34区分接口继承和实现继承">Item 34：区分接口继承和实现继承</a></li>
+        <li><a href="#item-35考虑-virtual-函数以外的其他选择">Item 35：考虑 virtual 函数以外的其他选择</a></li>
+        <li><a href="#item-36绝不重新定义继承而来的-non-virtual-函数">Item 36：绝不重新定义继承而来的 non-virtual 函数</a></li>
+        <li><a href="#item-37绝不重新定义继承而来的缺省参数值">Item 37：绝不重新定义继承而来的缺省参数值</a></li>
+        <li><a href="#item-38通过复合塑模出-has-a-或-is-implemented-in-terms-of">Item 38：通过复合塑模出 &ldquo;has-a&rdquo; 或 &ldquo;is-implemented-in-terms-of&rdquo;</a></li>
+        <li><a href="#item-39明智而审慎地使用-private-继承">Item 39：明智而审慎地使用 private 继承</a></li>
+        <li><a href="#item-40明智而审慎地使用多重继承">Item 40：明智而审慎地使用多重继承</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="item-32确定你的-public-继承塑模出-is-a-关系">Item 32：确定你的 public 继承塑模出 is-a 关系</h2>
+<p>以 C++ 进行面向对象编程，最重要的一个规则是：<strong>public inheritance 意味着 “is-a” 的关系。</strong></p>
+<p>public 继承和 is-a 之间的等价关系听起来简单，但有时候直觉可能会带来误导：例如企鹅是一种鸟，这是事实。鸟可以飞，这也是事实。使用 public 描述这种关系如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Bird</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">fly</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Penguin</span><span class="o">:</span> <span class="k">public</span> <span class="n">Bird</span> <span class="p">{...};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这的意思是说企鹅可以飞，但事实并不是这样的。</p>
+<p>所以，为了更加准确，我们必须承认：有数种鸟不会飞。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Bird</span> <span class="p">{};</span> <span class="c1">//没有声明 fly 函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">FlyingBird</span><span class="o">:</span> <span class="k">public</span> <span class="n">Bird</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">fly</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Penguin</span><span class="o">:</span> <span class="k">public</span> <span class="n">Bird</span> <span class="p">{};</span> <span class="c1">//没有声明 fly 函数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>另一种思想派别的处理思路是：为企鹅重新定义 fly 函数，令它产生一个运行期错误。</p>
+<p><strong>代码通过编译并不表示就可以正确运作</strong></p>
+<p>总结：“public 继承”意味 is-a &ndash; 适用于 base classes 身上的每一件事情一定也适用于 derived classes 身上，因为每一个 derived class 对象也都是一个 base class 对象。</p>
+<h2 id="item-33避免遮掩继承而来的名称">Item 33：避免遮掩继承而来的名称</h2>
+<p>考虑下面代码中变量的作用域：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// global变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">someFunc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// local 变量  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>名称遮掩：上述读取数据的语句指的是 local 变量 x，而不是 global 变量 x，因为内层作用域的名称会遮掩外围作用域的名称。</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220902152828382-16621037252481.png" alt="image-20220902152828382"></p>
+<p>引入继承，因为 derived class 继承了声明于 base class 内的所有东西，即 derived class 作用域被嵌套在 base class 作用域内。所以对于多重继承，查找某名称指涉的东西时顺序是： <code>local 作用域 -- 外围作用域（derived class覆盖的作用域） -- 更外围（base class作用域）-- 内含 base 的那个 namespace(s) 的作用域 -- global 作用域</code></p>
+<p>有两种方法可以使遮掩的名称重见天日：</p>
+<ul>
+<li>using 声明式</li>
+<li>转交函数</li>
+</ul>
+<p>如果你继承 base class 并加上重载函数，而你又希望重新定义或覆写其中一部分，那么你必须为那些原本会被遮掩的每个名称引入一个 using 声明式：例：<code>using Base::mf1;</code></p>
+<p>但有时侯你不想继承 base classes 的所有函数，在 public 继承下，这绝不可能发生，但在 private 继承下却是有意义的，此时 using 声明式无法派上用场，只能使用转交函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">mf1</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">mf1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span> <span class="k">private</span> <span class="n">Base</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">mf1</span><span class="p">()</span> <span class="p">{</span> <span class="n">Base</span><span class="o">::</span><span class="n">mf1</span><span class="p">();</span> <span class="p">}</span> <span class="c1">//转交函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="item-34区分接口继承和实现继承">Item 34：区分接口继承和实现继承</h2>
+<ul>
+<li>成员函数的接口总是会被继承。</li>
+<li>声明一个 pure virtual 函数的目的是为了让 derived classes 只继承函数接口</li>
+</ul>
+<p>pure virtual 函数有两个最突出的特性：他们必须被任何“继承了它们”的具象 class 重新声明，而且它们在抽象 class 中通常没有定义。</p>
+<ul>
+<li>声明 impure virtual 函数的目的，是让 derived classes 继承该函数的接口和缺省实现。</li>
+</ul>
+<p>impure virtual 函数与 pure virtual 函数有所不同，derived classes 继承其函数接口，但 impure virtual 函数会提供一份实现代码，derived classes 可能复写它。</p>
+<ul>
+<li>声明 non-virtual 函数的目的是为了令 derived classes 继承函数的接口及一份强制性实现</li>
+</ul>
+<p>如果成员函数是个 non-virtual 函数，意味着它并不打算在 derived classes 中有不同的行为。一个 non-virtual 成员函数所表现的不变性凌驾其特异性。</p>
+<h2 id="item-35考虑-virtual-函数以外的其他选择">Item 35：考虑 virtual 函数以外的其他选择</h2>
+<p>当你为解决问题而寻找某个设计方法时，不妨考虑 virtual 函数的替代方案：</p>
+<ul>
+<li>使用 non-virtual interface（NVI）手法，那是 <strong>Template Method</strong> 设计模式的一种特殊形式。它以 public non-virtual 成员函数包裹较低访问性（private 或 protected）的 virtual 函数。</li>
+<li>将 virtual 函数替换为“函数指针成员变量”，这是 <strong>Strategy</strong> 设计模式的一种分解表现形式。</li>
+<li>以 <code>tr1::function</code> 成员变量替换 virtual 函数，因而允许使用任何可调用物搭配一个兼容于需求的签名式。这也是 <strong>Strategy</strong> 设计模式的某种形式。</li>
+<li>将继承体系内的 virtual 函数替换为另一个继承体系内的 virtual 函数。这是 <strong>Strategy</strong> 设计模式的传统实现手法。</li>
+</ul>
+<p>将机能从成员函数移到 class 外部函数，带来的一个缺点是，非成员函数无法访问 class 的 non-public 成员。</p>
+<h2 id="item-36绝不重新定义继承而来的-non-virtual-函数">Item 36：绝不重新定义继承而来的 non-virtual 函数</h2>
+<p>non-virtual 函数使静态绑定的，virtual 函数是动态绑定的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">B</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">mf</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">D</span><span class="o">:</span> <span class="k">public</span> <span class="n">B</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">mf</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">D</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span><span class="o">*</span> <span class="n">pB</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">D</span><span class="o">*</span> <span class="n">pD</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">pB</span><span class="o">-&gt;</span><span class="n">mf</span><span class="p">();</span> <span class="c1">//调用B::mf  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">pD</span><span class="o">-&gt;</span><span class="n">mf</span><span class="p">();</span> <span class="c1">//调用D::mf
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果 mf 是个 virtual 函数，不论是通过 pB 或 pD 调用 mf，都会导致调用 D::mf，因为 pB 和 pD 真正指的都是一个类型为 D 的对象。</p>
+<p>如果 mf 是个 non-virtual 函数，当 mf 被调用，任何一个 D 对象都可能表现出 B 或 D 的行为；决定因素不在对象自身，而在于“指向该对象之指针”当初的声明类型。References 也会展现和指针一样难以理解的行径。</p>
+<p><strong>任何情况下都不该重新定义一个继承而来的 non-virtual 函数</strong></p>
+<h2 id="item-37绝不重新定义继承而来的缺省参数值">Item 37：绝不重新定义继承而来的缺省参数值</h2>
+<p>virtual 函数动态绑定，而缺省参数值却是静态绑定。即你可能会在“调用一个定义于 derived class 内的 virtual 函数” 的同时，却使用 base class 为它所指定的缺省参数值。</p>
+<p>对象所谓的静态类型就是它在程序中被声明时所采用的类型。</p>
+<p>对象的所谓动态类型则是指“目前所指对象的类型”</p>
+<h2 id="item-38通过复合塑模出-has-a-或-is-implemented-in-terms-of">Item 38：通过复合塑模出 &ldquo;has-a&rdquo; 或 &ldquo;is-implemented-in-terms-of&rdquo;</h2>
+<p>复合是类型之间的一种关系，当某种类型的对象内含它种类型的对象便是这种关系。</p>
+<p>复合意味 has-a 或 is-implemented-in-terms-of</p>
+<p>程序中的对象其实相当于你塑造的世界中的某些事物，例如人、汽车等等，这些对象属于<strong>应用域</strong>；其他对象则纯粹是实现细节上的人工制品，像是缓冲区、互斥器、查找树等等，这些对象属于<strong>实现域</strong>。</p>
+<ul>
+<li>当复合发生于应用域内的对象之间，表现出 has-a 的关系</li>
+<li>当它发生于实现域内则是表现 is-implemented-in-terms-of 的关系</li>
+</ul>
+<h2 id="item-39明智而审慎地使用-private-继承">Item 39：明智而审慎地使用 private 继承</h2>
+<p>private 继承的规则：</p>
+<ul>
+<li>如果 classes 之间的继承关系是 private，编译器不会自动将一个 derived class 对象转换为一个 base class 对象</li>
+<li>由 private  base class 继承而来的所有成员，在 derived class 中都会变成 private 属性。纵使它们在 base class 中原本是 protected 或 public 属性。</li>
+</ul>
+<p>private 继承意味 implemented-in-terms-of（根据某物实现出），即只有实现部分被继承，接口部分被略去，如果 D 以 private 形式继承 B，意思是 D 对象根据 B 对象实现而得，再没有其他含义。</p>
+<p>public 继承+复合：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">WidgetTimer</span><span class="o">:</span> <span class="k">public</span> <span class="n">Timer</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">virtual</span> <span class="kt">void</span> <span class="n">onTick</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WidgetTimer</span> <span class="n">timer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>何时用继承？何时用复合？ <strong>尽可能使用复合，必要时才使用 private 继承；必要时即当 protected 成员和/或 virtual 函数牵扯进来的时候。</strong> 还有一种激进情况是当空间方面的利害关系足以踢翻 private 继承的支柱时。即只适用于你所处理的 class 不带任何数据时，这样的 classes 没有 non-static 成员变量，没有 virtual 函数，也没有 virtual base classes。</p>
+<h2 id="item-40明智而审慎地使用多重继承">Item 40：明智而审慎地使用多重继承</h2>
+<p>多重继承的意思是继承一个以上的 base classes，但这些 base classes 并不常在继承体系中又有更高级的 base classes，因为那会导致要命的“钻石型多重继承”。</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220907193608391.png" alt="image-20220907193608391"></p>
+<p>使用 virtual 继承的那些 classes 所产生的对象往往比使用 non-virtual 继承的兄弟们体积大，访问 virtual base classes 的成员变量时也比访问 non-virtual base classes 的成员变量速度慢。</p>
+<p>对于 virtual base classes：</p>
+<ul>
+<li>非必要不使用 virtual bases，平常请使用 non-virtual 继承；</li>
+<li>如果必须使用 virtual base classes，尽可能避免在其中放置数据；</li>
+</ul>
+<p>尽量使用单一继承，多重继承比单一继承复杂，还可能导致新的歧义性，以及对 virtual 继承的需要。</p>
+<p>多重继承的确有正当用途。其中一个情节设计“public 继承某个 Interface class” 和 “private 继承某个协助实现的 class 的两相组合”。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/effectivec&#43;&#43;_7/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Effective C&#43;&#43; | 第 7 章 模板与泛型编程</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/effectivec&#43;&#43;_5/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 第 5 章 实现</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

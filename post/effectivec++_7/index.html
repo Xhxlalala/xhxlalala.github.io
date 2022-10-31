@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Effective C&#43;&#43; | 第 7 章 模板与泛型编程 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="Item 41：了解隐式接口和编译器多态 面向对象编程世界总是以显式接口与运行期多态解决问题： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 class Widget { public: Widget(); virtual ~Widget(); virtual std::size_t size() const;" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/effectivec&#43;&#43;_7/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Effective C&#43;&#43; | 第 7 章 模板与泛型编程" />
+<meta property="og:description" content="Item 41：了解隐式接口和编译器多态 面向对象编程世界总是以显式接口与运行期多态解决问题： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 class Widget { public: Widget(); virtual ~Widget(); virtual std::size_t size() const;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_7/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-31T21:38:26+08:00" />
+<meta property="article:modified_time" content="2022-10-31T21:38:26+08:00" />
+
+<meta itemprop="name" content="Effective C&#43;&#43; | 第 7 章 模板与泛型编程">
+<meta itemprop="description" content="Item 41：了解隐式接口和编译器多态 面向对象编程世界总是以显式接口与运行期多态解决问题： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 class Widget { public: Widget(); virtual ~Widget(); virtual std::size_t size() const;"><meta itemprop="datePublished" content="2022-10-31T21:38:26+08:00" />
+<meta itemprop="dateModified" content="2022-10-31T21:38:26+08:00" />
+<meta itemprop="wordCount" content="3399">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Effective C&#43;&#43; | 第 7 章 模板与泛型编程"/>
+<meta name="twitter:description" content="Item 41：了解隐式接口和编译器多态 面向对象编程世界总是以显式接口与运行期多态解决问题： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 class Widget { public: Widget(); virtual ~Widget(); virtual std::size_t size() const;"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Effective C&#43;&#43; | 第 7 章 模板与泛型编程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 3399 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#item-41了解隐式接口和编译器多态">Item 41：了解隐式接口和编译器多态</a></li>
+        <li><a href="#item-42了解-typename-的双重意义">Item 42：了解 typename 的双重意义</a></li>
+        <li><a href="#item-43知道如何处理模块化基类内的名称">Item 43：知道如何处理模块化基类内的名称</a></li>
+        <li><a href="#item-44将与参数无关的代码抽离-templates">Item 44：将与参数无关的代码抽离 templates</a></li>
+        <li><a href="#item-45运用成员函数模板接受所有兼容类型">Item 45：运用成员函数模板接受所有兼容类型</a></li>
+        <li><a href="#item-46需要类型转换时请为模板定义非成员函数">Item 46：需要类型转换时请为模板定义非成员函数</a></li>
+        <li><a href="#item-47使用-traits-classes-表现类型信息">Item 47：使用 traits classes 表现类型信息</a></li>
+        <li><a href="#item-48认识-template-元编程">Item 48：认识 template 元编程</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="item-41了解隐式接口和编译器多态">Item 41：了解隐式接口和编译器多态</h2>
+<p>面向对象编程世界总是以显式接口与运行期多态解决问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Widget</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">Widget</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">normalize</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Widget</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">doProcessing</span><span class="p">(</span><span class="n">Widget</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">w</span> <span class="o">!=</span> <span class="n">someNastWidget</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Widget</span> <span class="n">temp</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span><span class="p">.</span><span class="n">normalize</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>由于 w 的类型被声明为 Widget，所以 w 必须支持 Widget 接口。我们可以在源码中找到这个接口，因此称此为<strong>显式接口</strong>。</li>
+<li>w 对 virtual 成员函数的调用将表现出<strong>运行期多态</strong>，也就是说将于运行期根据 w 的动态类型决定究竟调用哪一个函数。</li>
+</ul>
+<p>对于 Templates 和泛型编程，更重要的是<strong>隐式接口</strong>和<strong>编译期多态</strong></p>
+<p>将 doProcessing 从函数转成函数模板如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">doProcessing</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">w</span> <span class="o">!=</span> <span class="n">someNastWidget</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">T</span> <span class="nf">temp</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span><span class="p">.</span><span class="n">normalize</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>w 必须支持哪一种接口由 template 中执行于 w 身上的操作决定。</li>
+<li>“以不同的 template 参数巨现化 function templates” 会导致调用不同的函数，这便是所谓的编译期多态。</li>
+</ul>
+<p>通常显式接口由函数的签名式（即函数名称、参数类型、返回类型）构成。</p>
+<p>隐式接口并不基于函数签名式，而是由有效表达式组成。</p>
+<p>隐式接口仅仅是由一组有效表达式构成，表达式自身可能看起来很复杂，但它们要求的约束条件一般而言相当直接又明确。</p>
+<h2 id="item-42了解-typename-的双重意义">Item 42：了解 typename 的双重意义</h2>
+<p><strong>当我们声明 template 类型参数，class 和 typename 的意义完全相同。</strong></p>
+<p>template 内出现的名称如果依存于某个 template 参数，称之为<strong>从属名称</strong>。如果从属名称在 class 内呈嵌套状，我们称其为嵌套从属名称。并不依赖任何 template 参数的名称叫做<strong>非从属名称</strong>。</p>
+<p>嵌套从属名称有可能导致解析困难：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">C</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">print2nd</span><span class="p">(</span><span class="k">const</span> <span class="n">C</span><span class="o">&amp;</span> <span class="n">container</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span><span class="o">::</span><span class="n">const_iterator</span><span class="o">*</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果 C::const_iterator 不是个类型，假设 C 有个 static 成员变量而碰巧被命名为 const_iterator, 或如果 x 碰巧是个 global 变量名称，则上述代码就不再是声明一个 local 对象，而是一个相乘动作。</p>
+<p>C++ 有个规则可以解析此一歧义状态：如果解析器在 template 中遭遇一个嵌套从属名称，它便假设这个名称不是个类型，除非你告诉它是。但此规则有个例外。</p>
+<p><strong>一般性规则：任何时候当你想要在 template 中指涉一个嵌套从属类型名称，就必须在紧临它的前一个位置放上关键字 typename</strong></p>
+<p>typename 只被用来验明嵌套从属类型名称，其他名称不该有它存在。</p>
+<p>上述规则提到的例外是：typename 不可以出现在 base classes list 内的嵌套从属类型名称之前，也不可再 member initialization list（成员初值列）中作为 base class 修饰符。</p>
+<h2 id="item-43知道如何处理模块化基类内的名称">Item 43：知道如何处理模块化基类内的名称</h2>
+<p>假设有如下模板类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Company</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MsgSender</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span> <span class="c1">//构造函数、析构函数等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">void</span> <span class="n">sendClear</span><span class="p">(</span><span class="k">const</span> <span class="n">MsgInfo</span><span class="o">&amp;</span> <span class="n">info</span><span class="p">)</span> <span class="c1">//MagInfo 是前边定义的信息类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">msg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Company</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="p">.</span><span class="n">sendCleartext</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">sendSecret</span><span class="p">(</span><span class="k">const</span> <span class="n">MsgInfo</span><span class="o">&amp;</span> <span class="n">info</span><span class="p">){...}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>假设有两个 Company：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CompanyA</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>  
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">sendCleartext</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">sendEncrypted</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>  
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CompanyZ</span> <span class="p">{</span> <span class="c1">//这个class不提供sendCleartext函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span><span class="o">:</span>  
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">sendEncrypted</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一般性的 MsgSender template 对 CompanyZ 并不合适，因为那个 template 提供了一个 <code>sendClear</code> 函数，为了纠正这个问题，需要针对 CompanyZ 产生一个特化版：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MsgSender</span><span class="o">&lt;</span><span class="n">Company</span><span class="o">&gt;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">sendSecret</span><span class="p">(</span><span class="k">const</span> <span class="n">MsgInfo</span><span class="o">&amp;</span> <span class="n">info</span><span class="p">){...}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>模板全特化：</strong> template MsgSender 针对类型 CompanyZ 特化了，而且其特化是全面性的，也就是说一旦类型参数被定义为 CompanyZ，再没有其他 template 参数可供变化。</p>
+<p>现在考虑下边的 derived class：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220912194424466.png" alt="image-20220912194424466"></p>
+<p>C++ 将拒绝<code>sendClear(info)</code>的调用，它知道 base class templates 有可能被特化，而那个特化版本可能不提供和一般性 template 相同的接口。</p>
+<p>有三种方法来解决 C++ 拒绝在模板化基类中寻找继承而来的名称的问题：</p>
+<ul>
+<li>在 base class 函数调用动作之前加上 <code>this-&gt;</code>   &ndash; <code>this-&gt;sendClear(info);</code></li>
+<li>使用 using 声明式 &ndash; <code>using MsgSender&lt;Company&gt;::sendClear;</code></li>
+<li>明白指出被调用的函数位于 base class 内 &ndash; <code>MsgSender&lt;Company&gt;::sendClear(info);</code></li>
+</ul>
+<p>上述三种解法做的事情都相同：对编译器承诺“base class template 的任何特化版本都将支持其一般（泛化）版本所提供的接口”。</p>
+<h2 id="item-44将与参数无关的代码抽离-templates">Item 44：将与参数无关的代码抽离 templates</h2>
+<p>在 template 代码中，重复是隐晦的：因为只存在一份 template 源码，所以必须训练自己去感受当 template 被具现化多次时可能发生的重复。</p>
+<p>templates 生成多个 classes 和多个函数，所以任何 template 代码都不该与某个造成膨胀的 template 参数产生依赖关系。</p>
+<p>因非类型模板参数而造成的代码膨胀，往往可以消除，做法是以函数参数或 class 成员变量替换 template 参数。</p>
+<p>因类型参数而造成的代码膨胀，往往可降低，做法是让带有完全相同二进制表述的具现类型共享实现码。</p>
+<h2 id="item-45运用成员函数模板接受所有兼容类型">Item 45：运用成员函数模板接受所有兼容类型</h2>
+<p><strong>智能指针</strong>是“行为像指针”的对象，并提供指针没有的机能。</p>
+<p>**Member function templates(成员函数模板)**的作用是为 class 生成函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SmartPtr</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">U</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SmartPtr</span><span class="p">(</span><span class="k">const</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;&amp;</span> <span class="n">other</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上述代码的意思是，对于任何类型 T 和任何类型 U ，这里可以根据<code>SmartPtr&lt;U&gt;</code>生成一个<code>SmartPtr&lt;T&gt;</code>，因为<code>SmartPtr&lt;T&gt;</code>有个构造函数接受一个<code>SmartPtr&lt;U&gt;</code>参数。这一类构造函数根据对象 u 创建对象 t，而 u 和 v 的类型是同一个 template 的不同具现体，有时我们称之为泛化 copy 构造函数。</p>
+<p>成员函数模板的效用不限于构造函数，他们常扮演的另一个角色是支持赋值操作。例如 TR1 的<code>shared_ptr</code>支持所有“来自兼容之内置指针、tr1::shared_ptrs、auto_ptrs 和 tr1::weak_ptrs”的构造行为，以及所有来自上述各物(tr1::weak_ptrs 除外)的赋值操作。</p>
+<p>成员函数模板并不改变语言基本规则。所以在 class 内声明泛化 copy 构造函数并不会阻止编译器生成它们自己的构造函数，所以如果想要控制 copy 构造的方方面面必须同时声明泛化 copy 构造函数和“正常的” copy 构造函数。相同规则也适用于赋值操作。</p>
+<h2 id="item-46需要类型转换时请为模板定义非成员函数">Item 46：需要类型转换时请为模板定义非成员函数</h2>
+<p>在 template 实参推导过程中从不将饮食类型转换函数纳入考虑，所以模板化类内的某些表现可能与 non-template 版本不同。例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Rational</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Rational</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">numerator</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">denominator</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">T</span> <span class="nf">numerator</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">T</span> <span class="nf">denominator</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">Rational</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Rational</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">){...}</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以下操作将会出错：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Rational</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">oneHalf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Rational</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">oneHalf</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">//错误
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>要缓解编译器在实参推导方面的问题，可以利用这样的事实：template class 内的 friend 声明式可以指涉某个特定函数。所以对于上边的问题可以令 Rational<T> class 声明适当的 <code>operator*</code>为其 friend 函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">friend</span> <span class="k">const</span> <span class="n">Rational</span> <span class="k">operator</span><span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在一个 class template 内，template 名称可被用来作为 “template 和其参数” 的简略表达方式，即 <code>Rational&lt;T&gt;</code>可以简写为<code>Rational</code></p>
+<p>经过修改后的代码虽然可以通过编译，但无法连接，因为函数只被声明于 Rational 内，并没有被定义出来。最简单可行的办法就是将<code>operator*</code>函数本体合并至其声明式内。</p>
+<p>定义了 Rational 的头文件代码典型样子为：<code>template&lt;typename T&gt; class Rational;</code></p>
+<h2 id="item-47使用-traits-classes-表现类型信息">Item 47：使用 traits classes 表现类型信息</h2>
+<p>STL 的五种迭代器分类：</p>
+<ul>
+<li>Input：只能向前移动，一次一步，只可读取所指的东西，且只能读取一次</li>
+<li>Output：只能向前移动，一次一步，只可涂写所指的东西，且只能涂写一次</li>
+<li>Forward：可以读或写其所指物一次以上</li>
+<li>Bidirectional：除了可以向前移动还可以向后移动</li>
+<li>Random Access：可以执行“迭代器算术”，也就是它可以在常量时间内向前或向后跳跃任意距离</li>
+</ul>
+<p>为了充分利用不同迭代器的威力，可以利用<code>traits</code>在编译期间取得某些类型信息，针对不同类型设置不同的操作。</p>
+<p><code>traits</code>是一种技术，这个技术的要求之一是，它对内置类型和用户自定义类型的表现必须一样好。</p>
+<p>类型的 traits 信息必须位于类型自身之外，标准技术是把它放进一个 template 及其一或多个特化版本中，这样的 templates 在标准程序库中有若干个，其中针对迭代器的被命名为<code>iterator_traits</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">IterT</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">iterator_traits</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>iterator_traits</code> 的运作方式是，针对每一个类型 IterT，在<code>struct iterator traits&lt;IterT&gt;</code>内一定声明某个 typedef 名为 iterator category。这个 typedef 用来确认 IterT 的迭代器分类。</p>
+<p>例，针对 deque 迭代器设计的 class 如下：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220914160153269.png" alt="image-20220914160153269"></p>
+<p>为了支持指针迭代器，<code>iterator_traits</code>特别针对指针类型设计一个偏特化版本：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220914160315229.png" alt="image-20220914160315229"></p>
+<p>但是还有一个问题是 IterT 类型在编译期间获知，而 if 语句在运行期才会核定，可以通过<strong>重载</strong>将 if 语句移到编译期执行。</p>
+<p>所以，使用一个 traits class 可以分为两步：</p>
+<ul>
+<li>建立一组重载函数或函数模板，彼此间的差异只在于各自的 traits 参数。令每个函数实现码与其接受的 traits 信息相应和。</li>
+<li>建立一个控制函数或函数模板，它调用上述那些“劳工函数”并传递 traits class 所提供的信息。</li>
+</ul>
+<h2 id="item-48认识-template-元编程">Item 48：认识 template 元编程</h2>
+<p>模板元编程是以 C++ 写成，执行于 C++ 编译器内的程序。</p>
+<p>TMP 有两个伟大的效力，第一，它让某些事情更容易；第二，由于 template metaprograms 执行于 C++ 编译器，因此可将工作从运行期转移到编译期。</p>
+<p>TMP 已被证明是个“图灵完全”机器，意思是它的威力大到足以计算任何事物。</p>
+<p>TMP 并没有真正的循环构件，所以循环结果由递归完成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="n">n</span><span class="o">&gt;</span> <span class="c1">//一般情况
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">Factorial</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="p">{</span> <span class="n">value</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">Factorial</span><span class="o">&lt;</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">value</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="c1">//特殊情况
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">Factorial</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="p">{</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">}</span><span class="err">；</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="err">；</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>TMP 能达到的目标：</p>
+<ul>
+<li>确保量度单位正确</li>
+<li>优化矩阵计算</li>
+<li>可以生成客户定制的设计模式实现品</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/effectivec&#43;&#43;_8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Effective C&#43;&#43; | 定制 new 和 delete</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/effectivec&#43;&#43;_6/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 第 6 章 继承与面向对象设计</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Effective C&#43;&#43; | 第 4 章 设计与声明 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="Item 18：让接口容易被正确使用，不易被误用 理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/effectivec&#43;&#43;_4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Effective C&#43;&#43; | 第 4 章 设计与声明" />
+<meta property="og:description" content="Item 18：让接口容易被正确使用，不易被误用 理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_4/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-31T21:35:16+08:00" />
+<meta property="article:modified_time" content="2022-10-31T21:35:16+08:00" />
+
+<meta itemprop="name" content="Effective C&#43;&#43; | 第 4 章 设计与声明">
+<meta itemprop="description" content="Item 18：让接口容易被正确使用，不易被误用 理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译"><meta itemprop="datePublished" content="2022-10-31T21:35:16+08:00" />
+<meta itemprop="dateModified" content="2022-10-31T21:35:16+08:00" />
+<meta itemprop="wordCount" content="1972">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Effective C&#43;&#43; | 第 4 章 设计与声明"/>
+<meta name="twitter:description" content="Item 18：让接口容易被正确使用，不易被误用 理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Effective C&#43;&#43; | 第 4 章 设计与声明</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 1972 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#item-18让接口容易被正确使用不易被误用">Item 18：让接口容易被正确使用，不易被误用</a></li>
+        <li><a href="#item-19设计-class-犹如设计-type">Item 19：设计 class 犹如设计 type</a></li>
+        <li><a href="#item-20偏好-pass-by-reference-to-const-甚于-pass-by-value">Item 20：偏好 pass-by-reference-to-const 甚于 pass-by-value</a></li>
+        <li><a href="#item-21必须返回对象时别妄想返回其-reference">Item 21：必须返回对象时，别妄想返回其 reference</a></li>
+        <li><a href="#item-22将成员变量声明为-private">Item 22：将成员变量声明为 private</a></li>
+        <li><a href="#item-23宁以-non-membernon-friend-替换-member-函数">Item 23：宁以 non-member、non-friend 替换 member 函数</a></li>
+        <li><a href="#item-24若所有参数皆需类型转换请为此采用-non-member-函数">Item 24：若所有参数皆需类型转换，请为此采用 non-member 函数</a></li>
+        <li><a href="#item-25考虑写出一个不抛异常的-swap-函数">Item 25：考虑写出一个不抛异常的 swap 函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="item-18让接口容易被正确使用不易被误用">Item 18：让接口容易被正确使用，不易被误用</h2>
+<p>理想上，如果客户企图使用某个接口而却没有获得他所预期的行为，这个代码不该通过编译；如果代码通过了编译，它的作为就该是客户所想要的。</p>
+<p>明智而审慎地导入新类型对预防“接口被误用”有神奇疗效；一旦正确地类型定位，限制其值有时候是通情达理的。</p>
+<p>如下，一个表现日期的类，月份这样设计是安全的：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220824190904312.png" alt="image-20220824190904312"></p>
+<p>预防客户错误的另一个办法是，限制类型内什么事可做，什么事不能做。常见的限制是加上 <code>const</code></p>
+<p>另外一个一般性原则“让 types 容易被正确使用，不容易被误用”的表现形式是：除非有好理由，否则应该尽量令你的 types 的行为与内置 types 一致。</p>
+<p><code>tr1::shared_ptr</code> 支持定制型删除器。这可防范 DLL 问题，可被用来自动解除互斥锁 (mutexes) 等等。</p>
+<h2 id="item-19设计-class-犹如设计-type">Item 19：设计 class 犹如设计 type</h2>
+<p>为了设计高效的 classes ，需要考虑以下几个问题：</p>
+<ul>
+<li>新 type 的对象应该如何被创建和销毁？</li>
+<li>对象的初始化和对象的赋值该有什么样的差别？</li>
+<li>新 type 的对象如果被 passed by value，意味着什么？</li>
+<li>什么是新 type 的“合法值”？</li>
+<li>你的新 type 需要配合某个继承图系吗？</li>
+<li>你的新 type 需要什么样的转换？</li>
+<li>什么样的操作符和函数对此新 type 而言是合理的？</li>
+<li>什么样的标准函数应该驳回？</li>
+<li>谁该取用新 type 的成员？</li>
+<li>什么是新 type 的“未声明接口”？</li>
+<li>你的新 type 有多么一般化？</li>
+<li>你真的需要一个新 type 吗？</li>
+</ul>
+<h2 id="item-20偏好-pass-by-reference-to-const-甚于-pass-by-value">Item 20：偏好 pass-by-reference-to-const 甚于 pass-by-value</h2>
+<p>缺省情况下 C++ 以 by value 方式传递对象至（或来自）函数，这种方式会带来费时的 copy 构造以及析构操作。</p>
+<p>使用 pass by reference-to-const 没有任何构造函数或析构函数被调用，因为没有任何新对象被创建。将以 reference 传递的参数声明为 const 是必要的，因为不这样做的话调用者会忧虑会不会改变传入调用的函数的那个对象。</p>
+<p>以 by reference 方式传递参数也可以避免 slicing (对象切割) 问题。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Window</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">display</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">WindowWithScrollBars</span><span class="o">:</span> <span class="k">public</span> <span class="n">Window</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">display</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">printNameAndDisplay</span><span class="p">(</span><span class="k">const</span> <span class="n">Window</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">)</span> <span class="c1">//参数不会被切割
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">w</span><span class="p">.</span><span class="n">name</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">.</span><span class="n">display</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>reference 往往以指针实现出来，因此 pass by reference 通常意味真正传递的是指针。</p>
+<p>对于<strong>内置类型</strong>以及 <strong>STL 的迭代器和函数对象</strong>，pass-by-value 往往比较适当，对于其他任何东西均建议使用 pass-by-reference。</p>
+<h2 id="item-21必须返回对象时别妄想返回其-reference">Item 21：必须返回对象时，别妄想返回其 reference</h2>
+<p>所谓 reference 只是个名称，<strong>代表某个既有对象</strong>。</p>
+<p>绝不要返回 pointer 或 reference 指向一个 local stack 对象，或返回 reference 指向一个 heap-allocated 对象，或返回 pointer 或 reference 指向一个 local static 对象而有可能同时需要多个这样的对象。</p>
+<h2 id="item-22将成员变量声明为-private">Item 22：将成员变量声明为 private</h2>
+<p>为什么要把成员变量声明为 private？</p>
+<ul>
+<li>语法一致性：如果成员变量不是 public，客户唯一能够访问对象的办法就是通过成员函数；</li>
+<li>使用函数可以让你对成员变量的处理有更精确的控制。如果把成员变量设为 public，则每个人都可以读写它；</li>
+<li>封装：如果通过函数访问成员变量，日后可改以某个计算替换这个成员变量，而 class 客户一点也不会知道 class 的内部实现已经起了变化。</li>
+</ul>
+<p>protected 并不比 public 更具封装性。</p>
+<h2 id="item-23宁以-non-membernon-friend-替换-member-函数">Item 23：宁以 non-member、non-friend 替换 member 函数</h2>
+<p>愈少代码可以看到数据，愈多的数据可被封装，也就愈能自由地改变对象数据。</p>
+<p>在 member 函数、non-member 函数、non-friend 函数中，导致较大封装性的是 non-member non-friend 函数，因为其并不增加“能够访问 class 内 private 成分”的函数数量。</p>
+<p>friends 函数对 class private 成员的访问权力和 member 函数相同，因此两者对封装的冲击力道也相同。</p>
+<p>只因在意封装性而让函数“成为 class 的 non-member”并不意味着它“不可以是另一个 class 的 member”。在 c++ 中比较自然的做法是，让其成为一个 non-member 函数并且位于同一个 namespace 内。</p>
+<p>namespace 和 classes 不同，前者可跨越多个源码文件而后者不能。</p>
+<h2 id="item-24若所有参数皆需类型转换请为此采用-non-member-函数">Item 24：若所有参数皆需类型转换，请为此采用 non-member 函数</h2>
+<p>假设有一个有理数类： class Rationl</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Rational</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Rational</span><span class="p">(</span><span class="kt">int</span> <span class="n">numerator</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">denominator</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">numerator</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">denominator</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 定义operator*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">const</span> <span class="n">Rational</span> <span class="k">operator</span><span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>实例化对象进行运算：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Rational</span> <span class="nf">oneEighth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Rational</span> <span class="nf">oneHalf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Rational</span> <span class="n">result</span> <span class="o">=</span> <span class="n">oneHalf</span> <span class="o">*</span> <span class="n">oneEighth</span><span class="p">;</span> <span class="c1">// 正确
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">result</span> <span class="o">=</span> <span class="n">oneHalf</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 正确（在non-explicit构造函数的情况下）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">result</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oneHalf</span><span class="p">;</span> <span class="c1">// 错误
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>结论：<strong>只有当参数被列于参数列内，这个参数才是隐式类型转换的合格参与者。</strong></p>
+<p>为了能够支持混合式算术运算，解决最后一个错误，可行的方法是：<em><em>让 operator</em> 成为一个 non-member 函数，即允许编译器在每一个实参身上执行隐式类型转换。</em>*</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220825194247223.png" alt="image-20220825194247223"></p>
+<p>需要注意的是 operator* 不能设计为 Rational class 的一个 friend 函数达到类似的效果。<strong>member 函数的反面是 non-member 函数，不是 friend 函数。</strong> 无论何时如果可以避免 friend 函数就该避免。</p>
+<h2 id="item-25考虑写出一个不抛异常的-swap-函数">Item 25：考虑写出一个不抛异常的 swap 函数</h2>
+<ul>
+<li>如果 swap 的缺省实现对你的 class 或 class template 提供可接受的效率，你不需要做任何事。</li>
+<li>如果 swap 缺省实现版的效率不足，试着做以下事情：
+<ul>
+<li>提供一个 public swap 成员函数，让它高效地置换你的类型地两个对象值。</li>
+<li>在你的 class 或 template 所在的命名空间内提供一个 non-member swap，并令它调用上述 swap 成员函数。</li>
+<li>如果你正编写一个 class（而非 class template），为你的 class 特化 std::swap。并令它调用你的 swap 成员函数。</li>
+</ul>
+</li>
+<li>最后，如果你调用 swap，请确定包含一个 using 声明式，以便让 std::swap 在你的函数内曝光可见，然后不加任何 namespace 修饰符，赤裸裸地调用 swap</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/effectivec&#43;&#43;_5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Effective C&#43;&#43; | 第 5 章 实现</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/effectivec&#43;&#43;_3/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 第 3 章 资源管理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

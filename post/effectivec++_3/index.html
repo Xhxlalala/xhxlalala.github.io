@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Effective C&#43;&#43; | 第 3 章 资源管理 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="Item 13：用对象管理资源 为了保证资源被释放，通常把资源放进对象内，依赖 C&#43;&#43; 的“析构函数自动调用机制”。 标准程序库提供了 auto_ptr 来避免潜在的资源泄露，a" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/effectivec&#43;&#43;_3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Effective C&#43;&#43; | 第 3 章 资源管理" />
+<meta property="og:description" content="Item 13：用对象管理资源 为了保证资源被释放，通常把资源放进对象内，依赖 C&#43;&#43; 的“析构函数自动调用机制”。 标准程序库提供了 auto_ptr 来避免潜在的资源泄露，a" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-31T21:33:02+08:00" />
+<meta property="article:modified_time" content="2022-10-31T21:33:02+08:00" />
+
+<meta itemprop="name" content="Effective C&#43;&#43; | 第 3 章 资源管理">
+<meta itemprop="description" content="Item 13：用对象管理资源 为了保证资源被释放，通常把资源放进对象内，依赖 C&#43;&#43; 的“析构函数自动调用机制”。 标准程序库提供了 auto_ptr 来避免潜在的资源泄露，a"><meta itemprop="datePublished" content="2022-10-31T21:33:02+08:00" />
+<meta itemprop="dateModified" content="2022-10-31T21:33:02+08:00" />
+<meta itemprop="wordCount" content="1454">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Effective C&#43;&#43; | 第 3 章 资源管理"/>
+<meta name="twitter:description" content="Item 13：用对象管理资源 为了保证资源被释放，通常把资源放进对象内，依赖 C&#43;&#43; 的“析构函数自动调用机制”。 标准程序库提供了 auto_ptr 来避免潜在的资源泄露，a"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Effective C&#43;&#43; | 第 3 章 资源管理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 1454 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#item-13用对象管理资源">Item 13：用对象管理资源</a></li>
+        <li><a href="#item-14在资源管理类中小心-copying-行为">Item 14：在资源管理类中小心 copying 行为</a></li>
+        <li><a href="#item-15在资源管理类中提供对原始资源的访问">Item 15：在资源管理类中提供对原始资源的访问</a></li>
+        <li><a href="#item-16成对使用-new-和-delete-时要采取相同形式">Item 16：成对使用 new 和 delete 时要采取相同形式</a></li>
+        <li><a href="#item-17以独立语句将-newed-对象置入智能指针">Item 17：以独立语句将 newed 对象置入智能指针</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="item-13用对象管理资源">Item 13：用对象管理资源</h2>
+<p>为了保证资源被释放，通常把资源放进对象内，依赖 C++ 的“析构函数自动调用机制”。</p>
+<p>标准程序库提供了 <code>auto_ptr</code> 来避免潜在的资源泄露，<code>auto_ptr</code> 是一个 “类指针对象”，即智能指针，其析构函数自动对其所指对象调用 delete。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">Investment</span><span class="o">&gt;</span> <span class="n">pInv</span><span class="p">(</span><span class="n">createInvestment</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 经由 auto_ptr 的析构函数自动删除 pInv
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以对象管理资源的两个关键想法：<strong>RAII（Resource Acquisition Is Initialization）</strong></p>
+<ul>
+<li><strong>获得资源后立刻放进管理对象内</strong></li>
+<li><strong>管理对象运用析构函数确保资源被释放</strong></li>
+</ul>
+<p>注意：不要让多个 <code>auto_ptr</code> 同时指向同一对象，因为 <code>auto_ptr</code> 被销毁时会自动删除它指向的对象。<strong>若通过 copy 构造函数或 copy assignmen 操作符复制 <code>auto_ptr</code>，它们会变成 null，而复制所得的指针将取得资源的唯一所有权！</strong></p>
+<p>由于这个原因，STL 容器等要求其元素发挥复制行为的就不能使用 <code>auto_ptr</code>, 它们使用的是<strong>引用计数型智慧指针（RCSP）</strong>. RCSP 也是智能指针，能持续追踪共有多少对象指向某笔资源，并在无人指向它时自动删除该资源，但是 RCSP 无法打破环状引用。</p>
+<p>常用的 RCSP 为 TR1 的 <code>tr1::shared_ptr</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">tr1</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Investment</span><span class="o">&gt;</span> <span class="n">pInv</span><span class="p">(</span><span class="n">createInvestment</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>auto_ptr</code> 和 <code>tr1::shared_ptr</code> 两者都在其析构函数内做 delete 而不是 delete[] 操作，这意味着在动态分配而得的 array 身上使用 <code>auto_ptr</code> 和 <code>tr1::shared_ptr</code> 是个馊主意。</p>
+<p><strong>实现RAII的一个技巧：<u>CADRE（Constructor Acquires， Destructor Releases）</u></strong></p>
+<h2 id="item-14在资源管理类中小心-copying-行为">Item 14：在资源管理类中小心 copying 行为</h2>
+<p>当一个 RAII 对象被复制会发生什么事？</p>
+<ul>
+<li><strong>禁止复制</strong>：如果复制动作对 RAII 类不合理，就应该禁止：将 copying 操作声明为 private</li>
+<li><strong>对底层资源使用“引用计数法”</strong>：<code>tr1::shared_ptr</code></li>
+</ul>
+<p><code>tr1::shared_ptr</code> 允许指定所谓的“删除器”(deleter)，那是一个函数或函数对象，当引用次数为 0 时便被调用。</p>
+<ul>
+<li>复制资源管理对象时，也应该复制其所包覆的资源，即“深度拷贝”</li>
+<li>某些罕见场合下可能希望确保永远只有一个 RAII 对象指向一个未加工资源，即使 RAII 对象被复制依然如此。此时，资源的拥有权会从被复制物转移到目标物（auto_ptr）</li>
+</ul>
+<h2 id="item-15在资源管理类中提供对原始资源的访问">Item 15：在资源管理类中提供对原始资源的访问</h2>
+<p>将 RAII class 对象转换为其所内含之原始资源，有两个做法可以达成目标：</p>
+<ul>
+<li>显式转换</li>
+<li>隐式转换</li>
+</ul>
+<p><code>tr1::shared_ptr</code> 和 <code>auto_ptr</code> 都提供一个 <code>get</code> 成员函数，用来执行显式转换，也就是它会返回智能指针内部的原始指针（的复件）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">tr1</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Investment</span><span class="o">&gt;</span> <span class="n">pImv</span><span class="p">(</span><span class="n">createInvestment</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">daysHeld</span><span class="p">(</span><span class="k">const</span> <span class="n">Investment</span><span class="o">*</span> <span class="n">pi</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 调用 daysHeld
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">days</span> <span class="o">=</span> <span class="n">daysHeld</span><span class="p">(</span><span class="n">pInv</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>tr1::shared_ptr</code> 和 <code>auto_ptr</code> 也重载了指针取值操作符，它们允许隐式转换至底部原始指针：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220823195843329.png" alt="image-20220823195843329"></p>
+<p>是否该提供一个显式转换函数将 RAII class 转换为其底部资源，或是应该提供隐式转换，答案主要取决于 RAII class 被设计执行的特定工作，以及它被使用的情况。最佳原则应该是：<code>让接口容易被正确使用，不易被误用</code>。</p>
+<p>一般而言显式转换比较安全，但隐式转换对客户比较方便。</p>
+<h2 id="item-16成对使用-new-和-delete-时要采取相同形式">Item 16：成对使用 new 和 delete 时要采取相同形式</h2>
+<p>delete 最大的问题在于：<strong>即将被删除的内存之内究竟存有多少个对象决定了有多少个析构函数必须被调用起来。</strong></p>
+<p>单一对象的内存布局与数组的内存布局是不一样的，数组所用的内存通常还包括“数组大小”的记录，一遍 delete 知道需要调用多少次析构函数。</p>
+<p>规则：<strong>如果调用 new 时使用 [] ，必须在对应调用 delete 时也使用 []；如果调用 new 时没有使用 [] ，那么也不应该在对应调用 delete 时使用 []</strong></p>
+<p>这个规则对于喜欢使用 typedef 的也同样重要。为了避免出错，尽量不要对数组形式做 typedef 动作。</p>
+<h2 id="item-17以独立语句将-newed-对象置入智能指针">Item 17：以独立语句将 newed 对象置入智能指针</h2>
+<p>假设有两个函数：<code>int priority()</code> 和 <code>void processWidget(std::tr1::shared_ptr&lt;Widget&gt; pw, int priority);</code></p>
+<p>当调用 <code>processWidget(std::tr1::shared_ptr&lt;Widget&gt; (new Widget), priority())</code> 时，编译器首先要做三件事：</p>
+<ul>
+<li>调用 priority</li>
+<li>执行 <code>new Widget</code></li>
+<li>调用 <code>tr1::shared_ptr</code> 构造函数</li>
+</ul>
+<p>c++ 做这些事的次序是不固定的，错误的执行次序可能会带来资源泄露的问题。避免这些问题，可以<strong>使用分离语句，分别写出：(1) 创建 Widget；(2) 将它置入一个智能指针内，然后再把那个智能指针传给 processWidget</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">tr1</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Widget</span><span class="o">&gt;</span> <span class="n">pw</span><span class="p">(</span><span class="k">new</span> <span class="n">Widget</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">processWidget</span><span class="p">(</span><span class="n">pw</span><span class="p">,</span> <span class="n">priority</span><span class="p">());</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/effectivec&#43;&#43;_4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Effective C&#43;&#43; | 第 4 章 设计与声明</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/effectivec&#43;&#43;_2/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 第 2 章 构造、析构、赋值</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

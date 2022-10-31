@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Effective C&#43;&#43; | 第 9 章 杂项讨论 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="Item 53：不要轻易忽略编译器的警告 严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。 不要过度依" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/effectivec&#43;&#43;_9/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Effective C&#43;&#43; | 第 9 章 杂项讨论" />
+<meta property="og:description" content="Item 53：不要轻易忽略编译器的警告 严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。 不要过度依" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_9/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-31T21:38:36+08:00" />
+<meta property="article:modified_time" content="2022-10-31T21:38:36+08:00" />
+
+<meta itemprop="name" content="Effective C&#43;&#43; | 第 9 章 杂项讨论">
+<meta itemprop="description" content="Item 53：不要轻易忽略编译器的警告 严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。 不要过度依"><meta itemprop="datePublished" content="2022-10-31T21:38:36+08:00" />
+<meta itemprop="dateModified" content="2022-10-31T21:38:36+08:00" />
+<meta itemprop="wordCount" content="1229">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Effective C&#43;&#43; | 第 9 章 杂项讨论"/>
+<meta name="twitter:description" content="Item 53：不要轻易忽略编译器的警告 严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。 不要过度依"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Effective C&#43;&#43; | 第 9 章 杂项讨论</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 1229 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#item-53不要轻易忽略编译器的警告">Item 53：不要轻易忽略编译器的警告</a></li>
+        <li><a href="#item-54让自己熟悉-tr1-在内的标准程序库">Item 54：让自己熟悉 TR1 在内的标准程序库</a></li>
+        <li><a href="#item-55让自己熟悉-boost">Item 55：让自己熟悉 Boost</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="item-53不要轻易忽略编译器的警告">Item 53：不要轻易忽略编译器的警告</h2>
+<ul>
+<li>严肃对待编译器发出的警告信息。努力在你的编译器的最高（最严苛）警告级别下争取“无任何警告”的荣誉。</li>
+<li>不要过度依赖编译器的报警能力，因为不同的编译器对待事情的态度并不相同。一旦移植到另一个编译器上，你原本依赖的警告信息有可能消失。</li>
+</ul>
+<h2 id="item-54让自己熟悉-tr1-在内的标准程序库">Item 54：让自己熟悉 TR1 在内的标准程序库</h2>
+<p>C++ 98 列入的 C++ 标准程序库主要有以下成分：</p>
+<ul>
+<li>STL、覆盖容器、迭代器、算法、函数对象、各种容器适配器和函数对象适配器</li>
+<li>iostreams, 覆盖用户自定缓冲功能、国际化 I/O，以及预定义好的对象 cin，cout，cerr 和 clog</li>
+<li>国际化支持，包括多区域能力</li>
+<li>数值处理，包括复数模板和纯数值模板</li>
+<li>异常阶层体系</li>
+<li>C89 标准程序库</li>
+</ul>
+<p>TR1 详细叙述了 14 个新组件，通通都放在了 <code>std</code> 命名空间内，更准确的说是在其嵌套命名空间 <code>tr1</code> 内。</p>
+<p>最常用的 TR1 组件：</p>
+<ul>
+<li>智能指针：<code>tr1::shared_ptr</code>和<code>tr1::weak_ptr</code>前者的作用有如内置指针，但会记录有多少个<code>tr1::shared_ptr</code>共同指向同一个对象。这便是所谓的 reference counting（引用计数）。一旦最后一个这样的指针被销毁，也就是一旦某对象的引用次数变为 0 ，这个对象会被自动删除。<code>tr1::weak_ptr</code>并不参与引用计数的计算；当最后一个指向某对象的<code>tr1::shared_ptr</code>被销毁，纵使还有个 <code>tr1::weak_ptrs</code>继续指向同一对象，该对象仍然会被删除。这种情况下的<code>tr1::weak_ptr</code>会被自动标识无效。</li>
+<li><code>tr1::function</code>：此组件可以表示任何 <em>callable entity</em>，只要其签名符合目标。</li>
+<li><code>tr1::bind</code>：它能够做 STL 绑定器 blindlst 和 bind2nd 所做的每一件事，而又更多。和前任绑定器不同的是,<code>tr1::bind</code>可以和 const 以及 non-const 成员函数协同运作，可以和 by-reference 参数协同运作，而且不需要特殊协助就可以处理函数指针。</li>
+</ul>
+<p>其他 TR1 组件可以分为两组，第一组提供彼此互不相干的独立功能：</p>
+<ul>
+<li>Hash Tables，用来实现 sets,multisets,maps 和 multi-maps。</li>
+<li>正则表达式</li>
+<li>Tuples（变量组）</li>
+<li><code>tr1::array</code>，本质上是一个“STL 化”数组</li>
+<li><code>tr1::mem_fn</code>，这是个语句构造上与成员函数指针一致的东西。</li>
+<li><code>tr1::reference_wrapper</code>，一个“让 reference 的行为更像对象”的设施。</li>
+<li>随机数生成工具</li>
+<li>数学特殊函数</li>
+<li>C99 兼容扩充</li>
+</ul>
+<p>第二组 tr1 组件由更精巧的 template 编程技术构成：</p>
+<ul>
+<li>Type traits：一组 traits classes，用于提供类型的编译器信息。</li>
+<li><code>tr1::result_of</code>：这是个 template，用来推导函数调用的返回类型。</li>
+</ul>
+<p>最后，TR1 本身只是一份规范，为获得 TR1 提供的好处，你需要一份好的实物。一个好的事物来源是 Boost。</p>
+<h2 id="item-55让自己熟悉-boost">Item 55：让自己熟悉 Boost</h2>
+<p>Boost 是一个社群，也是一个网站。致力于免费、源码开放、同僚复审的 C++ 程序库开发。Boost 在 C++ 标准化过程中扮演深具影响力的角色。</p>
+<p>Boost 程序库对付的主题非常繁多，区分数十个类目：</p>
+<ul>
+<li>字符串与文本处理</li>
+<li>容器</li>
+<li>函数对象和高级编程</li>
+<li>泛型编程</li>
+<li>模板元编程</li>
+<li>数学和数值</li>
+<li>正确性测试</li>
+<li>数据结构</li>
+<li>语言间支持</li>
+<li>内存</li>
+<li>杂项</li>
+</ul>
+<p>Boost 同时提供许多 TR1 组件实现品。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-10-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/effectivec&#43;&#43;_8/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 定制 new 和 delete</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>C&#43;&#43; on Xtar&#39;s blog</title>
-    <link>https://www.xhxha.one/tags/c&#43;&#43;/</link>
-    <description>Recent content in C&#43;&#43; on Xtar&#39;s blog</description>
+    <title>读书笔记 on Xtar&#39;s blog</title>
+    <link>https://www.xhxha.one/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 读书笔记 on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Oct 2022 21:38:36 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 31 Oct 2022 21:38:36 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Effective C&#43;&#43; | 第 9 章 杂项讨论</title>
       <link>https://www.xhxha.one/post/effectivec&#43;&#43;_9/</link>
@@ -86,6 +86,15 @@
       
       <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_1/</guid>
       <description>item 1：把c++当作语言的联邦 c++的四种语言特性： C：c++基于c，块、statements、预处理器、内置数据类型、数组、指针等都来自c 面</description>
+    </item>
+    
+    <item>
+      <title>《Fluent Python》知识总结</title>
+      <link>https://www.xhxha.one/post/fluentpython/</link>
+      <pubDate>Mon, 17 Oct 2022 11:22:48 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/fluentpython/</guid>
+      <description>第1章 Python数据类型 __repr__ 和 __str__ 的区别在于，后者是在str()函数被调用，或是在用print函数打印一个对象时才被调用的，并且它返回的字符串</description>
     </item>
     
   </channel>
