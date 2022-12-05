@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>More Effective C&#43;&#43; | 第 5 章 技术 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="条款 25：将 constructor 和 non-member functions 虚化 所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_5/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="More Effective C&#43;&#43; | 第 5 章 技术" />
+<meta property="og:description" content="条款 25：将 constructor 和 non-member functions 虚化 所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-05T17:13:55+08:00" />
+<meta property="article:modified_time" content="2022-12-05T17:13:55+08:00" />
+
+<meta itemprop="name" content="More Effective C&#43;&#43; | 第 5 章 技术">
+<meta itemprop="description" content="条款 25：将 constructor 和 non-member functions 虚化 所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或"><meta itemprop="datePublished" content="2022-12-05T17:13:55+08:00" />
+<meta itemprop="dateModified" content="2022-12-05T17:13:55+08:00" />
+<meta itemprop="wordCount" content="4056">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="More Effective C&#43;&#43; | 第 5 章 技术"/>
+<meta name="twitter:description" content="条款 25：将 constructor 和 non-member functions 虚化 所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">More Effective C&#43;&#43; | 第 5 章 技术</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-12-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 4056 字 </span>
+          <span class="more-meta"> 预计阅读 9 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#条款-25将-constructor-和-non-member-functions-虚化">条款 25：将 constructor 和 non-member functions 虚化</a></li>
+            <li><a href="#条款-26限制某个-class-所能产生的对象数量">条款 26：限制某个 class 所能产生的对象数量</a></li>
+            <li><a href="#条款-27要求或禁止对象产生于-heap-之中">条款 27：要求（或禁止）对象产生于 heap 之中</a></li>
+            <li><a href="#条款-28smart-pointers智能指针">条款 28：Smart Pointers（智能指针）</a></li>
+            <li><a href="#条款-29reference-counting引用计数">条款 29：Reference counting（引用计数）</a></li>
+            <li><a href="#条款-30proxy-classes代理类">条款 30：Proxy classes（代理类）</a></li>
+            <li><a href="#条款-31让函数根据一个以上的对象类型来决定如何虚化">条款 31：让函数根据一个以上的对象类型来决定如何虚化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="条款-25将-constructor-和-non-member-functions-虚化">条款 25：将 constructor 和 non-member functions 虚化</h3>
+<p>所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或网络或磁带等）读取对象信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NewsLetter</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">NLComponent</span> <span class="o">*</span><span class="n">readComponent</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="n">NLComponent</span> <span class="o">*</span><span class="nf">clone</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">NewsLetter</span><span class="o">::</span><span class="n">NewsLetter</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">str</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">components</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">readComponent</span><span class="p">(</span><span class="n">str</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上边的 <code>readComponent</code> 就是一个 virtual constructor。</p>
+<p>有一种特别的 vitual constructor 即 virtual copy constructor，该 virtual constructor 会返回一个指针，指向其调用者（某对象）的一个副本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NLComponent</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="n">NLComponent</span> <span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TextBlock</span><span class="o">:</span> <span class="k">public</span> <span class="n">NLComponent</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="n">TextBlock</span><span class="o">*</span><span class="n">clone</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="nf">TextBlock</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过 virtual copy constructor，我们上面的 NewsLetter 构造函数就可以这样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">NewsLetter</span><span class="o">::</span><span class="n">NewsLetter</span><span class="p">(</span><span class="k">const</span> <span class="n">NewsLetter</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">str</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">list</span><span class="o">&lt;</span><span class="n">NLComponent</span><span class="o">*&gt;::</span><span class="n">const_iterator</span> <span class="n">it</span><span class="o">=</span><span class="n">rhs</span><span class="p">.</span><span class="n">component</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span><span class="o">!=</span><span class="n">rhs</span><span class="p">.</span><span class="n">component</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">it</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">components</span><span class="p">.</span><span class="n">push_back</span><span class="p">((</span><span class="o">*</span><span class="n">it</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样每一个 TextBlock 都可以调用他自己的 clone，其他的子类也可以调用他们自己对应的 clone().</p>
+<p><strong>将 Non-Member Functions 的行为虚化：</strong> 写一个虚函数做实际工作，在写一个什么都不做的非虚函数，只负责调用虚函数，为了避免带来不必要的成本，还可以将非虚函数 inline 化。</p>
+<h3 id="条款-26限制某个-class-所能产生的对象数量">条款 26：限制某个 class 所能产生的对象数量</h3>
+<p>假如某个类只应该有一个对象，最简单的限制这个个数的方法就是将其 constructor 声明为 private，这样每个人都没有权力创建对象。或者做一个约束，每次创建的时候都返回static的对象：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Printer</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">friend</span> <span class="n">Printer</span><span class="o">&amp;</span> <span class="n">thePrinter</span><span class="p">();</span><span class="err">或者</span><span class="k">static</span> <span class="n">Printer</span><span class="o">&amp;</span> <span class="n">thePrinter</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Printer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Printer</span><span class="p">(</span><span class="k">const</span> <span class="n">Printer</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">Printer</span><span class="o">&amp;</span> <span class="n">thePrinter</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">Printer</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上述代码有 3 个特点：</p>
+<ul>
+<li>Printer class 的 constructor 为 private，可以压制对象的诞生</li>
+<li>全局函数 <code>thePrinter</code> 被声明为此 class 的一个 friend，使其不受 private constructors 约束</li>
+<li><code>thePrinter</code> 内含一个 static Printer 对象，所以只有一个 Printer 对象会被产生出来</li>
+</ul>
+<p>如果不想将 <code>thePrinter</code> 加入全局命名空间，可以将其改为 Printer 的一个 <strong>static member function</strong>; 或者把 Printer 和 <code>thePrinter</code> 放进一个 <strong>namespace</strong> 内。</p>
+<p><strong>创建对象的环境：</strong> 还有一个直观的方法来限制对象的个数，就是添加一个名为 numObjects 的 static 变量，来记录对象的个数，当然这种方法在出现继承的时候会出现问题（一个 Printer 和一个继承自 Printer 的 colorPrinter 同时存在的时候，就会超出 numObjects 个数，这个时候就需要限制继承。</p>
+<p><strong>允许对象来去自由：</strong> 如果使用伪构造函数的话，会导致对象销毁后，无法创建新的对象，解决方法就是一起使用上面的伪构造函数和计数器。</p>
+<p><strong>一个具有对象计数功能的基类</strong>： 如果拥有大量像 Printer 这样的类需要进行计数，那么较好的方法就是一次性封装所有的计数功能,需要确保每个进行实例计数的类都有一个相互隔离的计数器，所以模板会比较好:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">BeingCounted</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Counted</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">TooManyObjects</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="nf">objectCount</span><span class="p">(){</span><span class="k">return</span> <span class="n">numObjects</span><span class="p">;}</span>
+</span></span><span class="line"><span class="cl"><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Counted</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Counted</span><span class="p">(</span><span class="k">const</span> <span class="n">Counted</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Counted</span><span class="p">(){</span> <span class="o">--</span><span class="n">numObjects</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">numObjects</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="k">const</span> <span class="n">size_t</span> <span class="n">maxObjects</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">init</span><span class="p">();</span>                 <span class="c1">//避免构造函数的代码重复
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">BeingCounted</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Counted</span><span class="o">&lt;</span><span class="n">BeingCounted</span><span class="o">&gt;::</span><span class="n">Counted</span><span class="p">(){</span><span class="n">init</span><span class="p">();}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">BeingCounted</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Counted</span><span class="o">&lt;</span><span class="n">BeingCounted</span><span class="o">&gt;::</span><span class="n">Counted</span><span class="p">(</span><span class="k">const</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">BeingCounted</span><span class="o">&gt;&amp;</span><span class="p">){</span><span class="n">init</span><span class="p">();}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">BeingCounted</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">BeingCounted</span><span class="o">&gt;::</span><span class="n">init</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">numObjects</span> <span class="o">&gt;=</span> <span class="n">maxObjects</span><span class="p">)</span><span class="k">throw</span> <span class="n">TooManyObjects</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">++</span><span class="n">numObjects</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Printer</span><span class="o">:</span><span class="k">private</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">Printer</span><span class="o">&gt;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">Printer</span><span class="o">*</span> <span class="n">makePrinter</span><span class="p">();</span> <span class="c1">// 伪构造函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">using</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">Printer</span><span class="o">&gt;::</span><span class="n">objectCount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">Printer</span><span class="o">&gt;::</span><span class="n">TooManyObjects</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="条款-27要求或禁止对象产生于-heap-之中">条款 27：要求（或禁止）对象产生于 heap 之中</h3>
+<p>如果需要让某种类型的对象有 “delete this” 的能力，则必须要让该类型的对象被分配于 heap 中。如果需要保证某一类型绝不会发生内存泄漏，则要让该对象不从 heap 中产生。</p>
+<h4 id="要求对象产生于-heap-之中">要求对象产生于 heap 之中</h4>
+<p>为了实现这样的限制，必须找出一种方法，阻止 clients 不得使用 new 以外的方法产生对象。通常只需要让那些隐式调用的构造动作和析构动作不合法即可，最简单的办法即让 destructor 成为 private，而 constructor 为 public 。具体来说就是可以导入一个伪析构函数来调用真正的析构函数。</p>
+<p>限制 destructor 和 constructors 的运用会带来另一个问题即妨碍了继承和内含。解决继承问题，可以让基类的 destructor 成为 protected（仍保持其 constructors 为 public）。而对于必须内含的类，可以修改为内含一个指针，指向原本内含的对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">UPNumber</span> <span class="p">{...};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NonNegativeUPNumber</span> <span class="o">:</span> <span class="k">public</span> <span class="n">UPNumber</span> <span class="p">{...};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Asset</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Asset</span><span class="p">(</span><span class="kt">int</span> <span class="n">initValue</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Asset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">UPNumber</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="判断某个对象是否位于-heap-内">判断某个对象是否位于 heap 内</h4>
+<p>程序的地址空间以线性序列组织而成，其中 stack（栈）高地址往低地址成长，heap（堆）由低地址往高地址成长，而 static objeccts 通常位于 heap 之下：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221113203520605.png" alt="image-20221113203520605"></p>
+<p>然而，他们究竟在哪里视系统而定，没有一个绝对具移植性的办法可以决定某对象是否位于 heap 内。</p>
+<p>相对而言，判断 “指针的删除动作” 是否安全要简单的多，只需判断此指针是否由 new 返回即可，可以自行写一个 operator new。</p>
+<h4 id="禁止对象产生于-heap-之中">禁止对象产生于 heap 之中</h4>
+<p>欲阻止用户直接将对象实例化于 heap 之中，只需要让用户无法调用 new 即可。可以重写 operator new 将其声明为 private，因为 new operator 是通过 operator new 进行工作的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">UPNumber</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="o">*</span><span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="k">operator</span> <span class="nf">delete</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="条款-28smart-pointers智能指针">条款 28：Smart Pointers（智能指针）</h3>
+<p>所谓 smart pointers 是那些看起来、用起来、感觉起来都像内建指针，但提供更多机能的一种对象。smart pointers 由 templates 产生出来，可以利用 templates 参数表明其所指对象的类型。</p>
+<p><strong>Smart Pointers 的构造、赋值、析构</strong></p>
+<p>Smart pointer 的构造通常非常简单：确定一个目标物（通常是利用 smart pointer 的 constructor 自变量），然后让 smart pointer 内部的 dumb pointer 指向它。如果尚未决定目标物，就将内部指针设为 0，或是发出一个错误信息。此外，如果一个 smart pointer 拥有它所指的对象，它就有责任在本身即将被销毁时删除该对象，前提是这个 smart pointer 所指对象系动态分配而得。</p>
+<p>以 by value 方式传递 auto_ptrs 往往是个非常糟的做法，只有当你确定要讲对象拥有权移转给函数的某个参数时，才应该以 by value 方式传递 auto_ptrs.若一定要以 auto_ptrs 作为参数，应采用 pass-by-reference-to-const 方式。当 smart pointer 被复制，或是身为赋值动作的来源端时，它会被改变。</p>
+<p>smart pointer 的 destructor 通常看起来如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::~</span><span class="n">SmartPtr</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="k">this</span> <span class="n">owns</span> <span class="o">*</span><span class="n">pointee</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">pointee</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>实现解析操作符</strong></p>
+<p>operator* 返回所指对象，reference;operator-&gt; 返回 dumb pointer（指向某对象），或者一个 smart pointer。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">perform</span> <span class="s">&#34;smart pointer&#34;</span> <span class="n">processing</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">*</span><span class="n">pointee</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">perform</span> <span class="s">&#34;smart pointer&#34;</span> <span class="n">processing</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pointee</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>测试 Smart Pointers 是否为 Null</strong></p>
+<p>smart pointer 不能直接进行测试是否为 Null，需要提供一个隐式类型转换符：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">ptn</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">ptn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)...</span> <span class="c1">//error
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="n">ptn</span><span class="p">)...</span> <span class="c1">//error
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">ptn</span><span class="p">)...</span> <span class="c1">//error
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////修改/////////////////////////////////////    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SmartPtr</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">operator</span> <span class="kt">void</span><span class="o">*</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">ptn</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">ptn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">//现在正确
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="n">ptn</span><span class="p">)</span> <span class="c1">//现在正确
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">ptn</span><span class="p">)</span> <span class="c1">//现在正确
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Smart Pointers 与继承有关的转换</strong></p>
+<p>也需要添加一个隐式类型转换符：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MusicProduct</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Cassette</span><span class="o">:</span><span class="k">public</span> <span class="n">MusicProduct</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CD</span><span class="o">:</span><span class="k">public</span> <span class="n">MusicProduct</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="n">displayAndPlay</span><span class="p">(</span><span class="k">const</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">MusicProduct</span><span class="o">&gt;&amp;</span> <span class="n">pmp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">numTimes</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">Cassette</span><span class="o">&gt;</span> <span class="n">funMusic</span><span class="p">(</span><span class="k">new</span> <span class="n">Cassette</span><span class="p">(</span><span class="s">&#34;1234&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">CD</span><span class="o">&gt;</span> <span class="n">nightmareMusic</span><span class="p">(</span><span class="k">new</span> <span class="n">CD</span><span class="p">(</span><span class="s">&#34;143&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">displayAndPlay</span><span class="p">(</span><span class="n">funMusic</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span> <span class="c1">// 错误!
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">displayAndPlay</span><span class="p">(</span><span class="n">nightmareMusic</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 错误!
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">////////////////////////////////修改/////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SmartPtr</span><span class="o">&lt;</span><span class="n">Cassette</span><span class="o">&gt;</span><span class="p">{</span><span class="c1">//或者用模板来代替
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">operator</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">MusicProduct</span><span class="o">&gt;</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">MusicProduct</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pointee</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Smart Pointer 和 const</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">CD</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span> <span class="c1">//non-const 对象 non-const 指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">CD</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span> <span class="c1">//const 对象 non-const 指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">CD</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">goodCD</span><span class="p">;</span> <span class="c1">//non-const 对象 const 指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">CD</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">goodCD</span><span class="p">;</span> <span class="c1">//const 对象 const 指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>      <span class="c1">// 指向const对象的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">SmartPtrToConst</span><span class="p">{</span> <span class="c1">//灵巧指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">...</span>                <span class="c1">// 灵巧指针通常的成员函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">union</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">constPointee</span><span class="p">;</span> <span class="c1">// 让 SmartPtrToConst 访问
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">T</span><span class="o">*</span> <span class="n">pointee</span><span class="p">;</span> <span class="c1">// 让 SmartPtr 访问
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="c1">// 指向 non-const 对象的灵巧指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">SmartPtr</span><span class="o">:</span> <span class="k">public</span> <span class="n">SmartPtrToConst</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span> <span class="c1">// 没有数据成员
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="条款-29reference-counting引用计数">条款 29：Reference counting（引用计数）</h3>
+<p>引用计数有两个好处：</p>
+<ul>
+<li>简化 heap objects 周边的记录工作：当对象使用了引用计数，它就拥有了自己，一旦不再有任何人使用它，便自动销毁自己。</li>
+<li>允许多个等值对象共享同一实值，避免多次存储。</li>
+</ul>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20221115171600311.png" alt="image-20221115171600311"></p>
+<p><strong>引用计数的实现：</strong></p>
+<p>产生一个 class 不仅存储引用计数，也存储它们追踪的对象值。</p>
+<p><strong>技巧：</strong> 将一个 struct 嵌套放进一个 class 的 private 段落内，可以很方便地让该 class 的所有 members 有权处理这个 struct，而又能禁止任何其他人访问这个 struct。</p>
+<h3 id="条款-30proxy-classes代理类">条款 30：Proxy classes（代理类）</h3>
+<p>代理类可以让一些原本十分困难或几乎不可能完成的行为得以实现：</p>
+<p><strong>(1) 实现多维数组</strong></p>
+<p>实现二维数组：在 <code>Array2D</code> 中将 <code>operator[]</code> 重载，令其返回一个 <code>Array1D</code> 对象。然后再对 <code>Array1D</code> 重载其 <code>operator[]</code> 令其返回原先二维数组中的一个元素。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Array2D</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Array2D</span><span class="p">(</span><span class="kt">int</span> <span class="n">dim1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dim2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">Array1D</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Array1D</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">Array1D</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">Array2D</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="c1">//这里面的[][]运算符是通过两次重载实现的
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Array2D</code> 的用户不需要知道 <code>Array1D</code> class 的存在。</p>
+<p><strong>(2) 区分 operator[] 的读写操作</strong></p>
+<p>采用延迟计算方法，修改operator[]让他返回一个（代理字符的）proxy对象而不是字符对象本身，并且判断之后这个代理字符怎么被使用，从而判断是读还是写操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">String</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">CharProxy</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CharProxy</span><span class="p">(</span><span class="n">String</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CharProxy</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">CharProxy</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CharProxy</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">operator</span> <span class="nf">char</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span><span class="o">&amp;</span> <span class="n">theString</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">charIndex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">CharProxy</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span><span class="c1">//对于const的Strings
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">CharProxy</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">);</span>            <span class="c1">//对于non-const的Strings
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">friend</span> <span class="k">class</span> <span class="nc">CharProxy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">RCPtr</span><span class="o">&lt;</span><span class="n">StringValue</span><span class="o">&gt;</span> <span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>(3) 压制类型转换</strong></p>
+<p>见条款 5。</p>
+<p>然而，代理类也有缺点。如果扮演函数返回值的角色，那些代理类就是一种临时对象，需要被产生和被销毁。另外重要的一点是，当 class 的身份从“与真实对象合作”移转到“与替身对象合作”，往往会造成 class 语意的改变。</p>
+<h3 id="条款-31让函数根据一个以上的对象类型来决定如何虚化">条款 31：让函数根据一个以上的对象类型来决定如何虚化</h3>
+<p>思考以下架构出两物（宇宙飞船、太空站、小行星）碰撞的 C++ 代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">GameObject</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceShip</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GameObject</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceStation</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GameObject</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Asteroid</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GameObject</span><span class="p">{....};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">checkForCollision</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">object1</span><span class="p">,</span> <span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">object2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">processCollision</span><span class="p">(</span><span class="n">object1</span><span class="p">,</span> <span class="n">object2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于 <code>processCollision(object1, object2)</code>的结果同时由 <code>object1</code> 和 <code>object2</code> 两者的动态类型决定，所以该函数由两个对象决定如何虚化。通常可以通过如下方法实现：</p>
+<ol>
+<li>
+<p><strong>虚函数 + RTTI（运行期类型辨识）</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">GameObject</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceShip</span><span class="o">:</span><span class="k">public</span> <span class="n">GameObject</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nl">SpaceShip</span><span class="p">:</span><span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">type_info</span><span class="o">&amp;</span> <span class="n">objectType</span> <span class="o">=</span> <span class="k">typeid</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">objectType</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="n">SpaceShip</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SpaceShip</span><span class="o">&amp;</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">SpaceShip</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">process</span> <span class="n">a</span> <span class="n">SpaceShip</span><span class="o">-</span><span class="n">SpaceShip</span> <span class="n">collision</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="nf">if</span><span class="p">(</span><span class="n">objectType</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="n">SpaceStation</span><span class="p">)){</span><span class="cm">/*与上边操作类似*/</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="nf">if</span><span class="p">(</span><span class="n">objectType</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="n">Asteroid</span><span class="p">)){</span><span class="cm">/*与上边操作类似*/</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="nf">CollisionWithUnknownObject</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>只需确定碰撞双方之一的类型，另一对象是 <code>*this</code> ，其类型已经被虚函数机制确定下来了（因为位于 SpaceShip member function 内，所以一定是一个 SpaceShip 对象）。</p>
+</li>
+<li>
+<p><strong>只使用虚函数</strong></p>
+<p>将 <strong>double-dispatching</strong> 以两个 <strong>single dispatches</strong> 实现出来：其一用来决定第一对象的动态类型，其二用来决定第二对象的动态类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceShip</span><span class="p">;</span> <span class="c1">// forward declaration
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">SpaceStation</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Asteroid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">GameObject</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span>   <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">collide</span><span class="p">(</span><span class="n">SpaceShip</span><span class="o">&amp;</span>    <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">collide</span><span class="p">(</span><span class="n">SpaceStation</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">collide</span><span class="p">(</span><span class="n">Asteroid</span><span class="o">&amp;</span>     <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果需要在程序中实现 double-dispatching，最好的方向就是修改设计，消除此项需求。如果不能，那么，虚函数法比 RTTI 法安全一些。</p>
+</li>
+<li>
+<p><strong>自行仿真虚函数表</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceShip</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GameObject</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span>   <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitSpaceShip</span><span class="p">(</span><span class="n">SpaceShip</span><span class="o">&amp;</span>    <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitSpaceStation</span><span class="p">(</span><span class="n">SpaceStation</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitAsteroid</span><span class="p">(</span><span class="n">Asteroid</span><span class="o">&amp;</span>     <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>初始化模拟虚函数表</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">GameObject</span> <span class="p">{</span> <span class="c1">// this is unchanged 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span><span class="o">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpaceShip</span><span class="o">:</span> <span class="k">public</span> <span class="n">GameObject</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// these functions now all take a GameObject parameter
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitSpaceShip</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">spaceShip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitSpaceStation</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">spaceStation</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitAsteroid</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">asteroid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SpaceShip</span><span class="o">::</span><span class="n">HitMap</span> <span class="o">*</span> <span class="n">SpaceShip</span><span class="o">::</span><span class="n">initializeCollisionMap</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HitMap</span> <span class="o">*</span><span class="n">phm</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HitMap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">*</span><span class="n">phm</span><span class="p">)[</span><span class="s">&#34;SpaceShip&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">hitSpaceShip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">*</span><span class="n">phm</span><span class="p">)[</span><span class="s">&#34;SpaceStation&#34;</span><span class="p">]</span><span class="o">=</span> <span class="o">&amp;</span><span class="n">hitSpaceStation</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">*</span><span class="n">phm</span><span class="p">)[</span><span class="s">&#34;Asteroid&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">hitAsteroid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">phm</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>其他方法还包括：<strong>使用非成员函数的碰撞处理函数</strong> 、<strong>继承 + 自行仿真的虚函数表</strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-12-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/moreeffectivec&#43;&#43;_6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">More Effective C&#43;&#43; | 第 6 章 杂项</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/moreeffectivec&#43;&#43;_4/">
+            <span class="next-text nav-default">More Effective C&#43;&#43; | 第 4 章 效率</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

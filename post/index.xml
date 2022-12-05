@@ -6,7 +6,61 @@
     <description>Recent content in Posts on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Oct 2022 21:38:36 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Dec 2022 17:21:37 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>More Effective C&#43;&#43; | 第 6 章 杂项</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_6/</link>
+      <pubDate>Mon, 05 Dec 2022 17:21:37 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_6/</guid>
+      <description>条款 32：在未来时态下发展程序 在未来时态下设计程序，就是接受“事情总会改变”的事实，并准备应对之道。 未来式思维主要考虑如下： 提供完整的 class ——</description>
+    </item>
+    
+    <item>
+      <title>More Effective C&#43;&#43; | 第 5 章 技术</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_5/</link>
+      <pubDate>Mon, 05 Dec 2022 17:13:55 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_5/</guid>
+      <description>条款 25：将 constructor 和 non-member functions 虚化 所谓 virtual constructor 就是某种函数，视其获得的输入，可产生不同类型的对象。virtual constructors 在许多情况下有用，其中之一就是从磁盘（或</description>
+    </item>
+    
+    <item>
+      <title>More Effective C&#43;&#43; | 第 4 章 效率</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_4/</link>
+      <pubDate>Mon, 05 Dec 2022 17:13:31 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_4/</guid>
+      <description>条款 16：谨记 80-20 准则 80-20 准则即： 一个程序 80% 的资源用于 20% 的代码身上。 考虑 80-20 准则的时候，有一点很重要，即：不要过于拘泥于字面上的数字。不论数字是 80-20</description>
+    </item>
+    
+    <item>
+      <title>More Effective C&#43;&#43; | 第 3 章 异常</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_3/</link>
+      <pubDate>Mon, 05 Dec 2022 17:13:25 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_3/</guid>
+      <description>条款 9：利用 destructors 避免泄露资源 假设有如下的代码： 1 2 3 4 5 6 7 8 9 10 //从s读取动物信息，返回一个指针，指向一个新分配的对象 ALA* readALA(istream&amp;amp; s); void processAdoptions(istream&amp;amp; dataSource) { while(dataSource) { ALA*</description>
+    </item>
+    
+    <item>
+      <title>More Effective C&#43;&#43; | 第 2 章 操作符</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_2/</link>
+      <pubDate>Mon, 05 Dec 2022 17:13:21 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_2/</guid>
+      <description>条款 5：对定制的“类型转换函数”保持警觉 C++ 允许编译器在不同类型之间执行隐式转换。但有一些可怕的类型转换需要格外注意：单变量 constructors 和 隐式类型转换操</description>
+    </item>
+    
+    <item>
+      <title>More Effective C&#43;&#43; | 第 1 章 基础议题</title>
+      <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_1/</link>
+      <pubDate>Mon, 05 Dec 2022 17:09:16 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_1/</guid>
+      <description>条款 1：仔细区别 pointers 和 references 没有所谓的 null reference。一个 reference 必须总代表某个对象。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可</description>
+    </item>
+    
     <item>
       <title>Effective C&#43;&#43; | 第 9 章 杂项讨论</title>
       <link>https://www.xhxha.one/post/effectivec&#43;&#43;_9/</link>
@@ -49,7 +103,7 @@
       <pubDate>Mon, 31 Oct 2022 21:38:15 +0800</pubDate>
       
       <guid>https://www.xhxha.one/post/effectivec&#43;&#43;_5/</guid>
-      <description>Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝</description>
+      <description>Item 26：尽可能延后变量定义式的出现时间 “尽可能延后” 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这</description>
     </item>
     
     <item>

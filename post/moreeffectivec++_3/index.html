@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>More Effective C&#43;&#43; | 第 3 章 异常 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="条款 9：利用 destructors 避免泄露资源 假设有如下的代码： 1 2 3 4 5 6 7 8 9 10 //从s读取动物信息，返回一个指针，指向一个新分配的对象 ALA* readALA(istream&amp;amp; s); void processAdoptions(istream&amp;amp; dataSource) { while(dataSource) { ALA*" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="More Effective C&#43;&#43; | 第 3 章 异常" />
+<meta property="og:description" content="条款 9：利用 destructors 避免泄露资源 假设有如下的代码： 1 2 3 4 5 6 7 8 9 10 //从s读取动物信息，返回一个指针，指向一个新分配的对象 ALA* readALA(istream&amp; s); void processAdoptions(istream&amp; dataSource) { while(dataSource) { ALA*" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-05T17:13:25+08:00" />
+<meta property="article:modified_time" content="2022-12-05T17:13:25+08:00" />
+
+<meta itemprop="name" content="More Effective C&#43;&#43; | 第 3 章 异常">
+<meta itemprop="description" content="条款 9：利用 destructors 避免泄露资源 假设有如下的代码： 1 2 3 4 5 6 7 8 9 10 //从s读取动物信息，返回一个指针，指向一个新分配的对象 ALA* readALA(istream&amp; s); void processAdoptions(istream&amp; dataSource) { while(dataSource) { ALA*"><meta itemprop="datePublished" content="2022-12-05T17:13:25+08:00" />
+<meta itemprop="dateModified" content="2022-12-05T17:13:25+08:00" />
+<meta itemprop="wordCount" content="3389">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="More Effective C&#43;&#43; | 第 3 章 异常"/>
+<meta name="twitter:description" content="条款 9：利用 destructors 避免泄露资源 假设有如下的代码： 1 2 3 4 5 6 7 8 9 10 //从s读取动物信息，返回一个指针，指向一个新分配的对象 ALA* readALA(istream&amp; s); void processAdoptions(istream&amp; dataSource) { while(dataSource) { ALA*"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">More Effective C&#43;&#43; | 第 3 章 异常</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-12-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 3389 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#条款-9利用-destructors-避免泄露资源">条款 9：利用 destructors 避免泄露资源</a></li>
+            <li><a href="#条款-10在-constructors-内阻止资源泄露">条款 10：在 constructors 内阻止资源泄露</a></li>
+            <li><a href="#条款-11禁止异常流出-destructors-之外">条款 11：禁止异常流出 destructors 之外</a></li>
+            <li><a href="#条款-12了解-抛出一个-exception-与-传递一个参数-或-调用一个虚函数-之间的差异">条款 12：了解 “抛出一个 exception” 与 “传递一个参数” 或 “调用一个虚函数” 之间的差异</a></li>
+            <li><a href="#条款-13以-by-reference-方式捕捉-exceptions">条款 13：以 by reference 方式捕捉 exceptions</a></li>
+            <li><a href="#条款-14审慎的使用异常规格exception-specifications">条款 14：审慎的使用异常规格（exception specifications）</a></li>
+            <li><a href="#条款-15了解异常处理的成本">条款 15：了解异常处理的成本</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="条款-9利用-destructors-避免泄露资源">条款 9：利用 destructors 避免泄露资源</h3>
+<p>假设有如下的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">//从s读取动物信息，返回一个指针，指向一个新分配的对象  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ALA</span><span class="o">*</span> <span class="nf">readALA</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">processAdoptions</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">dataSource</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">dataSource</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ALA</span><span class="o">*</span> <span class="n">pa</span> <span class="o">=</span> <span class="n">readALA</span><span class="p">(</span><span class="n">dataSource</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pa</span><span class="o">-&gt;</span><span class="n">processAdoption</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">pa</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果 <code>pa-&gt;processAdoption</code> 抛出一个 exception ，则 processAdoptions 无法捕捉它，所以这个 exception 会传播到 processAdoptions 的调用端。则这个函数内位于 <code>pa-&gt;processAdoption</code> 之后的语句都不会执行，即 pa 不会被删除，所以只要 <code>pa-&gt;processAdoption</code> 抛出一次异常，<code>processAdoptions</code> 便发生一次资源泄露。</p>
+<p>要解决上述问题，一种方法是使用 <code>try-catch</code> 语句，另一种更为简单的方法是：将 delete 动作从 processAdoptions 函数移到函数内某个局部对象的 destructor 内。实现这样的方法即：以一个“类似指针的对象”取代指针 pa。</p>
+<p>C++ 标准程序库提供了一个名为 <code>auto_ptr</code> 的 class template，其行为正是我们所需要的。每个 <code>auto_ptr</code> 的 constructor 都要求获得一个指向 heap object 的指针；其 destructor 会将该 heap object 删除。</p>
+<p>以 <code>auto_ptr</code> 对象取代原始指针之后，processAdoptions 看起来如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">processAdoptions</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">dataSource</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">dataSource</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">ALA</span><span class="o">&gt;</span> <span class="n">pa</span><span class="p">(</span><span class="n">readALA</span><span class="p">(</span><span class="n">dataSource</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pa</span><span class="o">-&gt;</span><span class="n">processAdoption</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>以一个对象存放“必须自动释放的资源”，并依赖该对象的 destructor 释放</strong>，这样的理念也可对“以指针为本”以外的资源施行。</p>
+<h3 id="条款-10在-constructors-内阻止资源泄露">条款 10：在 constructors 内阻止资源泄露</h3>
+<p>C++ 只会析构已构造完成的对象。对象只有在其 constructor 执行完毕才算是完全构造妥当。假设程序打算产生一个局部性的 BookEntry object b:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">testBookEntryClass</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BookEntry</span> <span class="n">b</span><span class="p">(</span><span class="s">&#34;Addison-Wes&#34;</span><span class="p">,</span> <span class="s">&#34;a&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果 exception 在 b 的构造过程中被抛出，b 的 destructor 就不会被调用，即使将 b 分配于 heap 中，并在 exception 出现时调用 delete，仍无济于事。</p>
+<p>C++ 不会自动清理那些“构造期间抛出 exceptions”的对象，所以你必须设计你的 constructors，使它们在那种情况下也可以自我清理。通常这只需要将所有可能的 exceptions 捕捉起来，执行某项清理工作，然后重新抛出 exception，使他继续传播出去即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">BookEntry</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">BookEntry</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">address</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">imageFileName</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">audioClipFileName</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">BookEntry</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">theName</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">theAddress</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">list</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">thePhones</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Image</span> <span class="o">*</span><span class="n">theImage</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">AudioClip</span> <span class="o">*</span><span class="n">theAudioClip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">Image</span><span class="o">&gt;</span> <span class="n">theImage</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">AudioClip</span><span class="o">&gt;</span> <span class="n">theAudioClip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BookEntry</span><span class="o">::</span><span class="n">BookEntry</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">address</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">imageFileName</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">audioClipFileName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="n">theName</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">theAddress</span><span class="p">(</span><span class="n">address</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">theImage</span><span class="p">(</span><span class="n">imageFileName</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="o">?</span> <span class="k">new</span> <span class="n">Image</span><span class="p">(</span><span class="n">imageFileName</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">      <span class="n">theAudioClip</span><span class="p">(</span><span class="n">audioClipFileName</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="o">?</span> <span class="k">new</span> <span class="n">AudioClip</span><span class="p">(</span><span class="n">audioClipFileName</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{}</span>  
+</span></span><span class="line"><span class="cl"><span class="n">BookEntry</span><span class="o">::~</span><span class="n">BookEntry</span><span class="p">(){}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上述设计中，如果 <code>theAudioClip</code> 初始化期间有任何 exception 被抛出，<code>theImage</code> 已经是完整构造好的对象，所以它会被自动销毁，就像 <code>theName</code>,<code>theAddress</code>,<code>thePhones</code> 一样。此外，由于 <code>theImage</code> 和 <code>theAudioClip</code> 如今都是对象，当其宿主 <code>BookEntry</code> 被销毁，它们亦将被自动销毁。因此不再需要以手动方式删除它们所指的对象。</p>
+<h3 id="条款-11禁止异常流出-destructors-之外">条款 11：禁止异常流出 destructors 之外</h3>
+<p>两种情况下 destructor 会被调用：</p>
+<ul>
+<li>当对象在正常状态下被销毁，即当它离开了它的生存空间或是被明确地删除；</li>
+<li>当对象被 exception 处理机制销毁</li>
+</ul>
+<p>如果控制权基于 excepion 的因素离开 destructor，而此时正有另一个 exception 处于作用状态，C++ 会调用 <code>terminate</code> 函数，此函数会立即将程序结束掉而不等局部对象被销毁。</p>
+<p>如何禁止异常流出 destructor 之外呢？可用的一个方法是在 <code>catch</code> 语句中什么也不做：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Session</span><span class="o">::~</span><span class="n">Session</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">logDestruction</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">catch</span><span class="p">(...){</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里的 <code>catch</code> 语句块看似什么也没做，实际上它阻止了“logDestruction 所抛出的 exceptions”传出 Session destructor 之外。这时如果一个 Session object 因为栈展开而被销毁，<code>terminate</code> 并不会被调用。</p>
+<h3 id="条款-12了解-抛出一个-exception-与-传递一个参数-或-调用一个虚函数-之间的差异">条款 12：了解 “抛出一个 exception” 与 “传递一个参数” 或 “调用一个虚函数” 之间的差异</h3>
+<p>函数参数和 exceptions 的传递方式有 3 种：<strong>by value</strong>, <strong>by reference</strong> , <strong>by pointer</strong>. 但是它们两者的行为却有很大不同，原因是当你调用一个函数，控制权最终会回到调用端（除非函数失败以至于无法返回），但是当你抛出一个 exception，控制权不会再回到抛出端。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">istream</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="n">Widget</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">passAndThrowWidget</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Widget</span> <span class="n">localWidget</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">localWidget</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="n">localWidget</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(1) 当 <code>localWidget</code> 被交到 <code>operator&gt;&gt;</code> 函数手中，并没有发生复制行为，而是 <code>operator&gt;&gt;</code> 内的 <code>reference w</code> 被绑定到 <code>localWidget</code> 身上。此时，对 <code>w</code> 所做的任何事情，其实都是施加于 <code>localWidget</code> 身上的。不同的是，无论 exception 是以 by value 或 by reference 方式传递，都会发生 <code>localWidget</code> 的复制行为，而交到 <code>catch</code> 子句手上的正是那个副本。这个不同也解释了“传递参数”与“抛出 exception”之间的另一个不同：后者往往比前者慢。</p>
+<p>当对象被复制当做一个 <code>exception</code>，复制行为是由对象的 <code>copy constructor</code> 执行的。这个 <code>copy constructor</code> 相应于该对象的“静态类型”而非“动态类型”。</p>
+<p>(2) “参数传递” 和 “exception 传播” 之间的另一个区别是，一个被抛出的对象（必为临时对象）可以简单地用 by reference 的方式捕捉，不需要以 by reference-to-const 的方式捕捉。函数调用过程中将一个临时对象传递给一个 non-const reference 参数是不允许的，但对 exceptions 则属合法。</p>
+<p>抛出“exception”和“传递函数参数”相比，前者会多构造一个“被抛出物”的副本（并于稍后析构）。</p>
+<p>以 by pointer 方式抛出 exceptions 事实上相当于 pass by pointer，两者都传递指针副本。必须注意的是，千万不要抛出一个指向局部对象的指针，因为该局部对象会在 exception 传离其 scope 时被销毁，因此 catch 子句会获得一个指向“已被销毁的对象”的指针，这是要避免的。</p>
+<p>(3) 另外一个区别就是在try语句块里面，抛出的异常不会进行类型转换（除了继承类和基类之间的类型转换，和类型化指针转变成无类型指针的变换），例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="n">value</span><span class="p">;</span> <span class="c1">//value可以是int也可以是double等其他类型的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">catch</span><span class="p">(</span><span class="kt">double</span> <span class="n">d</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="p">....</span>         <span class="c1">//这里只处理double类型的异常，如果遇到int或者其他类型的异常则不予理会
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) 虚函数采用所谓的“best fit”策略，而 exception 处理机制遵循所谓的“first fit”策略，即 <code>catch</code> 子句总是依出现顺序做匹配尝试。因此，当 <code>try</code> 语句块中分别有针对 base class 而设计和针对 derived class 而设计的 <code>catch</code> 子句，一个 <code>derived class exception</code> 仍有可能被“针对 base class 而设计的 catch 子句”处理掉。所以，最佳的行动策略是：<strong>绝不要将“针对 base class 而设计的 catch 子句”放在“针对 derived class 而设计的 catch 子句”之前</strong></p>
+<h3 id="条款-13以-by-reference-方式捕捉-exceptions">条款 13：以 by reference 方式捕捉 exceptions</h3>
+<p>若使用 <code>catch by pointer</code> ，需要解决的问题是必须有办法让 <code>exception objects</code> 在控制权离开那个“抛出指针”的函数之后仍然存在。</p>
+<p><code>Catch-by-value</code> 可以消除上边的问题，但存在的问题是每当 <code>exception objects</code> 被抛出，就得复制两次。此外它也会引起切割问题，因为 <code>derived class exception objects</code> 被捕捉并被视为 <code>base class exceptions</code> 者，将失去其派生成分。</p>
+<p><code>Catch-by-reference</code> 不需要蒙受上边所讨论的任何问题。它不像 <code>catch by pointer</code>，不会发生对象删除问题，因此也就不难捕获标准的 exception. 它和 <code>catch-by-value</code> 也不同，不存在切割问题，而且 <code>exception objects</code> 只会被复制一次。</p>
+<p>总结：<strong>Catch exceptions by reference!</strong></p>
+<h3 id="条款-14审慎的使用异常规格exception-specifications">条款 14：审慎的使用异常规格（exception specifications）</h3>
+<p>异常规格指的是函数指定只能抛出异常的类型：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">extern</span> <span class="kt">void</span> <span class="nf">f1</span><span class="p">();</span>    <span class="c1">//f1可以抛出任意类型的异常
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">f2</span><span class="p">()</span> <span class="k">throw</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="c1">//f2只能抛出int类型的异常
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">f2</span><span class="p">()</span> <span class="k">throw</span><span class="p">(</span><span class="kt">int</span><span class="p">){</span> 
+</span></span><span class="line"><span class="cl">     <span class="n">f1</span><span class="p">();</span>           <span class="c1">//编译器会因为f1和f2的异常规格不同而在发出异常的时候调用unexpected
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在用模板的时候，会让这种情况更为明显：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span> <span class="k">throw</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">&amp;</span><span class="n">lhs</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个模板为所有的类型定义了一个操作符函数 <code>operator==</code> 对于任意一对相同类型的对象，如果有一样的地址，则返回 true，否则返回 false，单单这么一个函数可能不会抛出异常，但是如果有 <code>operator&amp;</code> 重载时，<code>operator&amp;</code> 可能会抛出异常，这样就违反了异常规则，让程序跳转到 unexpected。</p>
+<p>阻止程序跳转到 unexpected 的三种方法： 将所有的 unexpected 异常都替换成  UnexpectedException 对象：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">UnexpectedException</span><span class="p">{};</span> <span class="c1">//所有的unexpected异常对象都被替换成这种对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">convertUnexpected</span><span class="p">(){</span>       <span class="c1">//如果一个unexpected异常被抛出，这个函数就会被调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">throw</span> <span class="n">UnexpectedException</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">set_unexpected</span><span class="p">(</span><span class="n">convertUnexpected</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>替换 unexpected 函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">convertUnexpected</span><span class="p">(){</span> <span class="c1">//如果一个unexpected异常被抛出，这个函数被调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">throw</span><span class="p">;</span>                <span class="c1">//只是重新抛出当前的异常
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">set_unexpected</span><span class="p">(</span><span class="n">convertUnexpected</span><span class="p">);</span><span class="c1">//安装convertUnexpected作为unexpected的替代品，此方法应该在所有的异常规格里面包含bad_exception
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>总结：<strong>异常规格应该在加入之前谨慎的考虑它带来的行为是否是我们所希望的</strong></p>
+<h3 id="条款-15了解异常处理的成本">条款 15：了解异常处理的成本</h3>
+<p>为了能够在运行期处理 exceptions，程序必须做大量记录工作：在每一个执行点，它们必须能够确认“如果发生 exception，哪些对象需要析构”，它们必须在每一个 try 语句块的进入点和离开点做记号，针对每个 try 语句块它们必须记录对应的 catch 子句及能够处理的 exceptions 类型，这些记录工作都必须付出代价。</p>
+<p>Exception 处理机制带来的第二种成本来自 try 语句块。不同编译器以不同的方法实现 try 语句块，付出的代价也各不相同。粗略估计，如果使用 try 语句块，代码大约膨胀 5% - 10% ，执行速度亦大约下降这个数。</p>
+<p>由于异常是罕见的，所以不需要对以上数据过度敏感。为了让 exception 的相关成本最小化，只要能够不支持 exceptions，编译器便不支持；请将你对try 语句块和 exception specifications 的使用限制于非用不可的地点，并且在真正异常的情况下才抛出 exceptions。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-12-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/moreeffectivec&#43;&#43;_4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">More Effective C&#43;&#43; | 第 4 章 效率</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/moreeffectivec&#43;&#43;_2/">
+            <span class="next-text nav-default">More Effective C&#43;&#43; | 第 2 章 操作符</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

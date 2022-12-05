@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Xtar" /><meta name="description" content="Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Xtar" /><meta name="description" content="Item 26：尽可能延后变量定义式的出现时间 “尽可能延后” 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="Effective C&#43;&#43; | 第 5 章 实现" />
-<meta property="og:description" content="Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝" />
+<meta property="og:description" content="Item 26：尽可能延后变量定义式的出现时间 “尽可能延后” 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.xhxha.one/post/effectivec&#43;&#43;_5/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-10-31T21:38:15+08:00" />
 <meta property="article:modified_time" content="2022-10-31T21:38:15+08:00" />
 
 <meta itemprop="name" content="Effective C&#43;&#43; | 第 5 章 实现">
-<meta itemprop="description" content="Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝"><meta itemprop="datePublished" content="2022-10-31T21:38:15+08:00" />
+<meta itemprop="description" content="Item 26：尽可能延后变量定义式的出现时间 “尽可能延后” 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这"><meta itemprop="datePublished" content="2022-10-31T21:38:15+08:00" />
 <meta itemprop="dateModified" content="2022-10-31T21:38:15+08:00" />
-<meta itemprop="wordCount" content="2169">
+<meta itemprop="wordCount" content="2165">
 <meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Effective C&#43;&#43; | 第 5 章 实现"/>
-<meta name="twitter:description" content="Item 26：尽可能延后变量定义式的出现时间 **“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝"/>
+<meta name="twitter:description" content="Item 26：尽可能延后变量定义式的出现时间 “尽可能延后” 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -168,7 +168,7 @@ code.has-jax {
             <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
             <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
             </div>
-          <span class="more-meta"> 约 2169 字 </span>
+          <span class="more-meta"> 约 2165 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -195,7 +195,7 @@ code.has-jax {
 </div>
     <div class="post-content">
       <h2 id="item-26尽可能延后变量定义式的出现时间">Item 26：尽可能延后变量定义式的出现时间</h2>
-<p>**“尽可能延后”**的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这份定义直到给它初值实参为止。</p>
+<p><strong>“尽可能延后”</strong> 的真正意义是：不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这份定义直到给它初值实参为止。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -244,7 +244,7 @@ code.has-jax {
 </div>
 </div><p>对于循环结构，可能存在两种写法：</p>
 <p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20220826160136654.png" alt="image-20220826160136654"></p>
-<p>除非(1)你知道赋值成本比“构造+析构”成本低，(2) 你正在处理代码中效率高度敏感的部分，否则你应该使用做法 B。</p>
+<p>除非(1) 你知道赋值成本比“构造+析构”成本低，(2) 你正在处理代码中效率高度敏感的部分，否则你应该使用做法 B。</p>
 <h2 id="item-27尽量少做转型动作">Item 27：尽量少做转型动作</h2>
 <p>旧时转型：</p>
 <ul>

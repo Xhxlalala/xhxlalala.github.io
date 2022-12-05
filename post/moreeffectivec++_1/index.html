@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>More Effective C&#43;&#43; | 第 1 章 基础议题 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="条款 1：仔细区别 pointers 和 references 没有所谓的 null reference。一个 reference 必须总代表某个对象。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="More Effective C&#43;&#43; | 第 1 章 基础议题" />
+<meta property="og:description" content="条款 1：仔细区别 pointers 和 references 没有所谓的 null reference。一个 reference 必须总代表某个对象。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/moreeffectivec&#43;&#43;_1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-05T17:09:16+08:00" />
+<meta property="article:modified_time" content="2022-12-05T17:09:16+08:00" />
+
+<meta itemprop="name" content="More Effective C&#43;&#43; | 第 1 章 基础议题">
+<meta itemprop="description" content="条款 1：仔细区别 pointers 和 references 没有所谓的 null reference。一个 reference 必须总代表某个对象。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可"><meta itemprop="datePublished" content="2022-12-05T17:09:16+08:00" />
+<meta itemprop="dateModified" content="2022-12-05T17:09:16+08:00" />
+<meta itemprop="wordCount" content="1305">
+<meta itemprop="keywords" content="C&#43;&#43;," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="More Effective C&#43;&#43; | 第 1 章 基础议题"/>
+<meta name="twitter:description" content="条款 1：仔细区别 pointers 和 references 没有所谓的 null reference。一个 reference 必须总代表某个对象。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">More Effective C&#43;&#43; | 第 1 章 基础议题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-12-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+          <span class="more-meta"> 约 1305 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#条款-1仔细区别-pointers-和-references">条款 1：仔细区别 pointers 和 references</a></li>
+            <li><a href="#条款-2最好使用-c-转型操作符">条款 2：最好使用 C++ 转型操作符</a></li>
+            <li><a href="#条款-3绝对不要以多态方式处理数组">条款 3：绝对不要以多态方式处理数组</a></li>
+            <li><a href="#条款-4非必要不提供-default-constructor">条款 4：非必要不提供 default constructor</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="条款-1仔细区别-pointers-和-references">条款 1：仔细区别 pointers 和 references</h3>
+<p>没有所谓的 null reference。<strong>一个 reference 必须总代表某个对象</strong>。所以如果使用某个变量，其目的是用来指向另一个对象，但是也有可能不指向任何对象，那么就应该使用 pointer，因为<strong>可以将 pointer 设置为 null</strong>。</p>
+<p>以下行为是非常有害的行为，输出结果不可预期：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">char</span> <span class="o">*</span><span class="n">pc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">&amp;</span> <span class="n">rc</span> <span class="o">=</span> <span class="o">*</span><span class="n">pc</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于 reference 一定得代表某个对象，因此 reference 必须有初值，但是 pointers 就没有这样的限制。</p>
+<p>此外，pointers 可以被重新赋值，指向另一个对象，reference 却总是指向它最初获得的那个对象。</p>
+<p>在实现某些操作符的时候，如 operator[]时，必须使用 reference。</p>
+<blockquote>
+<p>总结：当你知道你需要指向某个东西，而且绝不会改变指向其他东西，或是当你实现一个操作符而其语法需求无法由 pointers 达成，你就应该选择 reference。任何其他时候，请采用 pointers.</p>
+</blockquote>
+<h3 id="条款-2最好使用-c-转型操作符">条款 2：最好使用 C++ 转型操作符</h3>
+<p>C++ 定义了四种新的转型操作符：</p>
+<ul>
+<li>static_cast</li>
+<li>const_cast</li>
+<li>dynamic_cast</li>
+<li>reinterpret_cast</li>
+</ul>
+<p>面对这些新的转型操作符，唯一需要注意的是，过去习惯的形式<code>(type) expression</code>现在应改成<code>static_cast&lt;type&gt;(expression)</code></p>
+<p><strong>(1) static_cast</strong></p>
+<p>基本上拥有与 C 旧式转型相同的威力与意义，以及相同的限制。</p>
+<p><strong>(2) const_cast</strong></p>
+<p>用来改变表达式中的常量性或易变性，如果用于其他用途将会被拒绝。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Widget</span><span class="p">{...};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpecialWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{...};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">SpecialWidget</span> <span class="o">*</span><span class="n">psw</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">SpecialWidget</span> <span class="n">sw</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">SpecialWidget</span><span class="o">&amp;</span> <span class="n">csw</span> <span class="o">=</span> <span class="n">sw</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">update</span><span class="p">(</span><span class="k">const_cast</span><span class="o">&lt;</span><span class="n">SpecialWidget</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">csw</span><span class="p">));</span> <span class="c1">// const_cast 最常见的用途就是将某个对象的常量性去掉  
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>(3) dynamic_cast</strong></p>
+<p>用来执行继承体系中“安全的向下转型或跨系转型动作”，即可以将“指向 base class objects 的pointers 或 references” 转型为 “指向 derived class objects 的 pointers 或 references”，并得知转型是否成功。</p>
+<p><strong>dynamic_cast 无法应用在缺乏虚函数的类型身上，也不能改变类型的常量性。</strong></p>
+<p><strong>(4) reinterpret_cast</strong></p>
+<p>最常用的用途是转换“函数指针类型”。但是这个操作符的转换结果几乎总是与编译平台息息相关，所以 reinterpret_cast 不具移植性。</p>
+<h3 id="条款-3绝对不要以多态方式处理数组">条款 3：绝对不要以多态方式处理数组</h3>
+<p>假设有一个 class BST 及一个继承自 BST 的 class BalancedBST:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">BST</span> <span class="p">{...};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">BalancedBST</span><span class="o">:</span> <span class="k">public</span> <span class="n">BST</span><span class="p">{...};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>现在考虑有个函数用来打印 BSTs 数组中的每一个 BST 的内容：<code>void printBSTArray(ostream&amp; s, const BST array[], int numElements)</code></p>
+<p>如果将一个 BalancedBST 对象所组成的数组交给 printBSTArray 函数，会发生什么事：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">BalancedBST</span> <span class="n">bBSTArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">printBSTArray</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span> <span class="n">bBSTArray</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在这种情况下，编译器将会被误导。编译器假设数组中每一个元素的大小是 BST 的大小，但其实每一个元素的大小是 BalancedBST 的大小。由于 derived classes 通常比其 base classes 有更多的 data members，所以 derived class objects 通常都比其 base class objects 来得大。所以上边的代码将产生不可预计的行为。</p>
+<p>同样，如果通过 base class 指针删除一个由 derived classes objects 构成的数组，其结果未定义。</p>
+<p><strong>简单来说，多态和指针算术不能混用。</strong></p>
+<h3 id="条款-4非必要不提供-default-constructor">条款 4：非必要不提供 default constructor</h3>
+<p>所谓 default constructor ，即在没有任何外来信息的情况将对象初始化。</p>
+<p>大部分可以“合理地从无到有生成对象” 的 classes 都内含了 default constructor。</p>
+<p>如果 class 缺乏一个 default constructor，使用这个 class 时就会有一些限制。其运行可能在 3 种情况下出错：</p>
+<ul>
+<li>产生数组的时候</li>
+<li>它们将不适用于许多 template-based container classes</li>
+<li>Virtual base class 如果缺乏 default constructors,与之合作将会是一种惩罚</li>
+</ul>
+<p>如果 class constructors 可以确保对象的所有字段都会被正确地初始化，则可以提供 default constructor；否则，最好避免让 default constructor 出现，因为这样可以保证当你真的使用了这样的 class ，你可以预期它们所产生的对象会被完全地初始化，实现上亦更有效率。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-12-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/moreeffectivec&#43;&#43;_2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">More Effective C&#43;&#43; | 第 2 章 操作符</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/effectivec&#43;&#43;_9/">
+            <span class="next-text nav-default">Effective C&#43;&#43; | 第 9 章 杂项讨论</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
