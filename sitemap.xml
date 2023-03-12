@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.xhxha.one/categories/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/post/cp-abe/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/post/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/categories/%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xhxha.one/tags/%E5%B1%9E%E6%80%A7%E5%9F%BA%E5%8A%A0%E5%AF%86/</loc>
+    <lastmod>2023-03-12T11:22:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.xhxha.one/tags/c&#43;&#43;/</loc>
     <lastmod>2022-12-05T17:21:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -9,35 +58,7 @@
   </url>
   
   <url>
-    <loc>https://www.xhxha.one/categories/</loc>
-    <lastmod>2022-12-05T17:21:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_6/</loc>
-    <lastmod>2022-12-05T17:21:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/post/</loc>
-    <lastmod>2022-12-05T17:21:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/tags/</loc>
-    <lastmod>2022-12-05T17:21:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.xhxha.one/</loc>
     <lastmod>2022-12-05T17:21:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

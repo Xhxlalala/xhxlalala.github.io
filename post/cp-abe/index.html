@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CP-ABE 访问控制技术总结 - Xtar&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Xtar" /><meta name="description" content="主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://www.xhxha.one/post/cp-abe/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CP-ABE 访问控制技术总结" />
+<meta property="og:description" content="主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.xhxha.one/post/cp-abe/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-03-12T11:22:19+08:00" />
+<meta property="article:modified_time" content="2023-03-12T11:22:19+08:00" />
+
+<meta itemprop="name" content="CP-ABE 访问控制技术总结">
+<meta itemprop="description" content="主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它"><meta itemprop="datePublished" content="2023-03-12T11:22:19+08:00" />
+<meta itemprop="dateModified" content="2023-03-12T11:22:19+08:00" />
+<meta itemprop="wordCount" content="1676">
+<meta itemprop="keywords" content="属性基加密," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CP-ABE 访问控制技术总结"/>
+<meta name="twitter:description" content="主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Xtar&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Xtar&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+<script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CP-ABE 访问控制技术总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-03-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86/"> 可搜索加密 </a>
+            </div>
+          <span class="more-meta"> 约 1676 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一abe-介绍">一、ABE 介绍</a></li>
+        <li><a href="#二详细分类">二、详细分类</a></li>
+        <li><a href="#三具体介绍">三、具体介绍</a>
+          <ul>
+            <li><a href="#1--revocable-cp-abe">(1)  REVOCABLE CP-ABE</a></li>
+            <li><a href="#2-accountable-cp-abe">(2) ACCOUNTABLE CP-ABE</a></li>
+            <li><a href="#3-policy-hiding-cp-abe">(3) POLICY-HIDING CP-ABE</a></li>
+            <li><a href="#4-cp-abe-with-policy-updating">(4) CP-ABE WITH POLICY UPDATING</a></li>
+            <li><a href="#5-multi-authority-cp-abe">(5) MULTI-AUTHORITY CP-ABE</a></li>
+            <li><a href="#6-hierarchical-cp-abe">(6) HIERARCHICAL CP-ABE</a></li>
+            <li><a href="#7-onlineoffline-cp-abe">(7) ONLINE/OFFLINE CP-ABE</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>主要总结一下现有的 CP-ABE 机制。</p>
+<h2 id="一abe-介绍">一、ABE 介绍</h2>
+<p>ABE（Attribute-Based Encryption）访问控制机制是一种<strong>基于属性</strong>的加密技术，它允许数据所有者定义访问策略，将数据加密并授权给用户。用户可以通过满足特定属性要求来解密和访问数据。</p>
+<p>ABE 根据访问策略嵌入实体的不同可以分为两种：</p>
+<ul>
+<li>CP-ABE：将访问策略嵌入密文</li>
+<li>KP-ABE：将访问策略嵌入密钥</li>
+</ul>
+<p>KP-ABE机制更适用于用户数量较少、但需要高度灵活性的场景；而CP-ABE机制则更适用于用户数量较多、但需要高度可扩展性的场景。</p>
+<h2 id="二详细分类">二、详细分类</h2>
+<p>具体的分类如下图所示：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310204823331.png" alt="image-20230310204823331"></p>
+<p>本文主要介绍基于 CP-ABE 的访问控制。</p>
+<h2 id="三具体介绍">三、具体介绍</h2>
+<p>基础的 CP-ABE 如下图所示：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310205413965.png" alt="image-20230310205413965"></p>
+<p>其中包含四个实体：</p>
+<ul>
+<li><strong>DO</strong>: 数据所有者，定制访问策略，加密然后将密文上传云服务器(CSP)</li>
+<li><strong>DU</strong>: 数据用户, 具有不同的属性</li>
+<li><strong>CSP</strong>: 云服务提供商，存储数据所有者上传的密文，并对用户的查询请求进行处理</li>
+<li><strong>AA</strong>: 认证中心，主要负责 DO 与 DU 的密钥分发</li>
+</ul>
+<p>整个 CP-ABE 的过程主要包含如下四个算法：</p>
+<ul>
+<li>(PK, MSK) ← <strong>Setup($1^k$)</strong> : 输入安全参数 $k$ , 输出公钥 PK 和主密钥 MSK</li>
+<li>(SK ) ← <strong>KeyGen(PK, MSK, S)</strong> : 输入 PK，MSK 以及属性集合 S ，输出秘钥 SK</li>
+<li>(CT ) ← <strong>Encrypt(PK, M, A)</strong> ：输入 PK，信息 M, 访问策略 A，输出密文 CT</li>
+<li>$M \text { or } \perp$ ← <strong>Decrypt(PK, CT, SK )</strong> ：输入PK，CT，由属性集 S 描述的 SK，若 S 匹配访问访问策略 A，则可以获取解密后的信息 M，否则解密失败</li>
+</ul>
+<p>举例来说，在上图中，计算机科学学院用CS表示，通信工程学院用CE表示，访问策略设置为 <code>(Teacher OR (CS AND Student))</code>, 则对于用户 <code>La = {Teacher, Alice}</code> 以及用户 <code>Lb = {CS, Student, Bob}</code>，他们满足访问策略，因此可以对密文进行解密，而对于用户 <code>Lc = {CE, Student, Carl}</code>，因为其不满足访问策略，故不能对密文进行解密。</p>
+<h3 id="1--revocable-cp-abe">(1)  REVOCABLE CP-ABE</h3>
+<p>可撤销 CP-ABE 用于实现细粒度的可撤销访问控制。如下图所示：</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310211903654.png" alt="image-20230310211903654"></p>
+<p>假设访问策略是 <code>A = (Teacher OR (CS AND Student))</code>, 可撤销的 CP-ABE 支持对其中的属性进行撤销，比如可以撤销 <code>Student</code> 属性，则原来的 <code>Lb = {CS, Student, Bob}</code> 就不能像原来一样对相关密文进行解密了。</p>
+<p>根据当发生撤销事件时，是否应该更新未撤销 DU 的密钥可以分为两种可撤销的 CP-ABE : <strong>直接撤销 CP-ABE</strong> 以及 <strong>间接撤销 CP-ABE</strong></p>
+<h3 id="2-accountable-cp-abe">(2) ACCOUNTABLE CP-ABE</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310212848822.png" alt="image-20230310212848822"></p>
+<p>可追责的 CP-ABE 相比基础的 CP-ABE 主要多了追踪和评判用户的功能，主要是为了防止恶意用户滥用密钥。</p>
+<h3 id="3-policy-hiding-cp-abe">(3) POLICY-HIDING CP-ABE</h3>
+<p>支持访问策略隐藏的 CP-ABE 主要是指在访问策略中将属性值隐藏，属性名字以密文形式公开，其中主要可以分为两种模式：完全隐藏的 CP-ABE、部分隐藏的 CP-ABE</p>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310215746637.png" alt="image-20230310215746637"></p>
+<p>如上图，访问策略中只可以获取密文形式的属性名字(SSN, Status&hellip;)，而无法获取属性值(321-54-6789&hellip;)</p>
+<h3 id="4-cp-abe-with-policy-updating">(4) CP-ABE WITH POLICY UPDATING</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310220109684.png" alt="image-20230310220109684"></p>
+<p>支持策略更新的 CP-ABE 的应用场景是这样的：如果访问策略 <code>A = (Teacher OR (CS AND Student))</code>，则属性列表 <code>LA = {Teacher, Alice}</code>的 DU1 可以成功解密密文，而属性列表 <code>LB = {CE, Student, Bob}</code>的 DU2 无法解密密文。如果 DU1 要去度假，她可以提前委托 DU2 代表她进行解密。为了实现这个目标，DU1只需要给代理提供一个更新密钥，代理负责替 DU1 更新所要更新的密文。然后，代理使用更新密钥更新原始密文中的底层策略，以便 DU2 能够成功地恢复已更新的密文中的消息。</p>
+<h3 id="5-multi-authority-cp-abe">(5) MULTI-AUTHORITY CP-ABE</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310220642287.png" alt="image-20230310220642287"></p>
+<p>Multi-authority CP-ABE 是一种基于属性的加密技术，可以实现分布式访问控制。根据中心机构的存在与否，Multi-authority CP-ABE 方案分为<strong>集中式多机构 CP-ABE</strong> 和<strong>分步式多机构 CP-ABE</strong>两种类型。在集中式多机构 CP-ABE 方案中，所有的属性授权都由一个中心机构进行管理；而在分散式多机构 CP-ABE 方案中，不同的属性授权由不同的机构进行管理。Multi-authority CP-ABE方案可以提高系统的安全性和可扩展性，适用于需要跨组织或跨域访问控制的场景。</p>
+<h3 id="6-hierarchical-cp-abe">(6) HIERARCHICAL CP-ABE</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310220948406.png" alt="image-20230310220948406"></p>
+<p>Hierarchical CP-ABE 可以实现分层次的访问控制。在 Hierarchical CP-ABE 方案中，访问权限的委派是以层次结构的方式进行组织的。与基本的 CP-ABE 不同，Hierarchical CP-ABE 方案中有多个属性授权机构（AA），它们处于一个层次结构中。每个高级别 AA 通过向下发放主密钥或与密钥结构相关联的秘密密钥来委派其下级 AA。注意，Hierarchical CP-ABE 中的密钥结构是与属性相关联的一组集合。相比于基本 CP-ABE，Hierarchical CP-ABE 方案可以实现更细粒度、更灵活和更可扩展的访问控制策略，适用于需要分层次授权管理和跨组织或跨域访问控制的场景。</p>
+<h3 id="7-onlineoffline-cp-abe">(7) ONLINE/OFFLINE CP-ABE</h3>
+<p><img src="https://blog-img-1301528484.cos.ap-nanjing.myqcloud.com/images/image-20230310221241100.png" alt="image-20230310221241100"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Xtar</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2023-03-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%B1%9E%E6%80%A7%E5%9F%BA%E5%8A%A0%E5%AF%86/">属性基加密</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/moreeffectivec&#43;&#43;_6/">
+            <span class="next-text nav-default">More Effective C&#43;&#43; | 第 6 章 杂项</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xu-hx@foxmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xhxlalala" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.xhxha.one/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Xtar</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\[\[','\]\]']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

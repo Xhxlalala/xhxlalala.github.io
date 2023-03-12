@@ -6,7 +6,16 @@
     <description>Recent content on Xtar&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 05 Dec 2022 17:21:37 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Mar 2023 11:22:19 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CP-ABE 访问控制技术总结</title>
+      <link>https://www.xhxha.one/post/cp-abe/</link>
+      <pubDate>Sun, 12 Mar 2023 11:22:19 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/cp-abe/</guid>
+      <description>主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它</description>
+    </item>
+    
     <item>
       <title>More Effective C&#43;&#43; | 第 6 章 杂项</title>
       <link>https://www.xhxha.one/post/moreeffectivec&#43;&#43;_6/</link>

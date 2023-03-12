@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>可搜索加密 on Xtar&#39;s blog</title>
+    <link>https://www.xhxha.one/categories/%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86/</link>
+    <description>Recent content in 可搜索加密 on Xtar&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 12 Mar 2023 11:22:19 +0800</lastBuildDate><atom:link href="https://www.xhxha.one/categories/%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CP-ABE 访问控制技术总结</title>
+      <link>https://www.xhxha.one/post/cp-abe/</link>
+      <pubDate>Sun, 12 Mar 2023 11:22:19 +0800</pubDate>
+      
+      <guid>https://www.xhxha.one/post/cp-abe/</guid>
+      <description>主要总结一下现有的 CP-ABE 机制。 一、ABE 介绍 ABE（Attribute-Based Encryption）访问控制机制是一种基于属性的加密技术，它</description>
+    </item>
+    
+  </channel>
+</rss>
